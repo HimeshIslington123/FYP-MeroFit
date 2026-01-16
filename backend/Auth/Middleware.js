@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
 import dotenv from "dotenv";
-dotenv.config(); // Load env variables
+dotenv.config(); 
 
 
 export const authenticate = (req, res, next) => {
   try {
-    // Get token from Authorization header: "Bearer <token>"
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -18,11 +18,10 @@ export const authenticate = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    // Verify the token
-    const decoded = jwt.verify(token, "myname");
-     console.log("✅ Decoded token:", decoded); // add this
 
-    // Attach decoded data (like user id, email) to req.user
+    const decoded = jwt.verify(token, "myname");
+   
+
     req.user = decoded;
 
     // Continue to the next middleware or route

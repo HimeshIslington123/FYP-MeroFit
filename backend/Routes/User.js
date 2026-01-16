@@ -1,4 +1,4 @@
-// server/routes/userRoutes.js
+
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -12,14 +12,13 @@ dotenv.config(); // Load env variables
 const upload=multer();
 const router = express.Router();
 
-// ✅ Test route
 router.get("/", (req, res) => {
   res.send("User route working!");
 });
 
 router.get("/userdetail",authenticate, async (req, res) => {
   try {
-    const id = req.user.userId || req.user.id; // ✅ FIXED HERE
+    const id = req.user.userId || req.user.id; 
     const detail = await Register.findById(id);
     if (!detail) return res.status(404).json({ message: "User not found" });
    
@@ -100,7 +99,7 @@ router.get("/getusers",authenticate, async (req, res) => {
   }
 });
 
-// ✅ Login user
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 

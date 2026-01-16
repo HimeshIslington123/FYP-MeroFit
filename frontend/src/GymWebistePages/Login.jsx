@@ -3,8 +3,11 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import gym from "../assets/gymImage.jpg";
 import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+  const nav=useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [step, setStep] = useState(1);
   const [preview, setPreview] = useState("");
@@ -35,7 +38,7 @@ const Login = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, image: file });
-    setPreview(URL.createObjectURL(file));//to sgow preview
+    setPreview(URL.createObjectURL(file));//to show preview
   };
 
 
@@ -54,6 +57,9 @@ const Login = () => {
   localStorage.setItem("userId", res.data.id);
 
   alert("Login successful");
+ nav("/userhome/compare");
+
+  
 }
 
     } catch (error) {
