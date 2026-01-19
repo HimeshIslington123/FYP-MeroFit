@@ -13,6 +13,8 @@ import { UserContext } from "./GlobalContext/Userprovider";
 import { useContext } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import UserPayment from "./UserDashboard/Userpayment";
+
 
 const App = () => {
       const{user,setUser}=useContext(UserContext);
@@ -56,6 +58,7 @@ const App = () => {
 
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
+            <Route path="userpayment" element={< UserPayment />} />
         </Route>
       </Routes>
     </Router>
