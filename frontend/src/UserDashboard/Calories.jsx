@@ -39,7 +39,7 @@ const Calories = () => {
   };
 
   const calculateProgress = () => {
-    if (!user?.calories || !todayLog?.log?.totalCalories) return 0;
+    if (!user?.calories || d!todayLog?.log?.totalCalories) return 0;
     return (todayLog.log.totalCalories / user.calories) * 100;
   };
 
