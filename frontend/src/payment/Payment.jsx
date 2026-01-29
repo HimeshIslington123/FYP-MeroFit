@@ -61,7 +61,7 @@ const Payment = ({ amount, label }) => {
 
 
         <div className="flex justify-between">
-          <h1>Amount</h1>
+          <h1>Amounts</h1>
           <h1>{amount}</h1>
         </div>
 
