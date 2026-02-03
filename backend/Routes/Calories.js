@@ -69,5 +69,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+
+router.get("/:id", async (req, res) => {
+  try {
+    const food = await Food.findById(req.params.id);
+    if (!food) return res.status(404).json({ message: "Food not found" });
+    res.status(200).json(food);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching food", error: err.message });
+  }
+});
 export default router;
 
