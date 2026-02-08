@@ -4,7 +4,7 @@ import boy1 from "../assets/boy-1.jpg";
 import boy2 from "../assets/boy-2.jpg";
 import lady1 from "../assets/lady-1.jpg";
 import lady2 from "../assets/lady-2.jpg";
-import DoughnutGraph from "./Dongut";
+
 import {  useNavigate } from "react-router-dom";
 const Trainer = ({data}) => {
 

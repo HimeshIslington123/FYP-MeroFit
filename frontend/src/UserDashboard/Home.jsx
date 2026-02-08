@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import Trainer from "../Userdashboardcomponent/Trainer";
-import Linegraph from "../Userdashboardcomponent/Linegraph";
 import { TrendingUp, Flame, Activity, Target, Award } from "lucide-react";
 
 import { useState } from "react";
@@ -123,17 +122,9 @@ const[value,setValues]=useState(null)
           })}
         </div>
       </div>
-      <Trainer data={value} />
+     
 
-      {/* Main Section */}
-      <div className="w-full flex flex-row flex-wrap mt-4 gap-4">
-        {/* Line Graph Section */}
-        <div className="flex-[1.4] min-w-[300px] h-[300px] bg-white rounded-xl shadow-md p-3">
-          <Linegraph />
-        </div>
-
-        {/* Trainer Section */}
-      </div>
+     
       {console.log(value)}
     </div>
   );

@@ -40,7 +40,7 @@ const Userheader = () => {
             {/* Profile */}
             <div
               onClick={() => {
-                navigate("userprofile");
+                navigate("profile");
                 setNavLink("Profile");
               }}
               className={`${
