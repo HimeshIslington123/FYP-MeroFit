@@ -16,6 +16,7 @@ import axios from "axios";
 import UserPayment from "./UserDashboard/Userpayment";
 import Homeuser from "./UserDashboard/Home";
 import Profile from "./UserDashboard/Profile";
+import Badge from "./Userdashboardcomponent/Badge";
 
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
             <Route path="userpayment" element={< UserPayment />} />
             <Route path="home" element={< Homeuser />} />
               <Route path="profile" element={< Profile />} />
+                <Route path="badge" element={< Badge />} />
         </Route>
       </Routes>
     </Router>

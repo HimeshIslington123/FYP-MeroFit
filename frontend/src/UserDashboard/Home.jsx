@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import Trainer from "../Userdashboardcomponent/Trainer";
-import { TrendingUp, Flame, Activity, Target, Award } from "lucide-react";
-
+import { TrendingUp, Flame, Activity, Target, Award,ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import UserPayment from "./UserPayment";
+
 import { useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
+import Badge from "../Userdashboardcomponent/Badge";
 
 const Homeuser = () => {
   const{user,setUser}=useContext(UserContext);
@@ -125,8 +127,35 @@ const[value,setValues]=useState(null)
      
 
      
-      {console.log(value)}
+     <div className="mt-6">
+      {/* Header */}
+      <div className="flex w-full items-center justify-between mb-[-30px]">
+        <div className="flex items-center gap-2">
+          <Award size={18} className="text-[#C7F045]" />
+          <h1 className="text-white/90 text-lg font-medium tracking-wide">
+            My Badges
+          </h1>
+        </div>
+
+        <Link
+          to="/userhome/badge"
+          className="
+            flex items-center gap-1
+            text-sm text-white/70
+            hover:text-[#C7F045]
+            transition
+          "
+        >
+          View More
+          <ChevronRight size={16} />
+        </Link>
+      </div>
+
+      {/* Badges */}
+      <Badge limit={3} />
     </div>
+    </div>
+
   );
 };
 
