@@ -19,6 +19,8 @@ import Profile from "./UserDashboard/Profile";
 import Badge from "./Userdashboardcomponent/Badge";
 import Calories from "./UserDashboard/Calories";
 import Exercise from "./Userdashboardcomponent/Exercise";
+import AdminHome from "./AdminDashboard/AdminHome";
+import AdminBlog from "./AdminDashboard/AdminBlog";
 
 
 const App = () => {
@@ -60,6 +62,13 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/whytochooseus" element={<Whytochooseus />} />
         <Route path="/Blog" element={<Blog />} />
+
+
+      {/* Admin pages */}
+       <Route path="/adminhome" element={<AdminHome />} />
+        <Route path="/adminblog" element={<AdminBlog />} />
+
+
 
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
