@@ -17,6 +17,8 @@ import UserPayment from "./UserDashboard/Userpayment";
 import Homeuser from "./UserDashboard/Home";
 import Profile from "./UserDashboard/Profile";
 import Badge from "./Userdashboardcomponent/Badge";
+import Calories from "./UserDashboard/Calories";
+import Exercise from "./Userdashboardcomponent/Exercise";
 
 
 const App = () => {
@@ -65,6 +67,9 @@ const App = () => {
             <Route path="home" element={< Homeuser />} />
               <Route path="profile" element={< Profile />} />
                 <Route path="badge" element={< Badge />} />
+                  <Route path="exercise" element={< Exercise/>} />
+              
+                 
         </Route>
       </Routes>
     </Router>

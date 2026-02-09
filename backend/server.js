@@ -8,7 +8,7 @@ import { connectdb } from "./Config/Db.js";
 
 import userRoutes from "./Routes/User.js";
 import bodyRoutes from "./Routes/BodyProgress.js";
-
+import exerciseRoutes from "./Routes/ExerciseController.js";
 
 dotenv.config();
 
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/progress", bodyRoutes);
-
+app.use("/api/exercises", exerciseRoutes);
 
 
 

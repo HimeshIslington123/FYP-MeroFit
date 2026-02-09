@@ -47,6 +47,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
       activityLevel,
       targetWeight,
       address,
+      fitnesslevel,
     } = req.body;
 
     const existingUser = await Register.findOne({ email });
@@ -70,6 +71,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
       activityLevel,
       targetWeight,
       address,
+      fitnesslevel,
       image: req.file
         ? { data: req.file.buffer, contentType: req.file.mimetype }
         : null

@@ -10,6 +10,7 @@ const RegisterSchema = new mongoose.Schema({
   weight: Number,
   gender: String,
   exerciseType: String,
+  fitnesslevel: String,
   frequency: String,
   goal: String,
   activityLevel: String,

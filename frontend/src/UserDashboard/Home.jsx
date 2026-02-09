@@ -3,12 +3,14 @@ import Trainer from "../Userdashboardcomponent/Trainer";
 import { TrendingUp, Flame, Activity, Target, Award,ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import UserPayment from "./UserPayment";
+// import UserPayment from "./UserPayment";
 
 import { useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
 import Badge from "../Userdashboardcomponent/Badge";
+import Exercise from "../Userdashboardcomponent/Exercise";
+
 
 const Homeuser = () => {
   const{user,setUser}=useContext(UserContext);
@@ -32,7 +34,7 @@ const[value,setValues]=useState(null)
    if (!user) {
     return <div className="text-white">Loading...</div>;
   }
-
+{console.log(user)}
 
   const stats = [
     {
@@ -69,7 +71,7 @@ const[value,setValues]=useState(null)
     },
     {
       label: "Progress",
-      value: "78",
+      value: user.fitnesslevel,
       unit: "%",
       icon: Award,
       change: "+8%",
@@ -125,8 +127,22 @@ const[value,setValues]=useState(null)
         </div>
       </div>
      
+<div>
+  <div className="w-full flex justify-between">
+     <h1 className="text-white/90 text-lg mt-[30px] font-medium tracking-wide">
+    Recommended exercise for you
+  </h1>
 
-     
+  <Link to="/userhome/exercise"  className="
+            flex items-center gap-1
+            text-sm text-white/70
+            hover:text-[#C7F045]
+            transition
+          ">View more  <ChevronRight size={16} /></Link>
+  </div>
+ 
+  <Exercise fitnesstype={user.fitnesslevel} limit={8} />
+</div>
      <div className="mt-6">
       {/* Header */}
       <div className="flex w-full items-center justify-between mb-[-30px]">

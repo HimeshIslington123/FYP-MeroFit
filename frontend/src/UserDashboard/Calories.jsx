@@ -1,4 +1,4 @@
-// FULL CODE BELOW (START)
+
 
 import {
   Plus,
@@ -39,7 +39,7 @@ const Calories = () => {
   };
 
   const calculateProgress = () => {
-    if (!user?.calories || d!todayLog?.log?.totalCalories) return 0;
+    if (!user?.calories ) return 0;
     return (todayLog.log.totalCalories / user.calories) * 100;
   };
 
@@ -304,10 +304,7 @@ const Calories = () => {
         </div>
       ) : (
         <>
-          {/* ===================================================== */}
-          {/* ========== NORMAL UI (NOT SHOW HISTORY) ============= */}
-          {/* ===================================================== */}
-
+      
           <div className="w-full flex flex-col items-center">
             <div className="w-full flex justify-between items-center text-white py-5 px-5">
               <div className="flex flex-col">
@@ -481,4 +478,4 @@ const Calories = () => {
 
 export default Calories;
 
-// FULL CODE ABOVE (END)
+
