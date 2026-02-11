@@ -24,13 +24,10 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: {
-      type: String, // store image URL or filename
-      required: false,
-    },
+    image: { data: Buffer, contentType: String }
   },
   {
-    timestamps: true, // createdAt, updatedAt
+    timestamps: true, 
   }
 );
 

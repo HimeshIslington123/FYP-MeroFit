@@ -169,8 +169,11 @@ const[value,setValues]=useState(null)
 
       {/* Badges */}
       <Badge limit={3} />
+      <Trainer data={user}></Trainer>
     </div>
+   
     </div>
+
 
   );
 };

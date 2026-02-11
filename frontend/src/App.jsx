@@ -21,6 +21,7 @@ import Calories from "./UserDashboard/Calories";
 import Exercise from "./Userdashboardcomponent/Exercise";
 import AdminHome from "./AdminDashboard/AdminHome";
 import AdminBlog from "./AdminDashboard/AdminBlog";
+import SingleBlog from "./GymWebistePages/SingleBlog";
 
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/whytochooseus" element={<Whytochooseus />} />
         <Route path="/Blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<SingleBlog />} />
 
 
       {/* Admin pages */}
