@@ -22,6 +22,7 @@ import Exercise from "./Userdashboardcomponent/Exercise";
 import AdminHome from "./AdminDashboard/AdminHome";
 import AdminBlog from "./AdminDashboard/AdminBlog";
 import SingleBlog from "./GymWebistePages/SingleBlog";
+import PaymentSuccess from "./payment/PaymentSuccess";
 
 
 const App = () => {
@@ -64,6 +65,8 @@ const App = () => {
         <Route path="/whytochooseus" element={<Whytochooseus />} />
         <Route path="/Blog" element={<Blog />} />
         <Route path="/blog/:id" element={<SingleBlog />} />
+             
+        <Route path="/paymentsuccess" element={<PaymentSuccess></PaymentSuccess>}/>
 
 
       {/* Admin pages */}
@@ -79,6 +82,8 @@ const App = () => {
               <Route path="profile" element={< Profile />} />
                 <Route path="badge" element={< Badge />} />
                   <Route path="exercise" element={< Exercise/>} />
+                   <Route path="trackcalories" element={<Calories />} />
+                  
               
                  
         </Route>

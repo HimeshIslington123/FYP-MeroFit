@@ -14,8 +14,8 @@ import Exercise from "../Userdashboardcomponent/Exercise";
 
 const Homeuser = () => {
   const{user,setUser}=useContext(UserContext);
-const[value,setValues]=useState(null)
-   
+const [value, setValues] = useState({ active: false });
+
   
  
   
@@ -169,7 +169,7 @@ const[value,setValues]=useState(null)
 
       {/* Badges */}
       <Badge limit={3} />
-      <Trainer data={user}></Trainer>
+      <Trainer data={value}></Trainer>
     </div>
    
     </div>

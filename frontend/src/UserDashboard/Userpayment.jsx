@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Payment from "../payment/Payment";
 import esewa from "../assets/esewa_logo.png";
 const UserPayment = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -45,7 +45,17 @@ const UserPayment = () => {
         ))}
       </div>
 
-     
+      {/* Show Payment Form */}
+      <div className="w-full mt-10">
+        {selectedPackage && (
+          <Payment
+            key={selectedPackage.amount}
+            amount={selectedPackage.amount}
+            label={selectedPackage.label}
+            duration={selectedPackage.duration}
+          />
+        )}
+      </div>
     </div>
   );
 };

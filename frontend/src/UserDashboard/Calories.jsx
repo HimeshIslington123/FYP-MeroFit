@@ -38,10 +38,13 @@ const Calories = () => {
     return Math.round((value / 100) * quantity);
   };
 
-  const calculateProgress = () => {
-    if (!user?.calories ) return 0;
-    return (todayLog.log.totalCalories / user.calories) * 100;
-  };
+ const calculateProgress = () => {
+  if (!user?.calories) return 0;
+  if (!todayLog?.log?.totalCalories) return 0;
+
+  return (todayLog.log.totalCalories / user.calories) * 100;
+};
+
 
   const [search, setSearch] = useState("");
 
