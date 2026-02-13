@@ -14,6 +14,7 @@ import paymentRoutes from "./Routes/Esewa.js";
 import caloriesRoutes from "./Routes/Calories.js";
 import TrackCalories from "./Routes/TrackCalories.js";
 import ExercisePr from "./Routes/ExercisePrController.js"
+import WeightChanges from "./Routes/weightRoutes.js"
 
 dotenv.config();
 
@@ -43,6 +44,9 @@ app.use("/esewa", paymentRoutes);
 app.use("/calories", caloriesRoutes);
 app.use("/TrackCalories", TrackCalories);
 app.use("/api/pr", ExercisePr);
+app.use("/api/weightchanges", WeightChanges);
+
+
 
 
 const PORT = process.env.PORT || 4000;

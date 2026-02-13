@@ -25,6 +25,7 @@ import SingleBlog from "./GymWebistePages/SingleBlog";
 import PaymentSuccess from "./payment/PaymentSuccess";
 import ExercisePr from "./UserDashboard/ExercisePr";
 import Logout from "./UserDashboard/Logout";
+import WeightChanges from "./UserDashboard/WeightChanges";
 
 
 const App = () => {
@@ -87,6 +88,7 @@ const App = () => {
                    <Route path="trackcalories" element={<Calories />} />
                    <Route path="exercisepr" element={<ExercisePr />} />
                     <Route path="logout" element={<Logout />} />
+                      <Route path="weightchanges" element={<WeightChanges />} />
                   
               
                  
