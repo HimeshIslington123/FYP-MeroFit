@@ -13,6 +13,7 @@ import blogRoutes from "./Routes/Blogcontroller.js"
 import paymentRoutes from "./Routes/Esewa.js";
 import caloriesRoutes from "./Routes/Calories.js";
 import TrackCalories from "./Routes/TrackCalories.js";
+import ExercisePr from "./Routes/ExercisePrController.js"
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use("/api/blog",blogRoutes);
 app.use("/esewa", paymentRoutes);
 app.use("/calories", caloriesRoutes);
 app.use("/TrackCalories", TrackCalories);
+app.use("/api/pr", ExercisePr);
 
 
 const PORT = process.env.PORT || 4000;

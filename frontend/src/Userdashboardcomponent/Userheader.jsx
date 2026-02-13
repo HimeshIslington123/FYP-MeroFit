@@ -144,7 +144,12 @@ const Userheader = () => {
             <span>Security</span>
           </div>
 
-          <div className="flex items-center text-white gap-3 cursor-pointer hover:text-[#C7F045]">
+          <div 
+           onClick={() => {
+                navigate("logout");
+                setNavLink("logout");
+              }}
+          className="flex items-center text-white gap-3 cursor-pointer hover:text-[#C7F045]">
             <i className="bi bi-box-arrow-right"></i>
             <span>Logout</span>
           </div>

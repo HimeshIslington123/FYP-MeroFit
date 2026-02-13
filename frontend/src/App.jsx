@@ -23,6 +23,8 @@ import AdminHome from "./AdminDashboard/AdminHome";
 import AdminBlog from "./AdminDashboard/AdminBlog";
 import SingleBlog from "./GymWebistePages/SingleBlog";
 import PaymentSuccess from "./payment/PaymentSuccess";
+import ExercisePr from "./UserDashboard/ExercisePr";
+import Logout from "./UserDashboard/Logout";
 
 
 const App = () => {
@@ -83,6 +85,8 @@ const App = () => {
                 <Route path="badge" element={< Badge />} />
                   <Route path="exercise" element={< Exercise/>} />
                    <Route path="trackcalories" element={<Calories />} />
+                   <Route path="exercisepr" element={<ExercisePr />} />
+                    <Route path="logout" element={<Logout />} />
                   
               
                  
