@@ -1,6 +1,6 @@
 import React from "react";
 import { User, Bell } from "lucide-react";
-import { NavLink } from "react-router-dom"; // ✅ Import NavLink
+import { NavLink } from "react-router-dom"; 
 
 const Navbar = () => {
   return (
@@ -35,7 +35,7 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink
-          to="/admin/users"
+          to="/adminuser"
           className={({ isActive }) =>
             `font-light transition-colors ${
               isActive ? "text-[#C7F045]" : "text-white/80 hover:text-[#C7F045]"

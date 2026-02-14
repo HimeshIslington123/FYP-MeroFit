@@ -26,6 +26,7 @@ import PaymentSuccess from "./payment/PaymentSuccess";
 import ExercisePr from "./UserDashboard/ExercisePr";
 import Logout from "./UserDashboard/Logout";
 import WeightChanges from "./UserDashboard/WeightChanges";
+import AdminUser from "./AdminDashboard/AdminUser";
 
 
 const App = () => {
@@ -75,6 +76,7 @@ const App = () => {
       {/* Admin pages */}
        <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminblog" element={<AdminBlog />} />
+          <Route path="/adminuser" element={<AdminUser />} />
 
 
 

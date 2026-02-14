@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import multer from "multer";
 import { Register } from "../Model/Register.js"; // Your Mongoose model
-
+import Paymentmodel from "../Model/GymPayment.js";
 import { authenticate } from "../Auth/Middleware.js";
 import dotenv from "dotenv";
 dotenv.config(); // Load env variables
@@ -201,5 +201,70 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
     });
   }
 });
+
+
+router.get("/users-with-payment", authenticate, async (req, res) => {
+  try {
+    const users = await Register.find().select("-password");
+
+    const result = await Promise.all(
+      users.map(async (user) => {
+        const latestPayment = await Paymentmodel.findOne({ user: user._id })
+          .sort({ created_at: -1 });
+
+        let membershipStatus = "NO_PAYMENT";
+
+        if (latestPayment) {
+          const now = new Date();
+          membershipStatus =
+            latestPayment.expire_at > now ? "ACTIVE" : "EXPIRED";
+        }
+
+        return {
+          user,
+          payment: latestPayment || null,
+          membershipStatus,
+        };
+      })
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch users with payment",
+      error: error.message,
+    });
+  }
+});
+
+// DELETE user (admin)
+router.delete("/delete/:id", authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedUser = await Register.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting user",
+      error: error.message,
+    });
+  }
+});
+
 
 export default router;
