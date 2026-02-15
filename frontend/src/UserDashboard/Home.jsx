@@ -1,6 +1,13 @@
 import React, { useContext } from "react";
 import Trainer from "../Userdashboardcomponent/Trainer";
-import { TrendingUp, Flame, Activity, Target, Award,ChevronRight } from "lucide-react";
+import {
+  TrendingUp,
+  Flame,
+  Activity,
+  Target,
+  Award,
+  ChevronRight,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 // import UserPayment from "./UserPayment";
@@ -10,15 +17,12 @@ import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
 import Badge from "../Userdashboardcomponent/Badge";
 import Exercise from "../Userdashboardcomponent/Exercise";
-
+import Food from "../Userdashboardcomponent/Food";
 
 const Homeuser = () => {
-  const{user,setUser}=useContext(UserContext);
-const [value, setValues] = useState({ active: false });
+  const { user, setUser } = useContext(UserContext);
+  const [value, setValues] = useState({ active: false });
 
-  
- 
-  
   useEffect(() => {
     const token = localStorage.getItem("token");
     const verify = async () => {
@@ -31,10 +35,12 @@ const [value, setValues] = useState({ active: false });
 
     verify();
   }, []);
-   if (!user) {
+  if (!user) {
     return <div className="text-white">Loading...</div>;
   }
-{console.log(user)}
+  {
+    console.log(user);
+  }
 
   const stats = [
     {
@@ -83,8 +89,7 @@ const [value, setValues] = useState({ active: false });
     <div className="w-full text-white">
       {/* Header */}
       <h4 className="text-[25px] font-semibold text-gray-50">
-        Hi, {user?.name},
-        {console.log(user)}
+        Hi, {user?.name},{console.log(user)}
       </h4>
       <h4 className="text-[15px] opacity-65 text-gray-50">
         Wednesday, 22 October, 2025
@@ -126,55 +131,83 @@ const [value, setValues] = useState({ active: false });
           })}
         </div>
       </div>
-     
-<div>
-  <div className="w-full flex justify-between">
-     <h1 className="text-white/90 text-lg mt-[30px] font-medium tracking-wide">
-    Recommended exercise for you
-  </h1>
 
-  <Link to="/userhome/exercise"  className="
-            flex items-center gap-1
-            text-sm text-white/70
-            hover:text-[#C7F045]
-            transition
-          ">View more  <ChevronRight size={16} /></Link>
-  </div>
- 
-  <Exercise fitnesstype={user.fitnesslevel} limit={8} />
-</div>
-     <div className="mt-6">
-      {/* Header */}
-      <div className="flex w-full items-center justify-between mb-[-30px]">
-        <div className="flex items-center gap-2">
-          <Award size={18} className="text-[#C7F045]" />
-          <h1 className="text-white/90 text-lg font-medium tracking-wide">
-            My Badges
+      <div>
+        <div className="w-full flex justify-between">
+          <h1 className="text-white/90 text-lg mt-[30px] font-medium tracking-wide">
+            Recommended exercise for you
           </h1>
-        </div>
 
-        <Link
-          to="/userhome/badge"
-          className="
+          <Link
+            to="/userhome/exercise"
+            className="
             flex items-center gap-1
             text-sm text-white/70
             hover:text-[#C7F045]
             transition
           "
-        >
-          View More
-          <ChevronRight size={16} />
-        </Link>
+          >
+            View more <ChevronRight size={16} />
+          </Link>
+        </div>
+
+        <Exercise fitnesstype={user.fitnesslevel} limit={8} />
       </div>
+      <div className="mt-6">
+        {/* Header */}
+        <div className="flex w-full items-center justify-between mb-[-30px]">
+          <div className="flex items-center gap-2">
+            <Award size={18} className="text-[#C7F045]" />
+            <h1 className="text-white/90 text-lg font-medium tracking-wide">
+              My Badges
+            </h1>
+          </div>
 
-      {/* Badges */}
-      <Badge limit={3} />
-      <Trainer data={value}></Trainer>
+          <Link
+            to="/userhome/badge"
+            className="
+            flex items-center gap-1
+            text-sm text-white/70
+            hover:text-[#C7F045]
+            transition
+          "
+          >
+            View More
+            <ChevronRight size={16} />
+          </Link>
+        </div>
+
+        {/* Badges */}
+        <Badge limit={3} />
+        <Trainer data={value}></Trainer>
+      </div>
+    
+ 
+ <div className="flex justify-between">
+  <div className="flex items-center gap-2">
+            <Award size={18} className="text-[#C7F045]" />
+            <h1 className="text-white/90 text-lg font-medium tracking-wide">
+            Recommend foods for you
+            </h1>
+          </div>
+<Link
+  to="/userhome/foods"
+  className="flex items-center gap-1 text-sm text-white/70 hover:text-[#C7F045] transition"
+>
+  View More
+  <ChevronRight size={16} />
+</Link>
+ </div>
+  
+
+<Food limit={8} showFilters={false} />
+
+
+
+
+
+
     </div>
-   
-    </div>
-
-
   );
 };
 

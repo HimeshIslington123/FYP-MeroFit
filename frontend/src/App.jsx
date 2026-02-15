@@ -27,6 +27,7 @@ import ExercisePr from "./UserDashboard/ExercisePr";
 import Logout from "./UserDashboard/Logout";
 import WeightChanges from "./UserDashboard/WeightChanges";
 import AdminUser from "./AdminDashboard/AdminUser";
+import Food from "./Userdashboardcomponent/Food";
 
 
 const App = () => {
@@ -91,9 +92,9 @@ const App = () => {
                    <Route path="exercisepr" element={<ExercisePr />} />
                     <Route path="logout" element={<Logout />} />
                       <Route path="weightchanges" element={<WeightChanges />} />
-                  
-              
-                 
+                       <Route path="foods" element={<Food />} />
+
+                   
         </Route>
       </Routes>
     </Router>
