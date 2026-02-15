@@ -14,19 +14,20 @@ const FoodSchema = new mongoose.Schema({
     },
   },
 
-  // 🔥 NEW FIELD
+
   foodType: {
-    type: String,
-    enum: [
-      "HIGH_PROTEIN",
-      "LOW_CARB",
-      "HIGH_CARB",
-      "LOW_FAT",
-      "BALANCED",
-      "KETO",
-    ],
-    required: true,
-  },
+  type: String,
+  enum: [
+    "HIGH_PROTEIN",
+    "LOW_CARB",
+    "HIGH_CARB",
+    "LOW_FAT",
+    "BALANCED",
+    "KETO",
+  ],
+  default: "BALANCED", 
+},
+
 });
 
 const Food = mongoose.model("Foodtable", FoodSchema);

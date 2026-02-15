@@ -5,6 +5,31 @@ const router=express.Router();
 import  Food  from "../Model/Food.js"; 
 import { authenticate } from "../Auth/Middleware.js";
 
+// ✅ Add bulk foods
+router.post("/bulk", async (req, res) => {
+  try {
+    const foods = req.body; // expecting array of food objects
+
+    if (!Array.isArray(foods) || foods.length === 0) {
+      return res.status(400).json({
+        message: "Please send an array of food items",
+      });
+    }
+
+    const savedFoods = await Food.insertMany(foods);
+
+    res.status(201).json({
+      message: "Bulk foods added successfully",
+      count: savedFoods.length,
+      foods: savedFoods,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error adding bulk foods",
+      error: err.message,
+    });
+  }
+});
 
 
 // ✅ Get all foods
