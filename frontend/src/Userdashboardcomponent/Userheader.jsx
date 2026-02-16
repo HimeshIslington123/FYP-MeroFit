@@ -73,17 +73,17 @@ const Userheader = () => {
             {/* Analysis */}
             <div
               onClick={() => {
-                navigate("compare");
-                setNavLink("Compare");
+                navigate("trackchanges");
+                setNavLink("Track changes");
               }}
               className={`${
-                navLink === "Compare"
+                navLink === "Track changes"
                   ? "bg-[#D8FF00] text-black"
                   : "text-white"
               } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
             >
               <i className="bi bi-graph-down"></i>
-              <span>Compare</span>
+              <span>Track Changes</span>
             </div>
 
             {/* Track Calories */}
@@ -105,7 +105,7 @@ const Userheader = () => {
             {/* Message */}
             <div
               onClick={() => {
-                navigate("message");
+                navigate("chat");
                 setNavLink("Message");
               }}
               className={`${

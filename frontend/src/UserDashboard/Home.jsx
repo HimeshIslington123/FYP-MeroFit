@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Trainer from "../Userdashboardcomponent/Trainer";
 import {
   TrendingUp,
@@ -9,10 +9,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-// import UserPayment from "./UserPayment";
-
-import { useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
 import Badge from "../Userdashboardcomponent/Badge";
@@ -20,28 +16,42 @@ import Exercise from "../Userdashboardcomponent/Exercise";
 import Food from "../Userdashboardcomponent/Food";
 
 const Homeuser = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [value, setValues] = useState({ active: false });
 
+  // Fetch user payment info
   useEffect(() => {
     const token = localStorage.getItem("token");
     const verify = async () => {
       const res = await axios.get(`http://localhost:4000/esewa/getPayment`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setValues(res.data);
     };
-
     verify();
   }, []);
+
   if (!user) {
     return <div className="text-white">Loading...</div>;
   }
-  {
-    console.log(user);
-  }
 
+  // Function to calculate BMI
+  const calculateBMI = (weight, heightCm) => {
+    const heightM = heightCm / 100; // convert cm to meters
+    return weight / (heightM * heightM);
+  };
+
+  // Function to estimate body fat %
+  const calculateBodyFat = (weight, heightCm, age, gender) => {
+    const bmi = calculateBMI(weight, heightCm);
+    if (gender === "male") {
+      return (1.2 * bmi + 0.23 * age - 16.2).toFixed(1);
+    } else {
+      return (1.2 * bmi + 0.23 * age - 5.4).toFixed(1);
+    }
+  };
+
+  // Dynamic stats including calculated body fat
   const stats = [
     {
       label: "Weight",
@@ -61,7 +71,7 @@ const Homeuser = () => {
     },
     {
       label: "Body Fat",
-      value: "18.2",
+      value: calculateBodyFat(user.weight, user.height, user.age, user.gender),
       unit: "%",
       icon: Target,
       change: "-1.5%",
@@ -89,7 +99,7 @@ const Homeuser = () => {
     <div className="w-full text-white">
       {/* Header */}
       <h4 className="text-[25px] font-semibold text-gray-50">
-        Hi, {user?.name},{console.log(user)}
+        Hi, {user?.name}
       </h4>
       <h4 className="text-[15px] opacity-65 text-gray-50">
         Wednesday, 22 October, 2025
@@ -97,7 +107,7 @@ const Homeuser = () => {
 
       {/* Stats Cards */}
       <div className="w-full flex flex-row flex-wrap mt-4 gap-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  gap-5 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 w-full">
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
@@ -132,29 +142,28 @@ const Homeuser = () => {
         </div>
       </div>
 
-      <div>
-        <div className="w-full flex justify-between">
-          <h1 className="text-white/90 text-lg mt-[30px] font-medium tracking-wide">
-            Recommended exercise for you
-          </h1>
-
+      {/* Recommended Exercises */}
+      <div className="mt-6">
+        <div className="flex justify-between">
+          <div className="flex items-center gap-2">
+            <Award size={18} className="text-[#C7F045]" />
+            <h1 className="text-white/90 text-lg font-medium tracking-wide">
+              Recommend exercise for you
+            </h1>
+          </div>
           <Link
             to="/userhome/exercise"
-            className="
-            flex items-center gap-1
-            text-sm text-white/70
-            hover:text-[#C7F045]
-            transition
-          "
+            className="flex items-center gap-1 text-sm text-white/70 hover:text-[#C7F045] transition"
           >
-            View more <ChevronRight size={16} />
+            View More
+            <ChevronRight size={16} />
           </Link>
         </div>
-
         <Exercise fitnesstype={user.fitnesslevel} limit={8} />
       </div>
+
+      {/* Badges */}
       <div className="mt-6">
-        {/* Header */}
         <div className="flex w-full items-center justify-between mb-[-30px]">
           <div className="flex items-center gap-2">
             <Award size={18} className="text-[#C7F045]" />
@@ -162,51 +171,35 @@ const Homeuser = () => {
               My Badges
             </h1>
           </div>
-
           <Link
             to="/userhome/badge"
-            className="
-            flex items-center gap-1
-            text-sm text-white/70
-            hover:text-[#C7F045]
-            transition
-          "
+            className="flex items-center gap-1 text-sm text-white/70 hover:text-[#C7F045] transition"
           >
             View More
             <ChevronRight size={16} />
           </Link>
         </div>
-
-        {/* Badges */}
         <Badge limit={3} />
-        <Trainer data={value}></Trainer>
+        <Trainer data={value} />
       </div>
-    
- 
- <div className="flex justify-between">
-  <div className="flex items-center gap-2">
-            <Award size={18} className="text-[#C7F045]" />
-            <h1 className="text-white/90 text-lg font-medium tracking-wide">
+
+      {/* Recommended Foods */}
+      <div className="mt-6 flex justify-between">
+        <div className="flex items-center gap-2">
+          <Award size={18} className="text-[#C7F045]" />
+          <h1 className="text-white/90 text-lg font-medium tracking-wide">
             Recommend foods for you
-            </h1>
-          </div>
-<Link
-  to="/userhome/foods"
-  className="flex items-center gap-1 text-sm text-white/70 hover:text-[#C7F045] transition"
->
-  View More
-  <ChevronRight size={16} />
-</Link>
- </div>
-  
-
-<Food limit={8} showFilters={false} />
-
-
-
-
-
-
+          </h1>
+        </div>
+        <Link
+          to="/userhome/foods"
+          className="flex items-center gap-1 text-sm text-white/70 hover:text-[#C7F045] transition"
+        >
+          View More
+          <ChevronRight size={16} />
+        </Link>
+      </div>
+      <Food limit={8} showFilters={false} />
     </div>
   );
 };

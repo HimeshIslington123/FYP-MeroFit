@@ -28,6 +28,8 @@ import Logout from "./UserDashboard/Logout";
 import WeightChanges from "./UserDashboard/WeightChanges";
 import AdminUser from "./AdminDashboard/AdminUser";
 import Food from "./Userdashboardcomponent/Food";
+import Chat from "./UserDashboard/Chat";
+import TrackChanges from "./UserDashboard/TrackChanges";
 
 
 const App = () => {
@@ -93,6 +95,8 @@ const App = () => {
                     <Route path="logout" element={<Logout />} />
                       <Route path="weightchanges" element={<WeightChanges />} />
                        <Route path="foods" element={<Food />} />
+                        <Route path="chat" element={<Chat />} />
+                         <Route path="trackchanges" element={<TrackChanges />} />
 
                    
         </Route>

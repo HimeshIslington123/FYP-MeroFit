@@ -57,7 +57,7 @@ const Login = () => {
   localStorage.setItem("userId", res.data.id);
 
   alert("Login successful");
- nav("/userhome/compare");
+ nav("/userhome/home");
 
   
 }

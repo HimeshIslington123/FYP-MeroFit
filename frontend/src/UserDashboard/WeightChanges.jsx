@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Scale, Calendar, TrendingUp } from "lucide-react";
+import { Scale, Calendar, TrendingUp, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const WeightChanges = () => {
   const [weight, setWeight] = useState("");
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch weight history
   const fetchWeightHistory = async () => {
@@ -53,7 +55,16 @@ const WeightChanges = () => {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="  mx-auto">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 mb-6 text-[#C7F045] hover:text-[#b7db39] font-semibold"
+      >
+        <ArrowLeft size={20} />
+        Back
+      </button>
+
       <h2 className="text-white text-3xl font-bold mb-6 text-center">
         Weight Tracker
       </h2>

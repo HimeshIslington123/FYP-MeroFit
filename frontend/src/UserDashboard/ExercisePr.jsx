@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Dumbbell, Hash, Calendar } from "lucide-react";
+import { Dumbbell, Hash, Calendar,ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ExercisePr = () => {
   const [exerciseList, setExerciseList] = useState([]);
@@ -8,6 +9,7 @@ const ExercisePr = () => {
   const [selectedExercise, setSelectedExercise] = useState("");
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
+   const navigate = useNavigate();
 
   const fetchExercises = async () => {
     try {
@@ -58,7 +60,15 @@ const ExercisePr = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="mx-auto">
+       <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 mb-6 text-[#C7F045] hover:text-[#b7db39] font-semibold"
+      >
+        <ArrowLeft size={20} />
+        Back
+      </button>
+      
       <h2 className="text-white text-3xl font-bold mb-6 text-center">My Exercise PRs</h2>
 
       {/* Add PR form */}
