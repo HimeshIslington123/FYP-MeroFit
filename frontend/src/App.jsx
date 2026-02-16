@@ -30,6 +30,7 @@ import AdminUser from "./AdminDashboard/AdminUser";
 import Food from "./Userdashboardcomponent/Food";
 import Chat from "./UserDashboard/Chat";
 import TrackChanges from "./UserDashboard/TrackChanges";
+import Post from "./UserDashboard/Post";
 
 
 const App = () => {
@@ -97,6 +98,7 @@ const App = () => {
                        <Route path="foods" element={<Food />} />
                         <Route path="chat" element={<Chat />} />
                          <Route path="trackchanges" element={<TrackChanges />} />
+                          <Route path="post" element={<Post />} />
 
                    
         </Route>
