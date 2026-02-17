@@ -31,6 +31,7 @@ import Food from "./Userdashboardcomponent/Food";
 import Chat from "./UserDashboard/Chat";
 import TrackChanges from "./UserDashboard/TrackChanges";
 import Post from "./UserDashboard/Post";
+import Trainer from "./Userdashboardcomponent/Trainer";
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
     const getUser = async () => {
       try {
         const token = localStorage.getItem("token");
+        
         if (!token) return;
 
         const res = await axios.get(
@@ -52,6 +54,7 @@ const App = () => {
         const u = res.data.data;
 
         setUser(u);
+       
         
 
       } catch (error) {
@@ -99,6 +102,7 @@ const App = () => {
                         <Route path="chat" element={<Chat />} />
                          <Route path="trackchanges" element={<TrackChanges />} />
                           <Route path="post" element={<Post />} />
+                            <Route path="trainer" element={<Trainer />} />
 
                    
         </Route>

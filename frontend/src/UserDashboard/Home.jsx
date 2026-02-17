@@ -102,7 +102,8 @@ const Homeuser = () => {
         Hi, {user?.name}
       </h4>
       <h4 className="text-[15px] opacity-65 text-gray-50">
-        Wednesday, 22 October, 2025
+      {  new Date().toDateString()}
+
       </h4>
 
       {/* Stats Cards */}

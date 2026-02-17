@@ -62,7 +62,7 @@ const Trainer = ({data}) => {
                   <p className="text-white/30">190+ session</p>
                 </div>
 
-                {data.active?  <button className="w-full bg-[#C7F045] mt-[5px] flex items-center justify-center hover:bg-[#b3d93d] text-black rounded-xl py-3 shadow-[0_0_15px_rgba(199,240,69,0.3)] hover:shadow-[0_0_25px_rgba(199,240,69,0.5)] transition-all">
+                {data?.active?  <button className="w-full bg-[#C7F045] mt-[5px] flex items-center justify-center hover:bg-[#b3d93d] text-black rounded-xl py-3 shadow-[0_0_15px_rgba(199,240,69,0.3)] hover:shadow-[0_0_25px_rgba(199,240,69,0.5)] transition-all">
                   <Mail size={16} className="mr-2" />
                   Contact Trainer
                 </button>: <button onClick={()=>navigate("/userhome/userpayment")} className="w-full bg-[#C7F045] mt-[5px] flex items-center justify-center hover:bg-[#b3d93d] text-black rounded-xl py-3 shadow-[0_0_15px_rgba(199,240,69,0.3)] hover:shadow-[0_0_25px_rgba(199,240,69,0.5)] transition-all">

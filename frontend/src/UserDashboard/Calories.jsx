@@ -88,10 +88,7 @@ const Calories = () => {
     }
   };
 
-  useEffect(() => {
-    fetchFoods();
-    fetchTodayLog();
-  }, [token]);
+  
 
   const alldata = async () => {
     try {
@@ -107,9 +104,14 @@ const Calories = () => {
     }
   };
 
-  useEffect(() => {
-    alldata();
-  }, [token]);
+ useEffect(() => {
+  if (!token) return;
+
+  fetchFoods();
+  fetchTodayLog();
+  alldata();
+}, [token]);
+
 
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(search.toLowerCase())
