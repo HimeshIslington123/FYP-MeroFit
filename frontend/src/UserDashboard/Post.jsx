@@ -1,11 +1,147 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Post = () => {
-  return (
-    <div>
-      post jsx
-    </div>
-  )
-}
+  const [posts, setPosts] = useState([]);
+  const [caption, setCaption] = useState("");
+  const [file, setFile] = useState(null);
+  const [showMine, setShowMine] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-export default Post
+  const token = localStorage.getItem("token");
+  const loggedInUserId = localStorage.getItem("userId");
+
+  const fetchPosts = async () => {
+    const res = await axios.get("http://localhost:4000/api/post");
+    setPosts(res.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!caption && !file) return alert("Add something!");
+
+    const fd = new FormData();
+    fd.append("caption", caption);
+    if (file) fd.append("image", file);
+
+    await axios.post("http://localhost:4000/api/post/create", fd, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setCaption("");
+    setFile(null);
+    fetchPosts();
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(`http://localhost:4000/api/post/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchPosts();
+  };
+
+  const displayPosts = showMine
+    ? posts.filter((p) => p.user._id === loggedInUserId)
+    : posts;
+
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <div style={{ maxWidth: 600, margin: "30px auto", fontFamily: "Arial" }}>
+      {/* CREATE */}
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "#fff",
+          padding: 15,
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(0,0,0,.1)",
+        }}
+      >
+        <textarea
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          placeholder="What's on your mind?"
+          style={{
+            width: "100%",
+            padding: 10,
+            borderRadius: 8,
+            border: "1px solid #ccc",
+          }}
+        />
+        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+        <button
+          style={{
+            marginTop: 10,
+            background: "#1877f2",
+            color: "#fff",
+            padding: "8px 15px",
+            border: "none",
+            borderRadius: 8,
+          }}
+        >
+          Post
+        </button>
+      </form>
+
+      {/* FILTER */}
+      <div style={{ display: "flex", gap: 10, margin: "15px 0" }}>
+        <button className="bg-amber-50 p-3 rounded-xl" onClick={() => setShowMine(false)}>All</button>
+        <button className="bg-amber-50 p-3 rounded-xl" onClick={() => setShowMine(true)}>My Posts</button>
+      </div>
+
+      {/* FEED */}
+      {displayPosts.map((post) => (
+        <div
+          key={post._id}
+          style={{
+            background: "#fff",
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 20,
+            boxShadow: "0 2px 8px rgba(0,0,0,.08)",
+          }}
+        >
+          <div style={{ display: "flex", gap: 10 }}>
+            <img
+              src={post.user.image}
+              alt=""
+              style={{ width: 40, height: 40, borderRadius: "50%" }}
+            />
+            <div>
+              <strong>{post.user.name}</strong>
+              <br />
+              <small>{new Date(post.createdAt).toLocaleString()}</small>
+            </div>
+          </div>
+
+          {post.image && (
+            <img
+              src={post.image}
+              alt=""
+              style={{ width: "100%", marginTop: 10, borderRadius: 8 }}
+            />
+          )}
+
+          <p style={{ marginTop: 10 }}>{post.caption}</p>
+
+          {post.user._id === loggedInUserId && (
+            <button
+              onClick={() => handleDelete(post._id)}
+              style={{ color: "red", border: "none", background: "none" }}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Post;

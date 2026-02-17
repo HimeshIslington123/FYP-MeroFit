@@ -1,3 +1,4 @@
+
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -17,6 +18,8 @@ import ExercisePr from "./Routes/ExercisePrController.js"
 import WeightChanges from "./Routes/weightRoutes.js"
 import chatRoutes from "./Routes/ChatController.js"
 import ChatMessage from "./Model/Chat.js";
+import PostRoutes from "./Routes/PostRoutes.js"
+
 
 
 dotenv.config();
@@ -118,6 +121,8 @@ app.use("/TrackCalories", TrackCalories);
 app.use("/api/pr", ExercisePr);
 app.use("/api/weightchanges", WeightChanges);
 app.use("/api/chat", chatRoutes);
+app.use("/api/post",PostRoutes );
+
 
 
 

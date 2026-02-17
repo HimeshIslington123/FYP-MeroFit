@@ -122,17 +122,17 @@ const Userheader = () => {
              {/* caloires */}
             <div
               onClick={() => {
-                navigate("calories");
-                setNavLink("calories");
+                navigate("post");
+                setNavLink("post");
               }}
               className={`${
-                navLink === "calories"
+                navLink === "post"
                   ? "bg-[#D8FF00] text-black"
                   : "text-white"
               } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
             >
               <i className="bi bi-chat-left-dots"></i>
-              <span>Calories</span>
+              <span>Community</span>
             </div>
           </div>
         </div>
