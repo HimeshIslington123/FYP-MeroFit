@@ -7,6 +7,7 @@ const Post = () => {
   const [file, setFile] = useState(null);
   const [showMine, setShowMine] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false); // NEW STATE
 
   const token = localStorage.getItem("token");
   const loggedInUserId = localStorage.getItem("userId");
@@ -35,6 +36,7 @@ const Post = () => {
 
     setCaption("");
     setFile(null);
+    setShowForm(false); // CLOSE FORM AFTER POST
     fetchPosts();
   };
 
@@ -53,46 +55,99 @@ const Post = () => {
 
   return (
     <div style={{ maxWidth: 600, margin: "30px auto", fontFamily: "Arial" }}>
-      {/* CREATE */}
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: "#fff",
-          padding: 15,
-          borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(0,0,0,.1)",
-        }}
-      >
-        <textarea
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          placeholder="What's on your mind?"
-          style={{
-            width: "100%",
-            padding: 10,
-            borderRadius: 8,
-            border: "1px solid #ccc",
-          }}
-        />
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      
+      {/* ADD POST BUTTON */}
+      {!showForm && (
         <button
+          onClick={() => setShowForm(true)}
           style={{
-            marginTop: 10,
             background: "#1877f2",
             color: "#fff",
-            padding: "8px 15px",
+            padding: "10px 15px",
             border: "none",
             borderRadius: 8,
+            marginBottom: 15,
+            width: "100%",
           }}
         >
-          Post
+          + Add Post
         </button>
-      </form>
+      )}
+
+      {/* CREATE FORM */}
+      {showForm && (
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            background: "#fff",
+            padding: 15,
+            borderRadius: 10,
+            boxShadow: "0 2px 8px rgba(0,0,0,.1)",
+            marginBottom: 20,
+          }}
+        >
+          <textarea
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            placeholder="What's on your mind?"
+            style={{
+              width: "100%",
+              padding: 10,
+              borderRadius: 8,
+              border: "1px solid #ccc",
+            }}
+          />
+
+          <input
+            type="file"
+            style={{ marginTop: 10 }}
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+
+          <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+            <button
+              type="submit"
+              style={{
+                background: "#1877f2",
+                color: "#fff",
+                padding: "8px 15px",
+                border: "none",
+                borderRadius: 8,
+              }}
+            >
+              Post
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              style={{
+                background: "#ccc",
+                padding: "8px 15px",
+                border: "none",
+                borderRadius: 8,
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
 
       {/* FILTER */}
       <div style={{ display: "flex", gap: 10, margin: "15px 0" }}>
-        <button className="bg-amber-50 p-3 rounded-xl" onClick={() => setShowMine(false)}>All</button>
-        <button className="bg-amber-50 p-3 rounded-xl" onClick={() => setShowMine(true)}>My Posts</button>
+        <button
+          className="bg-amber-50 p-3 rounded-xl"
+          onClick={() => setShowMine(false)}
+        >
+          All
+        </button>
+        <button
+          className="bg-amber-50 p-3 rounded-xl"
+          onClick={() => setShowMine(true)}
+        >
+          My Posts
+        </button>
       </div>
 
       {/* FEED */}
