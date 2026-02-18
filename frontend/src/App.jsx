@@ -32,6 +32,7 @@ import Chat from "./UserDashboard/Chat";
 import TrackChanges from "./UserDashboard/TrackChanges";
 import Post from "./UserDashboard/Post";
 import Trainer from "./Userdashboardcomponent/Trainer";
+import AdminFoods from "./AdminDashboard/AdminFoods";
 
 
 const App = () => {
@@ -84,7 +85,7 @@ const App = () => {
        <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminblog" element={<AdminBlog />} />
           <Route path="/adminuser" element={<AdminUser />} />
-
+ <Route path="/adminfood" element={<AdminFoods />} />
 
 
         <Route path="/userhome" element={<Userhome />}>

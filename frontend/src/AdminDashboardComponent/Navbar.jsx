@@ -46,14 +46,14 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink
-          to="/admin/settings"
+          to="/adminfood"
           className={({ isActive }) =>
             `font-light transition-colors ${
               isActive ? "text-[#C7F045]" : "text-white/80 hover:text-[#C7F045]"
             }`
           }
         >
-          Settings
+          Foods
         </NavLink>
 
         {/* Icons */}

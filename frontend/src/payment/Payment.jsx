@@ -32,7 +32,7 @@ const Payment = ({ amount, label }) => {
     return hashedSignature;
   };
 
-  // useeffect
+
   useEffect(() => {
     const { total_amount, transaction_uuid, product_code, secret } = formData;
     const hashedSignature = generateSignature(
