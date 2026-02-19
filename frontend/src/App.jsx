@@ -33,6 +33,7 @@ import TrackChanges from "./UserDashboard/TrackChanges";
 import Post from "./UserDashboard/Post";
 import Trainer from "./Userdashboardcomponent/Trainer";
 import AdminFoods from "./AdminDashboard/AdminFoods";
+import Analysis from "./UserDashboard/Analysis";
 
 
 const App = () => {
@@ -104,6 +105,7 @@ const App = () => {
                          <Route path="trackchanges" element={<TrackChanges />} />
                           <Route path="post" element={<Post />} />
                             <Route path="trainer" element={<Trainer />} />
+                                        <Route path="analysis" element={<Analysis />} />
 
                    
         </Route>
