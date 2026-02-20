@@ -4,7 +4,7 @@ import axios from "axios";
 
 const PaymentSuccess = () => {
   const [search] = useSearchParams();
-  const dataQuery = search.get("data");    // <-- eSewa Base64 data
+  const dataQuery = search.get("data");    
   const token = localStorage.getItem("token");
   const [values, setValues] = useState(null);
 
