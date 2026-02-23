@@ -58,7 +58,22 @@ router.post("/add-food", authenticate, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+// ================= GET ALL CALORIE LOGS OF USER =================
+router.get("/all", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
 
+    const logs = await CalorieLog.find({ userId })
+      .sort({ date: -1 })
+      .populate("foods.foodId");
+
+    res.status(200).json({ logs });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 
 router.get("/today", authenticate, async (req, res) => {
