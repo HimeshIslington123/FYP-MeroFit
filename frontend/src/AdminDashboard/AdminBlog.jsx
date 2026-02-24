@@ -105,7 +105,7 @@ const AdminBlog = () => {
     setShowForm(true); // 👈 OPEN FORM
   };
 
-  // ---------------- DELETE ----------------
+  // ---------------- DELETEd ----------------
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this blog?")) return;
 
@@ -120,7 +120,7 @@ const AdminBlog = () => {
       <div className="p-6 max-w-6xl mx-auto">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Blog Management</h1>
+          <h1 className="text-2xl font-bold">Blog Management by admin</h1>
 
           {!showForm && (
             <button
