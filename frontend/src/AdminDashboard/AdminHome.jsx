@@ -5,6 +5,7 @@ const AdminHome = () => {
   return (
     <div>
       <Navbar></Navbar>
+      <h1>Admin dashboard</h1>
     </div>
   )
 }
