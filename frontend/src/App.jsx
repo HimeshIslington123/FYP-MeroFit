@@ -34,31 +34,28 @@ import Post from "./UserDashboard/Post";
 import Trainer from "./Userdashboardcomponent/Trainer";
 import AdminFoods from "./AdminDashboard/AdminFoods";
 import Analysis from "./UserDashboard/Analysis";
-
+import Recommendation from "./UserDashboard/Recommendation";
 
 const App = () => {
-      const{user,setUser}=useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
-        useEffect(() => {
+  useEffect(() => {
     const getUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        
+
         if (!token) return;
 
         const res = await axios.get(
           "http://localhost:4000/api/users/userdetail",
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
 
         const u = res.data.data;
 
         setUser(u);
-       
-        
-
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -66,7 +63,7 @@ const App = () => {
 
     getUser();
   }, []);
-      
+
   return (
     <Router>
       <Routes>
@@ -78,36 +75,36 @@ const App = () => {
         <Route path="/whytochooseus" element={<Whytochooseus />} />
         <Route path="/Blog" element={<Blog />} />
         <Route path="/blog/:id" element={<SingleBlog />} />
-             
-        <Route path="/paymentsuccess" element={<PaymentSuccess></PaymentSuccess>}/>
 
+        <Route
+          path="/paymentsuccess"
+          element={<PaymentSuccess></PaymentSuccess>}
+        />
 
-      {/* Admin pages */}
-       <Route path="/adminhome" element={<AdminHome />} />
+        {/* Admin pages */}
+        <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminblog" element={<AdminBlog />} />
-          <Route path="/adminuser" element={<AdminUser />} />
- <Route path="/adminfood" element={<AdminFoods />} />
-
+        <Route path="/adminuser" element={<AdminUser />} />
+        <Route path="/adminfood" element={<AdminFoods />} />
 
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
-            <Route path="userpayment" element={< UserPayment />} />
-            <Route path="home" element={< Homeuser />} />
-              <Route path="profile" element={< Profile />} />
-                <Route path="badge" element={< Badge />} />
-                  <Route path="exercise" element={< Exercise/>} />
-                   <Route path="trackcalories" element={<Calories />} />
-                   <Route path="exercisepr" element={<ExercisePr />} />
-                    <Route path="logout" element={<Logout />} />
-                      <Route path="weightchanges" element={<WeightChanges />} />
-                       <Route path="foods" element={<Food />} />
-                        <Route path="chat" element={<Chat />} />
-                         <Route path="trackchanges" element={<TrackChanges />} />
-                          <Route path="post" element={<Post />} />
-                            <Route path="trainer" element={<Trainer />} />
-                                        <Route path="analysis" element={<Analysis />} />
-
-                   
+          <Route path="userpayment" element={<UserPayment />} />
+          <Route path="home" element={<Homeuser />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="badge" element={<Badge />} />
+          <Route path="exercise" element={<Exercise />} />
+          <Route path="trackcalories" element={<Calories />} />
+          <Route path="exercisepr" element={<ExercisePr />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="weightchanges" element={<WeightChanges />} />
+          <Route path="foods" element={<Food />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="trackchanges" element={<TrackChanges />} />
+          <Route path="post" element={<Post />} />
+          <Route path="trainer" element={<Trainer />} />
+          <Route path="analysis" element={<Analysis />} />
+            <Route path="recommendation" element={<Recommendation />} />
         </Route>
       </Routes>
     </Router>
