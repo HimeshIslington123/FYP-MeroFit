@@ -100,6 +100,8 @@ const App = () => {
           <Route path="weightchanges" element={<WeightChanges />} />
           <Route path="foods" element={<Food />} />
           <Route path="chat" element={<Chat />} />
+
+          <Route path="chat/:trainerId" element={<Chat />} />
           <Route path="trackchanges" element={<TrackChanges />} />
           <Route path="post" element={<Post />} />
           <Route path="trainer" element={<Trainer />} />

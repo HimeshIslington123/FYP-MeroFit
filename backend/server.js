@@ -30,44 +30,34 @@ connectdb();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// Store online users: Map<userId, socketId>
 const onlineUsers = new Map();
 
-// Socket.IO connection
 io.on("connection", (socket) => {
   console.log("New socket connected:", socket.id);
 
-  // Register user
   socket.on("registerUser", (userId) => {
     onlineUsers.set(userId, socket.id);
     console.log("Online users:", onlineUsers);
   });
 
-  // Handle sending messages
   socket.on("sendMessage", async (data) => {
     try {
-      // Save message to MongoDB
       const msg = await ChatMessage.create({
         senderId: data.senderId,
         receiverId: data.receiverId,
-        message: data.text,
-        image: data.image || null,
+        message: data.message || "",
+        image: data.file || null, // store uploaded file
       });
 
-      // Send to receiver if online
       const receiverSocket = onlineUsers.get(data.receiverId);
       if (receiverSocket) io.to(receiverSocket).emit("receiveMessage", msg);
 
-      // Send back to sender
       socket.emit("receiveMessage", msg);
-
-      console.log("Message sent:", msg);
     } catch (err) {
       console.error(err);
     }
   });
 
-  // Handle disconnect
   socket.on("disconnect", () => {
     for (let [userId, sockId] of onlineUsers.entries()) {
       if (sockId === socket.id) onlineUsers.delete(userId);
@@ -75,8 +65,6 @@ io.on("connection", (socket) => {
     console.log("User disconnected. Online users:", onlineUsers);
   });
 });
-
-
 
 
 

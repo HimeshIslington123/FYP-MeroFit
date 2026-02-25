@@ -30,6 +30,57 @@ const img = `data:${detail.image.contentType};base64,${detail.image.data.toStrin
   }
 });
 
+// GET all trainers
+router.get("/trainers", async (req, res) => {
+  try {
+  const trainers = await Register.find({ role: { $in: ["trainer", "admin"] } });
+    const formattedTrainers = trainers.map((t) => ({
+      id: t._id,
+      name: t.name,
+      email: t.email,
+      address: t.address,
+      specialistTrainer: t.specialistTrainer,
+      certifications: t.certifications,
+      bio: t.bio,
+      image: t.image ? `data:${t.image.contentType};base64,${t.image.data.toString("base64")}` : null,
+    }));
+
+    res.status(200).json({ success: true, trainers: formattedTrainers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Failed to fetch trainers", error: err.message });
+  }
+});
+
+router.post("/createtrainer", upload.single("image"), async (req, res) => {
+  try {
+    const { name, email, password, address, specialistTrainer, certifications, bio } = req.body;
+
+    const existingUser = await Register.findOne({ email });
+    if (existingUser)
+      return res.status(400).json({ success: false, message: "User exists" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const trainer = new Register({
+      name,
+      email,
+      password: hashedPassword,
+      address,
+      role: "trainer", // important
+      specialistTrainer: specialistTrainer || "gain muscles",
+      certifications: certifications ? certifications.split(",") : [], // comma-separated list
+      bio: bio || "",
+      image: req.file ? { data: req.file.buffer, contentType: req.file.mimetype } : null,
+    });
+
+    await trainer.save();
+    res.status(201).json({ success: true, message: "Trainer added", trainer });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Error adding trainer", error: err.message });
+  }
+});
 
 router.post("/create", upload.single("image"), async (req, res) => {
   try {

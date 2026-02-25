@@ -5,6 +5,7 @@ const RegisterSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 
+  // User-specific fields
   age: Number,
   height: Number,
   weight: Number,
@@ -17,57 +18,53 @@ const RegisterSchema = new mongoose.Schema({
   targetWeight: Number,
   address: String,
 
+  // Role
+  role: {
+    type: String,
+    enum: ["user", "trainer", "admin"],
+    default: "user",
+  },
+
+  // Trainer-specific fields
+  specialistTrainer: {
+    type: String,
+    enum: ["weight loss", "gain muscles", "stay fit"],
+    default: "gain muscles",
+  },
+  certifications: [String],
+  bio: { type: String, maxlength: 500 },
+
+  // Common field
   image: { data: Buffer, contentType: String },
 
   createdAt: { type: Date, default: Date.now },
 
+  // Calories calculation for users only
   calories: {
     type: Number,
     default: function () {
-
-      // If missing values return 0
-      if (!this.weight || !this.height || !this.age || !this.gender) {
-        return 0;
-      }
-  
+      if (!this.weight || !this.height || !this.age || !this.gender) return 0;
 
       let bmr;
-
-      // ================= BMR =================
       if (this.gender === "male") {
         bmr = 10 * this.weight + 6.25 * this.height - 5 * this.age + 5;
       } else {
         bmr = 10 * this.weight + 6.25 * this.height - 5 * this.age - 161;
       }
 
-      // ======== Activity Multiplier ===========
       let multiplier = 1.2;
-
-      if (this.activityLevel === "very less")
-        multiplier = 1.2;
-
-      else if (this.activityLevel === "moderate")
-        multiplier = 1.55;
-
-      else if (this.activityLevel === "active")
-        multiplier = 1.725;
-
-      else if (this.activityLevel === "very active")
-        multiplier = 1.9;
+      if (this.activityLevel === "moderate") multiplier = 1.55;
+      else if (this.activityLevel === "active") multiplier = 1.725;
+      else if (this.activityLevel === "very active") multiplier = 1.9;
 
       let tdee = bmr * multiplier;
 
-      // ============== Goal Adjustment =============
-      if (this.goal === "lose fat")
-        tdee -= 400;
-
-      else if (this.goal === "gain muscle")
-        tdee += 300;
+      if (this.goal === "lose fat") tdee -= 400;
+      else if (this.goal === "gain muscle") tdee += 300;
 
       return Math.round(tdee);
-    }
-  }
-
+    },
+  },
 });
 
 export const Register = mongoose.model("Register_fyp", RegisterSchema);
