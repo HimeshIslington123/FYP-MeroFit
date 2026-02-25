@@ -6,54 +6,71 @@ const Recommendation = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get("http://localhost:4000/api/recommendation", {
+    axios
+      .get("http://localhost:4000/api/recommendation", {
         headers: { Authorization: `Bearer ${token}` },
-      });
-      setData(res.data);
-    };
-    fetchData();
-  }, [token]);
+      })
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
-  if (!data) return <h2>Loading...</h2>;
+  if (!data) return <h2 className="text-center mt-10">Loading...</h2>;
 
   return (
-    <div className="text-white" style={{ padding: 30, maxWidth: 900, margin: "auto" }}>
-      <h1>🔥 Smart Diet & Exercise Plan</h1>
+    <div className="max-w-4xl mx-auto p-8 text-white">
+      <h1 className="text-3xl mb-6 font-bold text-center">
+        🔥 Smart Diet Plan
+      </h1>
 
-      <h3>Target Calories: {data.targetCalories}</h3>
-      <h3>Today: {data.todayCalories}</h3>
-      <h3>Yesterday: {data.yesterdayCalories}</h3>
+      {/* TARGET */}
+      <div className="mb-6 bg-white/10 p-4 rounded">
+        <h2 className="text-xl mb-2">🎯 Targets</h2>
+        <p>Calories: {data.targetCalories}</p>
+        <p>Protein: {data.targetProtein} g</p>
+        <p>Carb: {data.targetCarb} g</p>
+        <p>Fat: {data.targetFat} g</p>
+      </div>
 
-      {data.message && <div style={{ background: "#ffe0e0", padding: 15 }}>{data.message}</div>}
+      {/* TODAY */}
+      <div className="mb-6 bg-white/10 p-4 rounded">
+        <h2 className="mb-2">📅 Today</h2>
+        <p>Calories: {data.todayCalories}</p>
+        <p>Remaining Calories: {data.remainingCalories.toFixed(1)}</p>
+        <p>Protein Left: {data.remainingProtein.toFixed(1)} g</p>
+        <p>Carb Left: {data.remainingCarb.toFixed(1)} g</p>
+        <p>Fat Left: {data.remainingFat.toFixed(1)} g</p>
+      </div>
 
-      <h2>🏋️ Muscle Split / Gym Plan</h2>
-      <ul>{data.muscleSplit.map((m,i)=><li key={i}>{m}</li>)}</ul>
+      {/* MESSAGE */}
+      <div className="bg-green-600 p-3 mb-6 rounded text-center font-semibold">
+        {data.message}
+      </div>
 
-      {data.calorieStatus !== "exceeded" && (
-        <>
-          <h2>🍎 Food Recommendations</h2>
-          {data.recommendedFoods.map(f=>(
-            <div key={f._id} style={{marginBottom:10, border:'1px solid #ddd', padding:10}}>
-              <h4>{f.name}</h4>
+      {/* FOODS */}
+      <h2 className="text-2xl mb-4">🍎 Recommended Foods</h2>
+
+      {data.recommendedFoods.length === 0 ? (
+        <p className="text-red-400">
+          No recommendations available for today.
+        </p>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          {data.recommendedFoods.map((f) => (
+            <div key={f._id} className="bg-white/10 p-4 rounded">
+              <h3 className="font-bold">{f.name}</h3>
               <p>Calories: {f.calories}</p>
-              <p>Protein: {f.protein} | Carb: {f.carb} | Fat: {f.fat}</p>
-              <p>Type: {f.foodType}</p>
+              <p>Protein: {f.protein} g</p>
+              <p>Carb: {f.carb} g</p>
+              <p>Fat: {f.fat} g</p>
+              <p className="text-yellow-400 mt-2">
+                ⭐ Score: {f.score}
+              </p>
             </div>
           ))}
-        </>
-      )}
-
-      <h2>💪 Exercise Recommendations</h2>
-      {data.recommendedExercises.map(ex=>(
-        <div key={ex._id} style={{marginBottom:10, border:'1px solid #ddd', padding:10}}>
-          <h4>{ex.name}</h4>
-          <p>Target: {ex.targetMuscle}</p>
-          <p>Level: {ex.level}</p>
         </div>
-      ))}
+      )}
     </div>
-  )
+  );
 };
 
 export default Recommendation;

@@ -296,7 +296,7 @@ const Login = () => {
                     onChange={handleChange}
                     className="p-3 rounded-md border border-white/50 bg-white/100 text-black"
                   >
-                    <option value="">Select fitnessLevel</option>
+                    <option value="">Select exercise fitnessLevel</option>
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Advanced">Advanced</option>
