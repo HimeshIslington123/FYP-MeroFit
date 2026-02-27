@@ -35,6 +35,7 @@ import Trainer from "./Userdashboardcomponent/Trainer";
 import AdminFoods from "./AdminDashboard/AdminFoods";
 import Analysis from "./UserDashboard/Analysis";
 import Recommendation from "./UserDashboard/Recommendation";
+import ExerciseRecommendation from "./UserDashboard/Recommendexercise";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -100,6 +101,7 @@ const App = () => {
           <Route path="weightchanges" element={<WeightChanges />} />
           <Route path="foods" element={<Food />} />
           <Route path="chat" element={<Chat />} />
+             <Route path="recommendexercise" element={<ExerciseRecommendation />} />
 
           <Route path="chat/:trainerId" element={<Chat />} />
           <Route path="trackchanges" element={<TrackChanges />} />

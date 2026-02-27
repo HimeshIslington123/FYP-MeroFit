@@ -19,12 +19,12 @@ const Recommendation = () => {
   return (
     <div className="max-w-4xl mx-auto p-8 text-white">
       <h1 className="text-3xl mb-6 font-bold text-center">
-        🔥 Smart Diet Plan
+         Recommendation Diet Plan
       </h1>
 
       {/* TARGET */}
       <div className="mb-6 bg-white/10 p-4 rounded">
-        <h2 className="text-xl mb-2">🎯 Targets</h2>
+        <h2 className="text-xl mb-2"> Targets</h2>
         <p>Calories: {data.targetCalories}</p>
         <p>Protein: {data.targetProtein} g</p>
         <p>Carb: {data.targetCarb} g</p>
@@ -33,7 +33,7 @@ const Recommendation = () => {
 
       {/* TODAY */}
       <div className="mb-6 bg-white/10 p-4 rounded">
-        <h2 className="mb-2">📅 Today</h2>
+        <h2 className="mb-2"> Today</h2>
         <p>Calories: {data.todayCalories}</p>
         <p>Remaining Calories: {data.remainingCalories.toFixed(1)}</p>
         <p>Protein Left: {data.remainingProtein.toFixed(1)} g</p>
@@ -47,7 +47,7 @@ const Recommendation = () => {
       </div>
 
       {/* FOODS */}
-      <h2 className="text-2xl mb-4">🍎 Recommended Foods</h2>
+      <h2 className="text-2xl mb-4"> Recommended Foods</h2>
 
       {data.recommendedFoods.length === 0 ? (
         <p className="text-red-400">
@@ -62,9 +62,9 @@ const Recommendation = () => {
               <p>Protein: {f.protein} g</p>
               <p>Carb: {f.carb} g</p>
               <p>Fat: {f.fat} g</p>
-              <p className="text-yellow-400 mt-2">
+          {/*     <p className="text-yellow-400 mt-2">
                 ⭐ Score: {f.score}
-              </p>
+              </p> */}
             </div>
           ))}
         </div>

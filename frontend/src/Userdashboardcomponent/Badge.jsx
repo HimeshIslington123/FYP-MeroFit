@@ -139,7 +139,7 @@ const Badge = () => {
   const percentage = Math.round((earnedCount / totalBadges) * 100);
 
   return (
-    <div className="bg-[#0f0f0f] text-white p-8 min-h-screen">
+    <div className="bg-[#0F0F0F] text-white p-8 min-h-screen">
       {/* HEADER */}
       <div className="flex items-center gap-3 mb-8">
         <Award className="text-[#C7F045]" />
@@ -172,7 +172,7 @@ const Badge = () => {
             className={`rounded-2xl p-6 text-center transition-all duration-300
               ${
                 badge.earned
-                  ? "bg-[#1A1A1A] border border-[#C7F045] shadow-[0_0_30px_rgba(199,240,69,0.3)]"
+                  ? "bg-[#1A1A1A] border border-[#262626] shadow-[0_0_30px_rgba(199,240,69,0.3)]"
                   : "bg-[#1A1A1A] border border-gray-700 opacity-60"
               }`}
           >
@@ -191,7 +191,7 @@ const Badge = () => {
             </h3>
 
             {badge.earned ? (
-              <div className="bg-[#C7F045] text-black py-2 px-4 rounded-full text-sm font-semibold">
+              <div className="bg-[#9CA3AF] text-black py-2 px-4 rounded-full text-sm font-semibold">
                 ✓ EARNED
               </div>
             ) : (
