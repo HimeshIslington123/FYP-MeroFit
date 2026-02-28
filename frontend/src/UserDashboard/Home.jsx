@@ -8,16 +8,32 @@ import {
   PointElement,
   Tooltip,
   Legend,
-
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-import { TrendingUp, Flame, Activity, Target, Award, ChevronRight  , ArrowUp, ArrowDown , } from "lucide-react";
+import {
+  TrendingUp,
+  Flame,
+  Activity,
+  Target,
+  Award,
+  ChevronRight,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
 import Food from "../Userdashboardcomponent/Food";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+);
 
 const Homeuser = () => {
   const [weightHistory, setWeightHistory] = useState([]);
@@ -62,7 +78,7 @@ const Homeuser = () => {
   if (!user) return <div className="text-white">Loading...</div>;
 
   // BMI & Body Fat calculations
-  const calculateBMI = (weight, heightCm) => weight / ((heightCm / 100) ** 2);
+  const calculateBMI = (weight, heightCm) => weight / (heightCm / 100) ** 2;
   const calculateBodyFat = (weight, heightCm, age, gender) => {
     const bmi = calculateBMI(weight, heightCm);
     return gender === "male"
@@ -79,13 +95,15 @@ const Homeuser = () => {
 
   // Prepare chart data
   const weightData = {
-    labels: weightHistory.map((w) => new Date(w.recordedAt).toLocaleDateString()),
+    labels: weightHistory.map((w) =>
+      new Date(w.recordedAt).toLocaleDateString(),
+    ),
     datasets: [
       {
         label: "Weight (kg)",
         data: weightHistory.map((w) => w.weight),
         borderColor: "#2bb3a3",
-        backgroundColor: "rgba(43, 179, 163, 0.2)", // Filled curve below line
+        backgroundColor: "rgba(43, 179, 163, 0.2)",
         tension: 0.4,
         fill: true,
         pointBackgroundColor: "#2bb3a3",
@@ -109,8 +127,22 @@ const Homeuser = () => {
 
   // Stats cards
   const stats = [
-    { label: "Weight", value: user.weight, unit: "kg", icon: Activity, change: "-2.3%", isPositive: true },
-    { label: "Height", value: user.height, unit: "cm", icon: TrendingUp, change: "", isPositive: true },
+    {
+      label: "Weight",
+      value: user.weight,
+      unit: "kg",
+      icon: Activity,
+      change: "-2.3%",
+      isPositive: true,
+    },
+    {
+      label: "Height",
+      value: user.height,
+      unit: "cm",
+      icon: TrendingUp,
+      change: "",
+      isPositive: true,
+    },
     {
       label: "Body Fat",
       value: calculateBodyFat(user.weight, user.height, user.age, user.gender),
@@ -119,8 +151,22 @@ const Homeuser = () => {
       change: "-1.5%",
       isPositive: true,
     },
-    { label: "Calories", value: user.calories, unit: "kcal", icon: Flame, change: "+12%", isPositive: true },
-    { label: "Progress", value: user.fitnesslevel, unit: "%", icon: Award, change: "+8%", isPositive: true },
+    {
+      label: "Calories",
+      value: user.calories,
+      unit: "kcal",
+      icon: Flame,
+      change: "+12%",
+      isPositive: true,
+    },
+    {
+      label: "Progress",
+      value: user.fitnesslevel,
+      unit: "%",
+      icon: Award,
+      change: "+8%",
+      isPositive: true,
+    },
   ];
 
   return (
@@ -157,7 +203,9 @@ const Homeuser = () => {
                 </div>
                 <h3 className="text-black text-3xl mb-1">
                   {stat.value}
-                  <span className="text-gray-500 text-lg ml-1">{stat.unit}</span>
+                  <span className="text-gray-500 text-lg ml-1">
+                    {stat.unit}
+                  </span>
                 </h3>
                 <p className="text-gray-400 text-sm">{stat.label}</p>
               </div>
@@ -172,20 +220,19 @@ const Homeuser = () => {
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-light text-black">Weight Progress</h3>
-           {weightDiff && (
-  <span className="flex items-center gap-1 bg-[#fdf3e7] text-[#e67e22] px-2 py-1 text-[12px] rounded-full">
-    {/* Icon */}
-    {weightDiff > 0 ? (
-      <ArrowUp size={14} className="text-[#e67e22]" />
-    ) : (
-      <ArrowDown size={14} className="text-[#e67e22]" />
-    )}
-
-    {/* Weight text */}
-    {weightDiff > 0 ? "+" : ""}
-    {weightDiff} kg
-  </span>
-)}
+            {weightDiff && (
+              <span className="flex items-center gap-1 bg-[#fdf3e7] text-[#e67e22] px-2 py-1 text-[12px] rounded-full">
+                {/* Icon */}
+                {weightDiff > 0 ? (
+                  <ArrowUp size={14} className="text-[#e67e22]" />
+                ) : (
+                  <ArrowDown size={14} className="text-[#e67e22]" />
+                )}
+                {/* Weight text */}
+                {weightDiff > 0 ? "+" : ""}
+                {weightDiff} kg
+              </span>
+            )}
           </div>
           {weightHistory.length > 0 ? (
             <Line
@@ -207,10 +254,16 @@ const Homeuser = () => {
         {/* Calorie Chart */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-light text-black">Last 7 Days Calories</h3>
+            <h3 className="text-lg font-light text-black">
+              Last 7 Days Calories
+            </h3>
             {last7.length > 0 && (
               <span className="bg-[#fdf3e7] text-[#e67e22] text-[12px] px-2 py-1 rounded-full">
-                Avg {Math.round(last7.reduce((sum, log) => sum + log.totalCalories, 0) / last7.length)} 
+                Avg{" "}
+                {Math.round(
+                  last7.reduce((sum, log) => sum + log.totalCalories, 0) /
+                    last7.length,
+                )}
               </span>
             )}
           </div>
@@ -220,7 +273,10 @@ const Homeuser = () => {
               options={{
                 responsive: true,
                 plugins: { legend: { display: true } },
-                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } },
+                scales: {
+                  x: { grid: { display: false } },
+                  y: { grid: { display: false } },
+                },
               }}
             />
           ) : (
@@ -233,7 +289,9 @@ const Homeuser = () => {
       <div className="mt-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Award size={18} className="text-[#C7F045]" />
-          <h1 className="text-white/90 text-lg font-medium tracking-wide">Recommended Foods for You</h1>
+          <h1 className="text-white/90 text-lg font-medium tracking-wide">
+            Recommended Foods for You
+          </h1>
         </div>
         <Link
           to="/userhome/foods"
