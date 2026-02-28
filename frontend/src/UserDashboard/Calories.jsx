@@ -158,7 +158,7 @@ const handleChange = (field, value) => {
           onClick={() => setShowAddFood(true)}
           className="bg-[#229e8f] text-[#e8f7f6] hover:bg-[#4d9388] px-4 py-2 rounded-4xl flex items-center gap-2 shadow"
         >
-          <Plus size={18} /> Add Food
+          <Plus size={18} /> Track meal
         </button>
       </div>
 
@@ -360,7 +360,7 @@ const handleChange = (field, value) => {
               </tbody>
 
               <tfoot>
-                <tr className="bg-gray-100 font-semibold text-gray-800 border-t-1">
+                <tr className=" font-semibold text-gray-800 border-t-1">
                   <td className="py-4 px-4">Total</td>
                   <td className="text-center text-[#229e8f]  py-4 px-4">
                     {todayCalories} kcal
