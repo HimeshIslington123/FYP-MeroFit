@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, Line, Doughnut } from "react-chartjs-2";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -54,41 +55,10 @@ const Analysis = () => {
       }
     };
 
-    if (token) {
-      fetchData();
-    }
+    if (token) fetchData();
   }, [token]);
 
-  // ================= GLOBAL CHART OPTIONS =================
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        labels: {
-          color: "#ffffff",
-        },
-      },
-      tooltip: {
-        backgroundColor: "#111",
-        titleColor: "#D8FF00",
-        bodyColor: "#fff",
-        borderColor: "#D8FF00",
-        borderWidth: 1,
-      },
-    },
-    scales: {
-      x: {
-        ticks: { color: "#ffffff" },
-        grid: { color: "rgba(255,255,255,0.1)" },
-      },
-      y: {
-        ticks: { color: "#ffffff" },
-        grid: { color: "rgba(255,255,255,0.1)" },
-      },
-    },
-  };
-
-  // ================= WEIGHT GRAPH =================
+  // ===================== CHART DATA =====================
   const weightData = {
     labels: weightHistory.map((w) =>
       new Date(w.recordedAt).toLocaleDateString()
@@ -97,33 +67,29 @@ const Analysis = () => {
       {
         label: "Weight (kg)",
         data: weightHistory.map((w) => w.weight),
-        borderColor: "#D8FF00",
-        backgroundColor: "rgba(216,255,0,0.2)",
-        pointBackgroundColor: "#D8FF00",
-        pointBorderColor: "#000",
-        pointRadius: 5,
+        borderColor: "#2bb3a3",
+        backgroundColor: "rgba(43, 179, 163, 0.2)",
         tension: 0.4,
         fill: true,
+        pointBackgroundColor: "#2bb3a3",
+        pointBorderColor: "#2bb3a3",
       },
     ],
   };
 
-  // ================= LAST 7 DAYS CALORIES =================
   const last7 = calorieLogs.slice(0, 7).reverse();
-
   const calorieData = {
     labels: last7.map((log) => log.date),
     datasets: [
       {
         label: "Calories",
         data: last7.map((log) => log.totalCalories),
-        backgroundColor: "#D8FF00",
-        borderRadius: 8,
+        backgroundColor: "#2bb3a3",
+        borderRadius: 6,
       },
     ],
   };
 
-  // ================= TODAY MACROS =================
   const macroData =
     todayMacros &&
     todayMacros.totalProtein !== undefined && {
@@ -135,84 +101,103 @@ const Analysis = () => {
             todayMacros.totalCarb,
             todayMacros.totalFat,
           ],
-          backgroundColor: [
-            "#D8FF00", // Protein
-            "#ffffff", // Carbs
-            "#444444", // Fat
-          ],
-          borderWidth: 2,
+          backgroundColor: ["#2bb3a3", "#ffffff", "#444444"],
           borderColor: "#000",
+          borderWidth: 2,
         },
       ],
     };
 
+  const weightDiff =
+    weightHistory.length > 1
+      ? Math.round(
+          weightHistory[weightHistory.length - 1].weight -
+            weightHistory[weightHistory.length - 2].weight
+        )
+      : null;
+
   return (
-    <div
-      style={{
-        padding: "40px",
-      
-        minHeight: "100vh",
-        color: "#fff",
-      }}
-    >
-      <h2 style={{ marginBottom: "40px", color: "#D8FF00" }}>
+    <div className=" min-h-screen text-black">
+      <h2 className="text-2xl  text-[#2bb3a3] mb-8 text-center">
         Fitness Analytics
       </h2>
 
-      {/* Weight Progress */}
-      <div
-        style={{
-          width: "600px",
-          marginBottom: "50px",
-          background: "#111",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0 0 15px rgba(216,255,0,0.1)",
-        }}
-      >
-        <h4 style={{ marginBottom: "20px" }}>Weight Progress</h4>
-        {weightHistory.length > 0 ? (
-          <Line data={weightData} options={chartOptions} />
-        ) : (
-          <p>No weight data available</p>
-        )}
+      {/* First row: Weight + Calories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* Weight Chart */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-light text-black">Weight Progress</h3>
+            {weightDiff !== null && (
+              <span className="flex items-center gap-1 bg-[#fdf3e7] text-[#e67e22] px-2 py-1 text-[12px] rounded-full">
+                {weightDiff > 0 ? (
+                  <ArrowUp size={14} className="text-[#e67e22]" />
+                ) : (
+                  <ArrowDown size={14} className="text-[#e67e22]" />
+                )}
+                {weightDiff > 0 ? "+" : ""}
+                {weightDiff} kg
+              </span>
+            )}
+          </div>
+          {weightHistory.length > 0 ? (
+            <Line
+              data={weightData}
+              options={{
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } },
+              }}
+            />
+          ) : (
+            <p className="text-gray-400 text-sm">No weight data available</p>
+          )}
+        </div>
+
+        {/* Last 7 Days Calories */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-light text-black">Last 7 Days Calories</h3>
+            {last7.length > 0 && (
+              <span className="bg-[#fdf3e7] text-[#e67e22] text-[12px] px-2 py-1 rounded-full">
+                Avg{" "}
+                {Math.round(
+                  last7.reduce((sum, log) => sum + log.totalCalories, 0) / last7.length
+                )}
+              </span>
+            )}
+          </div>
+          {last7.length > 0 ? (
+            <Bar
+              data={calorieData}
+              options={{
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } },
+              }}
+            />
+          ) : (
+            <p className="text-gray-400 text-sm">No calorie data available</p>
+          )}
+        </div>
       </div>
 
-      {/* Last 7 Days Calories */}
-      <div
-        style={{
-          width: "600px",
-          marginBottom: "50px",
-          background: "#111",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0 0 15px rgba(216,255,0,0.1)",
-        }}
-      >
-        <h4 style={{ marginBottom: "20px" }}>Last 7 Days Calories</h4>
-        {last7.length > 0 ? (
-          <Bar data={calorieData} options={chartOptions} />
-        ) : (
-          <p>No calorie logs available</p>
-        )}
-      </div>
-
-      {/* Today's Macros */}
-      <div
-        style={{
-          width: "400px",
-          background: "#111",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0 0 15px rgba(216,255,0,0.1)",
-        }}
-      >
-        <h4 style={{ marginBottom: "20px" }}>Today's Macros</h4>
-        {macroData ? (
-          <Doughnut data={macroData} />
-        ) : (
-          <p>No data logged today</p>
-        )}
+      {/* Second row: Macros */}
+      <div className="w-[40%] mx-auto">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h3 className="text-lg font-light text-black mb-4">Today's Macros</h3>
+          {macroData ? (
+            <Doughnut
+              data={macroData}
+              options={{
+                responsive: true,
+                plugins: { legend: { labels: { color: "#000" } } },
+              }}
+            />
+          ) : (
+            <p className="text-gray-400 text-sm">No data logged today</p>
+          )}
+        </div>
       </div>
     </div>
   );
