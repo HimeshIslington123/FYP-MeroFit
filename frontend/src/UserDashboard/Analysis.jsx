@@ -101,7 +101,7 @@ const Analysis = () => {
             todayMacros.totalCarb,
             todayMacros.totalFat,
           ],
-          backgroundColor: ["#2bb3a3", "#ffffff", "#444444"],
+          backgroundColor: ["#2bb3a3", "#fdf3e7", "#444444"],
           borderColor: "#000",
           borderWidth: 2,
         },
@@ -183,7 +183,7 @@ const Analysis = () => {
       </div>
 
       {/* Second row: Macros */}
-      <div className="w-[40%] mx-auto">
+      <div className="w-[40%] ">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h3 className="text-lg font-light text-black mb-4">Today's Macros</h3>
           {macroData ? (
