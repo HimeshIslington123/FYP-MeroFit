@@ -6,156 +6,70 @@ const Userheader = () => {
   const navigate = useNavigate();
   const [navLink, setNavLink] = useState("Home");
 
+  const links = [
+    { name: "Home", icon: "bi bi-house-door-fill", path: "home" },
+    { name: "Profile", icon: "bi bi-person-circle", path: "profile" },
+    { name: "Analysis", icon: "bi bi-graph-down", path: "analysis" },
+    { name: "Track Changes", icon: "bi bi-graph-up", path: "trackchanges" },
+    { name: "Track Calories", icon: "bi bi-clipboard2-data", path: "trackcalories" },
+    { name: "Message", icon: "bi bi-chat-left-dots", path: "chat" },
+    { name: "Community", icon: "bi bi-people", path: "post" },
+  ];
+
   return (
-    <>
-      <div className="h-[100vh] w-full bg-black flex flex-col justify-between">
-        {/* Logo Section */}
-        <div className="flex flex-col gap-[40px]">
-          <div className="py-4 flex justify-center">
-            <img
-              className="rounded-full border border-amber-50 w-[80px] h-[80px] object-cover"
-              src={gymlogo}
-              alt="Gym Logo"
-            />
-          </div>
-
-          {/* Navigation Menu */}
-          <div className="flex flex-col gap-5 px-6">
-            {/* Home */}
-            <div
-              onClick={() => {
-                navigate("home");
-                setNavLink("Home");
-              }}
-              className={`${
-                navLink === "Home"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[orange]`}
-            >
-              <i className="bi bi-house-door-fill"></i>
-              <span>Home</span>
-            </div>
-
-            {/* Profile */}
-            <div
-              onClick={() => {
-                navigate("profile");
-                setNavLink("Profile");
-              }}
-              className={`${
-                navLink === "Profile"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-person-circle"></i>
-              <span>Profile</span>
-            </div>
-
-            {/* Analysis */}
-            <div
-              onClick={() => {
-                navigate("analysis");
-                setNavLink("Analysis");
-              }}
-              className={`${
-                navLink === "Analysis"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-graph-down"></i>
-              <span>Analysis</span>
-            </div>
-
-
-            {/* Analysis */}
-            <div
-              onClick={() => {
-                navigate("trackchanges");
-                setNavLink("Track changes");
-              }}
-              className={`${
-                navLink === "Track changes"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-graph-down"></i>
-              <span>Track Changes</span>
-            </div>
-
-            {/* Track Calories */}
-            <div
-              onClick={() => {
-                navigate("trackcalories");
-                setNavLink("Track Calories");
-              }}
-              className={`${
-                navLink === "Track Calories"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-clipboard2-data"></i>
-              <span>Track Calories</span>
-            </div>
-
-            {/* Message */}
-            <div
-              onClick={() => {
-                navigate("chat");
-                setNavLink("Message");
-              }}
-              className={`${
-                navLink === "Message"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-chat-left-dots"></i>
-              <span>Message</span>
-            </div>
-
-
-             {/* caloires */}
-            <div
-              onClick={() => {
-                navigate("post");
-                setNavLink("post");
-              }}
-              className={`${
-                navLink === "post"
-                  ? "bg-[#D8FF00] text-black"
-                  : "text-white"
-              } flex items-center p-[8px] rounded-[5px] gap-3 cursor-pointer hover:text-[#D8FF00]`}
-            >
-              <i className="bi bi-chat-left-dots"></i>
-              <span>Community</span>
-            </div>
-          </div>
+    <div className="h-[100vh] w-full bg-white flex flex-col justify-between border-r border-gray-300">
+      {/* Logo Section */}
+      <div className="flex flex-col gap-[40px]">
+        <div className="py-4 flex justify-center">
+          <img
+            className="rounded-full border border-amber-50 w-[80px] h-[80px] object-cover"
+            src={gymlogo}
+            alt="Gym Logo"
+          />
         </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col gap-4 px-6 mb-6">
-          <div className="flex items-center text-white gap-3 cursor-pointer hover:text-[#C7F045]">
-            <i className="bi bi-lock"></i>
-            <span>Security</span>
-          </div>
-
-          <div 
-           onClick={() => {
-                navigate("logout");
-                setNavLink("logout");
+        {/* Navigation Menu */}
+        <div className="flex flex-col gap-5 px-6">
+          {links.map((link) => (
+            <div
+              key={link.name}
+              onClick={() => {
+                navigate(link.path);
+                setNavLink(link.name);
               }}
-          className="flex items-center text-white gap-3 cursor-pointer hover:text-[#C7F045]">
-            <i className="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-          </div>
+              className={`flex items-center p-2 rounded-md gap-3 cursor-pointer  ${
+                navLink === link.name
+                  ? "bg-[#e8f7f6] text-[#229e8f] border-[#229e8f]"
+                  : "text-gray-700 border-transparent hover:bg-[#f1f2f2] hover:text-black"
+              }`}
+            >
+              <i className={link.icon}></i>
+              <span>{link.name}</span>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+
+      {/* Bottom Section */}
+      <div className="flex flex-col gap-4 px-6 mb-6 border-t border-gray-300 pt-4">
+       
+
+        <div
+          onClick={() => {
+            navigate("logout");
+            setNavLink("Logout");
+          }}
+          className={`flex items-center gap-3 cursor-pointer p-2 rounded-md  ${
+            navLink === "Logout"
+              ? "bg-[#e8f7f6] text-[#229e8f] border-[#229e8f]"
+              : "text-gray-700 border-transparent hover:bg-[#f1f2f2] hover:text-black"
+          }`}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

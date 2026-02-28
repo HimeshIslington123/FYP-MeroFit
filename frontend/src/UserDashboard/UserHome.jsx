@@ -11,14 +11,14 @@ const Userhome = () => {
   return (
     <>
       {/* Desktop layout */}
-      <div className="hidden md:flex h-screen">
+      <div className="hidden md:flex  h-screen">
         {/* Sidebar */}
-        <div className="w-64 h-screen fixed">
+        <div className="w-64  h-screen fixed">
           <Userheader />
         </div>
 
         {/* Content area */}
-        <div className="flex-1 ml-64 bg-neutral-900 p-6 overflow-y-auto h-screen">
+        <div className="flex-1 ml-64 bg-gray-50 p-6 overflow-y-auto h-screen">
           <Outlet />
         </div>
       </div>
