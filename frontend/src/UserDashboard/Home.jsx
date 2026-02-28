@@ -19,11 +19,15 @@ import {
   ChevronRight,
   ArrowUp,
   ArrowDown,
+  Train,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../GlobalContext/Userprovider";
 import Food from "../Userdashboardcomponent/Food";
+import Trainer from "../Userdashboardcomponent/Trainer";
+import RecommendationPreview from "./Recommendation";
+import TrackChanges from "./TrackChanges";
 
 ChartJS.register(
   CategoryScale,
@@ -284,9 +288,10 @@ const Homeuser = () => {
           )}
         </div>
       </div>
+<Trainer data={value}></Trainer>
 
       {/* Recommended Foods */}
-      <div className="mt-6 flex justify-between items-center">
+   {/*    <div className="mt-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Award size={18} className="text-[#C7F045]" />
           <h1 className="text-white/90 text-lg font-medium tracking-wide">
@@ -301,8 +306,11 @@ const Homeuser = () => {
           <ChevronRight size={16} />
         </Link>
       </div>
-      <Food limit={8} showFilters={false} />
-    </div>
+      <Food limit={8} showFilters={false} / */}
+      <RecommendationPreview limit={4} />
+    <TrackChanges></TrackChanges></div>
+   
+
   );
 };
 

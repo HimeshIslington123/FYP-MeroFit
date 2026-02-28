@@ -36,6 +36,7 @@ import AdminFoods from "./AdminDashboard/AdminFoods";
 import Analysis from "./UserDashboard/Analysis";
 import Recommendation from "./UserDashboard/Recommendation";
 import ExerciseRecommendation from "./UserDashboard/Recommendexercise";
+import RecommendationPreview from "./UserDashboard/Recommendation";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -108,7 +109,7 @@ const App = () => {
           <Route path="post" element={<Post />} />
           <Route path="trainer" element={<Trainer />} />
           <Route path="analysis" element={<Analysis />} />
-            <Route path="recommendation" element={<Recommendation />} />
+            <Route path="recommendation" element={<RecommendationPreview />} />
         </Route>
       </Routes>
     </Router>

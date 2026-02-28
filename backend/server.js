@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
         senderId: data.senderId,
         receiverId: data.receiverId,
         message: data.message || "",
-        image: data.file || null, // store uploaded file
+        image: data.file || null, 
       });
 
       const receiverSocket = onlineUsers.get(data.receiverId);

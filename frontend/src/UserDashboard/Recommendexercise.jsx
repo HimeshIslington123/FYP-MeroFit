@@ -17,9 +17,9 @@ const ExerciseRecommendation = () => {
   if (!data) return <h2 className="text-center mt-10">Loading...</h2>;
 
   return (
-    <div className="max-w-5xl mx-auto p-8 text-white">
+    <div className="max-w-5xl mx-auto p-8 text-black">
       <h1 className="text-3xl mb-6 font-bold text-center">
-        Smart Workout Plan
+         Workout Plan
       </h1>
 
       {/* USER INFO */}
@@ -59,9 +59,7 @@ const ExerciseRecommendation = () => {
               <p>Target: {ex.targetMuscle}</p>
               <p>Level: {ex.level}</p>
 
-            {/*   <p className="text-yellow-400 mt-2 font-semibold">
-                ⭐ Score: {ex.score}
-              </p> */}
+          
             </div>
           ))}
         </div>
