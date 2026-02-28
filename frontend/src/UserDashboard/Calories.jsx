@@ -1,5 +1,3 @@
-
-
 import {
   Plus,
   Dumbbell,
@@ -38,13 +36,12 @@ const Calories = () => {
     return Math.round((value / 100) * quantity);
   };
 
- const calculateProgress = () => {
-  if (!user?.calories) return 0;
-  if (!todayLog?.log?.totalCalories) return 0;
+  const calculateProgress = () => {
+    if (!user?.calories) return 0;
+    if (!todayLog?.log?.totalCalories) return 0;
 
-  return (todayLog.log.totalCalories / user.calories) * 100;
-};
-
+    return (todayLog.log.totalCalories / user.calories) * 100;
+  };
 
   const [search, setSearch] = useState("");
 
@@ -88,15 +85,13 @@ const Calories = () => {
     }
   };
 
-  
-
   const alldata = async () => {
     try {
       const res = await axios.get(
         "http://localhost:4000/TrackCalories/all7days",
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       setAlldata(res.data);
     } catch (err) {
@@ -104,17 +99,16 @@ const Calories = () => {
     }
   };
 
- useEffect(() => {
-  if (!token) return;
+  useEffect(() => {
+    if (!token) return;
 
-  fetchFoods();
-  fetchTodayLog();
-  alldata();
-}, [token]);
-
+    fetchFoods();
+    fetchTodayLog();
+    alldata();
+  }, [token]);
 
   const filteredFoods = foods.filter((food) =>
-    food.name.toLowerCase().includes(search.toLowerCase())
+    food.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   const AddFood = async (foodId, quantity) => {
@@ -124,7 +118,7 @@ const Calories = () => {
       await axios.post(
         "http://localhost:4000/TrackCalories/add-food",
         { foodId, quantity: multiplier },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       fetchTodayLog();
     } catch (err) {
@@ -227,7 +221,7 @@ const Calories = () => {
       )}
 
       {showHistory ? (
-        <div className="w-full flex flex-col items-center text-white mt-5">
+        <div className="w-full flex flex-col items-center text-black mt-5">
           {dailyActivelog ? (
             <></>
           ) : (
@@ -248,7 +242,7 @@ const Calories = () => {
             <>
               <div className=" text-white w-[95%]">
                 <div className="">
-<div className="flex my-[10px] justify-between items-center">
+                  <div className="flex my-[10px] justify-between items-center">
                     <p>Food logs:</p>
                     <p
                       className="text-red-700"
@@ -258,13 +252,10 @@ const Calories = () => {
                     </p>
                   </div>
 
-
                   <div className="flex justify-between items-center">
                     <p>The food log for {dailyActivelog.date}</p>
                     <p>Total Calories: {dailyActivelog.totalCalories}/kcal</p>
                   </div>
-
-                  
 
                   {dailyActivelog?.foods.map((i, index) => (
                     <div className="bg-black p-[15px] mt-[10px]" key={index}>
@@ -309,7 +300,6 @@ const Calories = () => {
         </div>
       ) : (
         <>
-      
           <div className="w-full flex flex-col items-center">
             <div className="w-full flex justify-between items-center text-white py-5 px-5">
               <div className="flex flex-col">
@@ -482,5 +472,3 @@ const Calories = () => {
 };
 
 export default Calories;
-
-
