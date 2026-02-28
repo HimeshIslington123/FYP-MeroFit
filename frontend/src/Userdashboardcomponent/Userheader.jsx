@@ -10,10 +10,12 @@ const Userheader = () => {
     { name: "Home", icon: "bi bi-house-door-fill", path: "home" },
     { name: "Profile", icon: "bi bi-person-circle", path: "profile" },
     { name: "Analysis", icon: "bi bi-graph-down", path: "analysis" },
-    { name: "Track Changes", icon: "bi bi-graph-up", path: "trackchanges" },
+ 
     { name: "Track Calories", icon: "bi bi-clipboard2-data", path: "trackcalories" },
     { name: "Message", icon: "bi bi-chat-left-dots", path: "chat" },
     { name: "Community", icon: "bi bi-people", path: "post" },
+      { name: "Badge", icon: "bi bi-people", path: "badge" },
+        { name: "Progress logs", icon: "bi bi-people", path: "compare" },
   ];
 
   return (
@@ -29,7 +31,7 @@ const Userheader = () => {
         </div>
 
         {/* Navigation Menu */}
-        <div className="flex flex-col gap-5 px-6">
+        <div className="flex flex-col gap-3 px-6">
           {links.map((link) => (
             <div
               key={link.name}
