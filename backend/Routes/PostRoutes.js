@@ -42,7 +42,6 @@ router.post(
   }
 );
 
-// ================= GET ALL POSTS =================
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find()
@@ -53,22 +52,30 @@ router.get("/", async (req, res) => {
       _id: p._id,
       caption: p.caption,
       createdAt: p.createdAt,
-      image: p.image
-        ? `data:${p.image.contentType};base64,${p.image.data.toString("base64")}`
-        : null,
-      user: {
-        _id: p.user._id,
-        name: p.user.name,
-        image: p.user.image
-          ? `data:${p.user.image.contentType};base64,${p.user.image.data.toString(
+
+      image:
+        p.image && p.image.data
+          ? `data:${p.image.contentType};base64,${p.image.data.toString(
               "base64"
             )}`
           : null,
+
+      user: {
+        _id: p.user?._id,
+        name: p.user?.name,
+
+        image:
+          p.user?.image && p.user.image.data
+            ? `data:${p.user.image.contentType};base64,${p.user.image.data.toString(
+                "base64"
+              )}`
+            : null,
       },
     }));
 
     res.json(formatted);
   } catch (err) {
+    console.log("GET POSTS ERROR:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

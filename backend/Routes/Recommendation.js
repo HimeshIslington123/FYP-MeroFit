@@ -66,7 +66,7 @@ router.get("/", authenticate, async (req, res) => {
     } else if (remainingProtein <= 0) {
       message = "Protein completed. Focus on balanced carbs & fats.";
     } else if (remainingCalories < 200) {
-      message = "⚠ Calories almost finished.";
+      message = "Calories almost finished.";
     } else {
       message = "Balanced eating recommended.";
     }
@@ -110,7 +110,7 @@ router.get("/", authenticate, async (req, res) => {
         score -= f.protein * 3;
       }
 
-      // ----- FAT -----
+
       if (remainingFat > 0) {
         const usefulFat = Math.min(f.fat, remainingFat);
         score += usefulFat * 2;
@@ -118,7 +118,7 @@ router.get("/", authenticate, async (req, res) => {
         score -= f.fat * 2;
       }
 
-      // ----- CARB -----
+
       if (remainingCarb > 0) {
         const usefulCarb = Math.min(f.carb, remainingCarb);
         score += usefulCarb * 1.5;
