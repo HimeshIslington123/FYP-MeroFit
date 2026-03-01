@@ -37,6 +37,9 @@ import Analysis from "./UserDashboard/Analysis";
 import Recommendation from "./UserDashboard/Recommendation";
 import ExerciseRecommendation from "./UserDashboard/Recommendexercise";
 import RecommendationPreview from "./UserDashboard/Recommendation";
+import Adminchat from "./AdminDashboard/Adminchat";
+import AdminTrainer from "./AdminDashboard/AdminTrainer";
+import AdminCommunity from "./AdminDashboard/AdminCommunity";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -88,6 +91,9 @@ const App = () => {
         <Route path="/adminblog" element={<AdminBlog />} />
         <Route path="/adminuser" element={<AdminUser />} />
         <Route path="/adminfood" element={<AdminFoods />} />
+        <Route path="/adminchat" element={<Adminchat />} />
+        <Route path="/admintrainer" element={<AdminTrainer />} />
+                <Route path="/admincommunity" element={<AdminCommunity />} />
 
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
@@ -102,14 +108,17 @@ const App = () => {
           <Route path="weightchanges" element={<WeightChanges />} />
           <Route path="foods" element={<Food />} />
           <Route path="chat" element={<Chat />} />
-             <Route path="recommendexercise" element={<ExerciseRecommendation />} />
+          <Route
+            path="recommendexercise"
+            element={<ExerciseRecommendation />}
+          />
 
           <Route path="chat/:trainerId" element={<Chat />} />
           <Route path="trackchanges" element={<TrackChanges />} />
           <Route path="post" element={<Post />} />
           <Route path="trainer" element={<Trainer />} />
           <Route path="analysis" element={<Analysis />} />
-            <Route path="recommendation" element={<RecommendationPreview />} />
+          <Route path="recommendation" element={<RecommendationPreview />} />
         </Route>
       </Routes>
     </Router>
