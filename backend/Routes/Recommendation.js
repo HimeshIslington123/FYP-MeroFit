@@ -155,6 +155,7 @@ router.get("/", authenticate, async (req, res) => {
 });
 
 import Exercise from "../Model/Exercise.js";
+import Paymentmodel from "../Model/GymPayment.js";
 
 router.get("/exercise", authenticate, async (req, res) => {
   try {
@@ -265,5 +266,41 @@ router.get("/exercise", authenticate, async (req, res) => {
   }
 });
 
+
+
+
+
+router.get("/admin/stats", authenticate, async (req, res) => {
+  try {
+    const totalUsers = await Register.countDocuments({ role: "user" });
+    const totalTrainers = await Register.countDocuments({ role: "trainer" });
+
+    // ✅ No filter — get total of ALL payments
+    const result = await Paymentmodel.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$payment_amount" }
+        }
+      }
+    ]);
+
+    const totalEarning = result.length > 0 ? result[0].total : 0;
+
+    res.status(200).json({
+      success: true,
+      totalUsers,
+      totalTrainers,
+      totalEarning,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch admin stats",
+      error: err.message,
+    });
+  }
+});
 
 export default router;
