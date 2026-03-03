@@ -98,7 +98,7 @@ const RecommendationPreview = ({ limit }) => {
 
           {foodsToShow.length === 0 ? (
             <p className="text-slate-400 italic text-center py-4">
-              No recommendationsh yet.
+              No recommendations yet.
             </p>
           ) : (
             <div className="space-y-4">
