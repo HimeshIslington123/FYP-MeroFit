@@ -9,9 +9,13 @@ import {
   MessageCircle,
   Podcast,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/userhome/logout");
+  };
   // Navigation Link Helper for clean code
   const navItems = [
     {
@@ -65,7 +69,7 @@ const Navbar = () => {
       </div>
 
       {/* Action Icons */}
-      <div className="flex items-center space-x-3">
+      <div      onClick={handleLogout} className="flex items-center space-x-3">
         {/* Vertical Divider */}
         <div className="w-[1px] h-6 bg-gray-100 mx-2"></div>
 
