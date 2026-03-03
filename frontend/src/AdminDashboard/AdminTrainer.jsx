@@ -101,7 +101,7 @@ const AdminTrainer = () => {
           </div>
         </div>
 
-        {/* --- CONDITIONAL ADD TRAINER FORM --- */}
+    
         {showForm && (
           <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100 mb-16 animate-in fade-in slide-in-from-top-4 duration-300">
             <div className="flex items-center gap-3 mb-8">
@@ -174,7 +174,7 @@ const AdminTrainer = () => {
           </div>
         )}
 
-        {/* --- TRAINER LIST GRID --- */}
+
         <div className="flex items-center justify-between mb-8 ml-2">
             <h2 className="text-3xl font-bold text-slate-800">Active Roster</h2>
             {!showForm && <p className="text-slate-400 text-sm font-semibold">{trainers.length} Trainers found</p>}

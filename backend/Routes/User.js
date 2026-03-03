@@ -1,4 +1,3 @@
-
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -9,22 +8,22 @@ import { authenticate } from "../Auth/Middleware.js";
 import dotenv from "dotenv";
 dotenv.config(); // Load env variables
 
-const upload=multer();
+const upload = multer();
 const router = express.Router();
 
 router.get("/", (req, res) => {
   res.send("User route working!");
 });
 
-router.get("/userdetail",authenticate, async (req, res) => {
+router.get("/userdetail", authenticate, async (req, res) => {
   try {
-    const id = req.user.userId || req.user.id; 
+    const id = req.user.userId || req.user.id;
     const detail = await Register.findById(id);
     if (!detail) return res.status(404).json({ message: "User not found" });
-   
-const img = `data:${detail.image.contentType};base64,${detail.image.data.toString('base64')}`;
 
-    res.json({data:detail,img:img});
+    const img = `data:${detail.image.contentType};base64,${detail.image.data.toString("base64")}`;
+
+    res.json({ data: detail, img: img });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -33,7 +32,7 @@ const img = `data:${detail.image.contentType};base64,${detail.image.data.toStrin
 // GET all trainers
 router.get("/trainers", async (req, res) => {
   try {
-  const trainers = await Register.find({ role: { $in: ["trainer", "admin"] } });
+    const trainers = await Register.find({ role: { $in: ["trainer"] } });
     const formattedTrainers = trainers.map((t) => ({
       id: t._id,
       name: t.name,
@@ -42,19 +41,35 @@ router.get("/trainers", async (req, res) => {
       specialistTrainer: t.specialistTrainer,
       certifications: t.certifications,
       bio: t.bio,
-      image: t.image ? `data:${t.image.contentType};base64,${t.image.data.toString("base64")}` : null,
+      image: t.image
+        ? `data:${t.image.contentType};base64,${t.image.data.toString("base64")}`
+        : null,
     }));
 
     res.status(200).json({ success: true, trainers: formattedTrainers });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Failed to fetch trainers", error: err.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Failed to fetch trainers",
+        error: err.message,
+      });
   }
 });
 
 router.post("/createtrainer", upload.single("image"), async (req, res) => {
   try {
-    const { name, email, password, address, specialistTrainer, certifications, bio } = req.body;
+    const {
+      name,
+      email,
+      password,
+      address,
+      specialistTrainer,
+      certifications,
+      bio,
+    } = req.body;
 
     const existingUser = await Register.findOne({ email });
     if (existingUser)
@@ -71,14 +86,22 @@ router.post("/createtrainer", upload.single("image"), async (req, res) => {
       specialistTrainer: specialistTrainer || "gain muscles",
       certifications: certifications ? certifications.split(",") : [], // comma-separated list
       bio: bio || "",
-      image: req.file ? { data: req.file.buffer, contentType: req.file.mimetype } : null,
+      image: req.file
+        ? { data: req.file.buffer, contentType: req.file.mimetype }
+        : null,
     });
 
     await trainer.save();
     res.status(201).json({ success: true, message: "Trainer added", trainer });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Error adding trainer", error: err.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error adding trainer",
+        error: err.message,
+      });
   }
 });
 
@@ -125,7 +148,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
       fitnesslevel,
       image: req.file
         ? { data: req.file.buffer, contentType: req.file.mimetype }
-        : null
+        : null,
     });
 
     await user.save();
@@ -133,15 +156,20 @@ router.post("/create", upload.single("image"), async (req, res) => {
     res.status(201).json({ success: true, message: "User registered", user });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Error registering", error: err.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error registering",
+        error: err.message,
+      });
   }
 });
 
-
 // ✅ Get all users
-router.get("/getusers",authenticate, async (req, res) => {
+router.get("/getusers", authenticate, async (req, res) => {
   try {
-    const users = await Register.find().select("-password");;
+    const users = await Register.find().select("-password");
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({
@@ -151,7 +179,6 @@ router.get("/getusers",authenticate, async (req, res) => {
     });
   }
 });
-
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -180,7 +207,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, name: user.name, email: user.email },
       "myname",
-      { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "1d" },
     );
 
     res.status(200).json({
@@ -188,8 +215,7 @@ router.post("/login", async (req, res) => {
       message: "Login successful",
       user,
       token,
-      id:user._id,
-      
+      id: user._id,
     });
   } catch (err) {
     console.error("Login error:", err);
@@ -200,8 +226,6 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
-
 
 router.put("/updateProfile/:id", authenticate, async (req, res) => {
   try {
@@ -214,7 +238,7 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
       address,
       exercise_frequency,
       goal,
-      activity_level
+      activity_level,
     } = req.body;
 
     // Map frontend fields → DB fields
@@ -228,14 +252,14 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
       activityLevel: activity_level,
     };
 
-    const updatedUser = await Register.findByIdAndUpdate(
-      id,
-      updatedData,
-      { new: true }
-    );
+    const updatedUser = await Register.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
 
     if (!updatedUser) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     res.status(200).json({
@@ -243,7 +267,6 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
       message: "Profile updated successfully",
       user: updatedUser,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -253,15 +276,15 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
   }
 });
 
-
 router.get("/users-with-payment", authenticate, async (req, res) => {
   try {
     const users = await Register.find().select("-password");
 
     const result = await Promise.all(
       users.map(async (user) => {
-        const latestPayment = await Paymentmodel.findOne({ user: user._id })
-          .sort({ created_at: -1 });
+        const latestPayment = await Paymentmodel.findOne({
+          user: user._id,
+        }).sort({ created_at: -1 });
 
         let membershipStatus = "NO_PAYMENT";
 
@@ -276,7 +299,7 @@ router.get("/users-with-payment", authenticate, async (req, res) => {
           payment: latestPayment || null,
           membershipStatus,
         };
-      })
+      }),
     );
 
     res.status(200).json(result);
@@ -307,7 +330,6 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
       success: true,
       message: "User deleted successfully",
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -316,6 +338,5 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
     });
   }
 });
-
 
 export default router;

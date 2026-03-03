@@ -68,7 +68,7 @@ const ExercisePr = () => {
             </button>
             <h2 className=" text-2xl">Exercise PRs</h2>
           </div>
-          <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="bg-white p- rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
             <div className="p-3 bg-[#e8f7f6] rounded-2xl"><Award className="text-[#2bb3a3]" size={28} /></div>
             <div>
               <p className="text-slate-400 text-xs font-bold uppercase">Personal Bests</p>
