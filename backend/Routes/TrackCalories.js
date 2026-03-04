@@ -4,7 +4,7 @@ import Food from "../Model/Food.js";
 import { authenticate } from "../Auth/Middleware.js";
 import { CalorieLog } from "../Model/Calories.js";
 
-const router =express.Router();
+const router = express.Router();
 router.post("/add-food", authenticate, async (req, res) => {
   try {
     const { foodId, quantity = 1 } = req.body;
@@ -23,7 +23,7 @@ router.post("/add-food", authenticate, async (req, res) => {
       calories: food.calories * quantity,
       protein: food.protein * quantity,
       carb: food.carb * quantity,
-      fat: food.fat * quantity
+      fat: food.fat * quantity,
     };
 
     if (!log) {
@@ -34,7 +34,7 @@ router.post("/add-food", authenticate, async (req, res) => {
         totalCalories: foodEntry.calories,
         totalProtein: foodEntry.protein,
         totalCarb: foodEntry.carb,
-        totalFat: foodEntry.fat
+        totalFat: foodEntry.fat,
       });
 
       await log.save();
@@ -52,7 +52,6 @@ router.post("/add-food", authenticate, async (req, res) => {
 
     await log.save();
     return res.status(200).json({ message: "Food added", log });
-
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
@@ -68,7 +67,6 @@ router.get("/all", authenticate, async (req, res) => {
       .populate("foods.foodId");
 
     res.status(200).json({ logs });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -76,13 +74,65 @@ router.get("/all", authenticate, async (req, res) => {
 });
 
 
+
+
+router.get(
+  "/trainer/user/:userId/today",
+  authenticate,
+  async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const today = new Date().toISOString().split("T")[0];
+
+      const log = await CalorieLog.findOne({ userId, date: today })
+        .populate("foods.foodId");
+
+      if (!log) {
+        return res.status(404).json({
+          message: "No calorie log for today",
+        });
+      }
+
+      res.status(200).json({ log });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+
+
+router.get("/trainer/user/:userId", authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const logs = await CalorieLog.find({ userId })
+      .sort({ date: -1 })
+      .populate("foods.foodId");
+
+    if (!logs.length) {
+      return res.status(404).json({
+        message: "No calorie logs found for this user",
+      });
+    }
+
+    res.status(200).json({ logs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 router.get("/today", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
     const today = new Date().toISOString().split("T")[0];
 
     // Find today's log
-    const log = await CalorieLog.findOne({ userId, date: today }).populate("foods.foodId");
+    const log = await CalorieLog.findOne({ userId, date: today }).populate(
+      "foods.foodId",
+    );
 
     if (!log) {
       return res.status(404).json({ message: "No log found for today" });
@@ -113,7 +163,5 @@ router.get("/all7days", authenticate, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
-
 
 export default router;

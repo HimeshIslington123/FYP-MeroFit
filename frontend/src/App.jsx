@@ -40,6 +40,9 @@ import RecommendationPreview from "./UserDashboard/Recommendation";
 import Adminchat from "./AdminDashboard/Adminchat";
 import AdminTrainer from "./AdminDashboard/AdminTrainer";
 import AdminCommunity from "./AdminDashboard/AdminCommunity";
+import TrainerHome from "./Trainerdashboard/TrainerHome";
+import TrainerUserDetail from "./Trainerdashboard/TrainerUserDetail";
+import TrainerUserCalories from "./Trainerdashboard/TrainerUserCalories";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -86,6 +89,10 @@ const App = () => {
           element={<PaymentSuccess></PaymentSuccess>}
         />
 
+        <Route path="/trainerhome" element={<TrainerHome></TrainerHome>} />
+        <Route path="/trainer/user/:id" element={<TrainerUserDetail />} />
+        <Route path="/trainer/user/:id/calories" element={<TrainerUserCalories />} />
+
         {/* Admin pages */}
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminblog" element={<AdminBlog />} />
@@ -93,7 +100,7 @@ const App = () => {
         <Route path="/adminfood" element={<AdminFoods />} />
         <Route path="/adminchat" element={<Adminchat />} />
         <Route path="/admintrainer" element={<AdminTrainer />} />
-                <Route path="/admincommunity" element={<AdminCommunity />} />
+        <Route path="/admincommunity" element={<AdminCommunity />} />
 
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
