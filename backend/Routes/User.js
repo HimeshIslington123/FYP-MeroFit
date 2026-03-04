@@ -15,6 +15,35 @@ router.get("/", (req, res) => {
   res.send("User route working!");
 });
 
+
+router.get("/user/:id", authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await Register.findById(id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching user",
+      error: error.message,
+    });
+  }
+});
+
+
+
 router.get("/userdetail", authenticate, async (req, res) => {
   try {
     const id = req.user.userId || req.user.id;
@@ -205,7 +234,7 @@ router.post("/login", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email },
+     { id: user._id, name: user.name, email: user.email, role: user.role },
       "myname",
       { expiresIn: process.env.JWT_EXPIRES_IN || "1d" },
     );
@@ -278,7 +307,8 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
 
 router.get("/users-with-payment", authenticate, async (req, res) => {
   try {
-    const users = await Register.find().select("-password");
+
+    const users = await Register.find({ role: "user" }).select("-password");
 
     const result = await Promise.all(
       users.map(async (user) => {
@@ -299,7 +329,7 @@ router.get("/users-with-payment", authenticate, async (req, res) => {
           payment: latestPayment || null,
           membershipStatus,
         };
-      }),
+      })
     );
 
     res.status(200).json(result);
