@@ -30,7 +30,7 @@ const TrainerUserDetail = () => {
 
   return (
     <div>
-      <h2>{user.name}</h2>
+      <h2>name:{user.name} </h2>
 
       <p>Age: {user.age}</p>
       <p>Height: {user.height} cm</p>
