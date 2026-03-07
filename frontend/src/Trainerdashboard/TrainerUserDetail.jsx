@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import TrainerNavbar from "./Trainernavbar";
 
 const TrainerUserDetail = () => {
   const { id } = useParams();
@@ -28,7 +29,8 @@ const TrainerUserDetail = () => {
 
   if (!user) return <p>Loading...</p>;
 
-  return (
+  return (<>
+  <TrainerNavbar></TrainerNavbar>
     <div>
       <h2>name:{user.name} </h2>
 
@@ -41,6 +43,7 @@ const TrainerUserDetail = () => {
       <p>Exercise Frequency: {user.frequency}</p>
       <p>Fitness Level: {user.fitnesslevel}</p>
     </div>
+    </>
   );
 };
 

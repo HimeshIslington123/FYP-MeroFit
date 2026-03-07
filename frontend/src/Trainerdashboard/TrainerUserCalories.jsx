@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Trainernavbar from "./Trainernavbar";
 
 const TrainerUserCalories = () => {
   const { id } = useParams();
@@ -28,7 +29,8 @@ const TrainerUserCalories = () => {
 
   if (!logs.length) return <p>No calorie logs found</p>;
 
-  return (
+  return (<>
+  <Trainernavbar></Trainernavbar>
     <div style={{ padding: "20px" }}>
       <h2>User Calorie History</h2>
 
@@ -49,6 +51,7 @@ const TrainerUserCalories = () => {
         </div>
       ))}
     </div>
+    </>
   );
 };
 
