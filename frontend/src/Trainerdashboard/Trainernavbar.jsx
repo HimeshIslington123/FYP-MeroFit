@@ -23,7 +23,7 @@ const TrainerNavbar = () => {
       icon: <LayoutDashboard size={18} />,
     },
     {
-      path: "/trainerusers",
+      path: "/userlist",
       label: "My Users",
       icon: <Users size={18} />,
     },

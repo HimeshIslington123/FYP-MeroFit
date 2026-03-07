@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Trainernavbar from "./Trainernavbar";
 
 const TrainerUserCalories = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const username = location.state?.username || "User";
+
   const [logs, setLogs] = useState([]);
   const token = localStorage.getItem("token");
 
@@ -29,28 +32,30 @@ const TrainerUserCalories = () => {
 
   if (!logs.length) return <p>No calorie logs found</p>;
 
-  return (<>
-  <Trainernavbar></Trainernavbar>
-    <div style={{ padding: "20px" }}>
-      <h2>User Calorie History</h2>
+  return (
+    <>
+      <Trainernavbar />
 
-      {logs.map((log) => (
-        <div
-          key={log._id}
-          style={{
-            border: "1px solid gray",
-            padding: "15px",
-            marginBottom: "10px",
-          }}
-        >
-          <p>Date: {log.date}</p>
-          <p>Total Calories: {log.totalCalories}</p>
-          <p>Protein: {log.totalProtein} g</p>
-          <p>Carb: {log.totalCarb} g</p>
-          <p>Fat: {log.totalFat} g</p>
-        </div>
-      ))}
-    </div>
+      <div style={{ padding: "20px" }}>
+        <h2>User Calorie History of: {username}</h2>
+
+        {logs.map((log) => (
+          <div
+            key={log._id}
+            style={{
+              border: "1px solid gray",
+              padding: "15px",
+              marginBottom: "10px",
+            }}
+          >
+            <p>Date: {log.date}</p>
+            <p>Total Calories: {log.totalCalories}</p>
+            <p>Protein: {log.totalProtein} g</p>
+            <p>Carb: {log.totalCarb} g</p>
+            <p>Fat: {log.totalFat} g</p>
+          </div>
+        ))}
+      </div>
     </>
   );
 };

@@ -43,6 +43,8 @@ import AdminCommunity from "./AdminDashboard/AdminCommunity";
 import TrainerHome from "./Trainerdashboard/TrainerHome";
 import TrainerUserDetail from "./Trainerdashboard/TrainerUserDetail";
 import TrainerUserCalories from "./Trainerdashboard/TrainerUserCalories";
+import TrainerChat from "./Trainerdashboard/Trainerchat";
+import UserList from "./Trainerdashboard/UserList";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -90,6 +92,8 @@ const App = () => {
         />
 
         <Route path="/trainerhome" element={<TrainerHome></TrainerHome>} />
+         <Route path="/userlist" element={<UserList></UserList>} />
+        <Route path="/trainerchat" element={<TrainerChat></TrainerChat>} />
         <Route path="/trainer/user/:id" element={<TrainerUserDetail />} />
         <Route path="/trainer/user/:id/calories" element={<TrainerUserCalories />} />
 
