@@ -94,6 +94,7 @@ const App = () => {
         <Route path="/trainerhome" element={<TrainerHome></TrainerHome>} />
          <Route path="/userlist" element={<UserList></UserList>} />
         <Route path="/trainerchat" element={<TrainerChat></TrainerChat>} />
+          <Route path="trainerchat/:trainerId" element={<TrainerChat />} />
         <Route path="/trainer/user/:id" element={<TrainerUserDetail />} />
         <Route path="/trainer/user/:id/calories" element={<TrainerUserCalories />} />
 
