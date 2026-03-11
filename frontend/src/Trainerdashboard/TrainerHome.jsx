@@ -5,6 +5,7 @@ const TrainerHome = () => {
   return (
     <div>
       <TrainerNavbar></TrainerNavbar>
+        <TrainerNavbar></TrainerNavbar>
     </div>
   )
 }
