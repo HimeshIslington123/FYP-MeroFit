@@ -58,10 +58,13 @@ router.get("/userdetail", authenticate, async (req, res) => {
   }
 });
 
-// GET all trainers
+
 router.get("/trainers", async (req, res) => {
   try {
+
     const trainers = await Register.find({ role: { $in: ["trainer"] } });
+
+
     const formattedTrainers = trainers.map((t) => ({
       id: t._id,
       name: t.name,
@@ -70,21 +73,19 @@ router.get("/trainers", async (req, res) => {
       specialistTrainer: t.specialistTrainer,
       certifications: t.certifications,
       bio: t.bio,
-      image: t.image
+      image: t.image && t.image.data
         ? `data:${t.image.contentType};base64,${t.image.data.toString("base64")}`
         : null,
     }));
 
     res.status(200).json({ success: true, trainers: formattedTrainers });
   } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Failed to fetch trainers",
-        error: err.message,
-      });
+    console.error("Error fetching trainers:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch trainers",
+      error: err.message,
+    });
   }
 });
 

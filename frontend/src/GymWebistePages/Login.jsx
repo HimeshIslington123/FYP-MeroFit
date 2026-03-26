@@ -42,31 +42,46 @@ const Login = () => {
   };
 
 
-  const login = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:4000/api/users/login", {
-        email: formData.email,
-        password: formData.password,
-      });
-     if (res.data.success) {
+ const login = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post("http://localhost:4000/api/users/login", {
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (res.data.success) {
+
+
+      localStorage.setItem("token", res.data.token);
+
  
-  localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.id);
 
 
-  localStorage.setItem("userId", res.data.id);
+      localStorage.setItem("role", res.data.user.role);
 
-  alert("Login successful");
- nav("/userhome/home");
+      alert("Login successful");
 
-  
-}
 
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed!");
+      if (res.data.user.role === "admin") {
+        nav("/adminhome");
+      } 
+      else if (res.data.user.role === "trainer") {
+        nav("/trainerhome");
+      } 
+      else {
+        nav("/userhome/home");
+      }
+
     }
-  };
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed!");
+  }
+};
 
   // ---------------- REGISTER ----------------
   const registerUser = async () => {

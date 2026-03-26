@@ -20,7 +20,7 @@ const Chat = () => {
   const myId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  // Fetch all users
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -41,7 +41,7 @@ const Chat = () => {
     fetchUsers();
   }, [token, myId, trainerId]);
 
-  // Socket.IO setup
+
   useEffect(() => {
     if (!myId) return;
     socket.emit("registerUser", myId);
@@ -59,7 +59,7 @@ const Chat = () => {
     return () => socket.off("receiveMessage");
   }, [myId, selectedUser]);
 
-  // Fetch chat messages with selected user
+
   useEffect(() => {
     if (!selectedUser) return;
     const fetchMessages = async () => {
@@ -76,14 +76,17 @@ const Chat = () => {
     fetchMessages();
   }, [selectedUser, myId, token]);
 
-  // Auto-scroll chat
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Send message function
+
   const sendMessage = async () => {
-    if (!message.trim() && !file) return;
+     if (!message.trim() && !file) {
+    alert("Please enter a message or attach a file");
+    return;
+  }
 
     let fileData = null;
 
@@ -158,7 +161,6 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* --- MAIN CHAT AREA --- */}
         <div className="flex-1 bg-white rounded-[2rem] shadow-sm border border-gray-100 flex flex-col overflow-hidden">
           {selectedUser ? (
             <>
@@ -186,7 +188,6 @@ const Chat = () => {
                       }`}>
                         {m.message}
 
-                        {/* --- File Handling --- */}
                         {m.file && m.file.data && (
                           <>
                             {m.file.contentType.startsWith("image/") ? (

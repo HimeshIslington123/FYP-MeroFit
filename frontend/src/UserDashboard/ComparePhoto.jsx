@@ -117,6 +117,7 @@ const ComparePhoto = () => {
                   type="file"
                   id="file-upload"
                   hidden
+                  accept="image/png, image/jpeg, image/jpg"
                   onChange={(e) => setImage(e.target.files[0])}
                 />
                 <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center">

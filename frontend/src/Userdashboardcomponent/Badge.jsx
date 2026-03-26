@@ -32,7 +32,7 @@ const Badge = () => {
         ` I just earned the "${badge.title}" badge!`,
       );
 
-      // Convert local image to blob
+
       const response = await fetch(badge.image);
       const blob = await response.blob();
 
@@ -44,7 +44,7 @@ const Badge = () => {
         },
       });
 
-      alert("Badge shared successfully! 🎉");
+      alert("Badge shared successfully! ");
     } catch (error) {
       console.error(error);
     }
@@ -89,14 +89,9 @@ const Badge = () => {
     fetchAll();
   }, []);
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen text-[#2bb3a3] text-xl">
-        Loading your achievements...
-      </div>
-    );
+  
 
-  // ✅ All 9 badges with Tier + Description
+
   const badgeList = [
     {
       id: 1,
@@ -196,7 +191,7 @@ const Badge = () => {
   return (
     <div className=" ">
       <div className="max-w-7xl mx-auto">
-        {/* HEADER */}
+
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <div className="flex items-center gap-3 mb-3">
@@ -208,7 +203,7 @@ const Badge = () => {
             </p>
           </div>
 
-          {/* Progress Card */}
+  
           <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex w-[300px] justify-between items-center mb-3">
               <span className="text-slate-800 font-medium">
@@ -227,7 +222,7 @@ const Badge = () => {
           </div>
         </div>
 
-        {/* PREMIUM GRID */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {badgeList.map((badge) => (
             <div
@@ -239,7 +234,7 @@ const Badge = () => {
                   : "border-gray-100 opacity-60"
               }`}
             >
-              {/* Badge Image */}
+     
               <div className="mb-6 h-24 flex items-center justify-center">
                 <img
                   src={badge.image}
@@ -254,7 +249,7 @@ const Badge = () => {
 
               <p className="text-gray-500 text-sm mb-6">{badge.description}</p>
 
-              {/* Footer */}
+
               <div className="mt-auto">
                 {badge.earned ? (
                   <div className="flex flex-col gap-2 items-center">

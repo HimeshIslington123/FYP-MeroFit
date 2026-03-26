@@ -23,19 +23,30 @@ const WeightChanges = () => {
   useEffect(() => { fetchWeightHistory(); }, []);
 
   const handleUpdateWeight = async () => {
-    if (!weight) return;
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      await axios.post("http://localhost:4000/api/weightchanges/update-weight", 
-        { weight: Number(weight) }, 
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setWeight("");
-      fetchWeightHistory();
-    } catch (err) { console.error(err); } 
-    finally { setLoading(false); }
-  };
+  if (!weight || weight <= 0) {
+    alert("Please enter a valid weight");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "http://localhost:4000/api/weightchanges/update-weight",
+      { weight: Number(weight) },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setWeight("");
+    fetchWeightHistory();
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong!");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Logic for the header stats
   const startWeight = history.length > 0 ? history[history.length - 1].weight : 0;

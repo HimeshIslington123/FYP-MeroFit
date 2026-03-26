@@ -68,12 +68,12 @@ const Navbar = () => {
         ))}
       </div>
 
-      {/* Action Icons */}
+
       <div      onClick={handleLogout} className="flex items-center space-x-3">
         {/* Vertical Divider */}
         <div className="w-[1px] h-6 bg-gray-100 mx-2"></div>
 
-        {/* Profile Section */}
+     
         <button className="flex items-center gap-3 pl-2 pr-1 py-1 rounded-full hover:bg-gray-50 transition-all group">
           <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border-2 border-white shadow-sm group-hover:border-[#2bb3a3]/30 transition-all overflow-hidden">
             <User className="text-slate-400" size={20} />
@@ -81,12 +81,7 @@ const Navbar = () => {
          <p className="text-gray-500">logout</p> 
         </button>
 
-         <button className="flex items-center gap-3 pl-2 pr-1 py-1 rounded-full hover:bg-gray-50 transition-all group">
-          <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border-2 border-white shadow-sm group-hover:border-[#2bb3a3]/30 transition-all overflow-hidden">
-            <User className="text-slate-400" size={20} />
-          </div>
-         <p className="text-gray-500">logout</p> 
-        </button>
+      
       </div>
     </nav>
   );

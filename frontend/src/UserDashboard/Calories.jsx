@@ -43,6 +43,27 @@ const [food, setFood] = useState({
     fatPercent = 0.2;
   }
 const handleAddFood = async () => {
+  if (!food.name.trim()) {
+    alert("Please enter food name");
+    return;
+  }
+
+  if (!food.protein || food.protein <= 0) {
+    alert("Please enter valid protein value");
+    return;
+  }
+
+  if (!food.carb || food.carb <= 0) {
+    alert("Please enter valid carbs value");
+    return;
+  }
+
+  if (!food.fat || food.fat <= 0) {
+    alert("Please enter valid fat value");
+    return;
+  }
+
+
   try {
     const res = await axios.post(
       "http://localhost:4000/calories",

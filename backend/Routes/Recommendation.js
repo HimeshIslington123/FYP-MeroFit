@@ -154,6 +154,10 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
+
+
+
+
 import Exercise from "../Model/Exercise.js";
 import Paymentmodel from "../Model/GymPayment.js";
 
@@ -275,7 +279,6 @@ router.get("/admin/stats", authenticate, async (req, res) => {
     const totalUsers = await Register.countDocuments({ role: "user" });
     const totalTrainers = await Register.countDocuments({ role: "trainer" });
 
-    // ✅ No filter — get total of ALL payments
     const result = await Paymentmodel.aggregate([
       {
         $group: {

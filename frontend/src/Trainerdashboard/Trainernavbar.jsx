@@ -13,15 +13,11 @@ const TrainerNavbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/trainer/logout");
+    navigate("/userhome/logout");
   };
 
   const navItems = [
-    {
-      path: "/trainerhome",
-      label: "Dashboard",
-      icon: <LayoutDashboard size={18} />,
-    },
+   
     {
       path: "/userlist",
       label: "My Users",
@@ -32,16 +28,7 @@ const TrainerNavbar = () => {
       label: "Chat",
       icon: <MessageCircle size={18} />,
     },
-    {
-      path: "/trainerdiet",
-      label: "Diet Plans",
-      icon: <FileText size={18} />,
-    },
-    {
-      path: "/trainerprogress",
-      label: "Progress",
-      icon: <Activity size={18} />,
-    },
+
   ];
 
   return (
