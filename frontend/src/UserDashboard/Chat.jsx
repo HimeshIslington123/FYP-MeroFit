@@ -16,6 +16,7 @@ const Chat = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [file, setFile] = useState(null);
   const scrollRef = useRef();
+  const [payment, setPayment] = useState(null);
 
   const myId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -41,6 +42,22 @@ const Chat = () => {
     fetchUsers();
   }, [token, myId, trainerId]);
 
+useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  const verifyPayment = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/esewa/getPayment", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setPayment(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  verifyPayment();
+}, []);
 
   useEffect(() => {
     if (!myId) return;
@@ -116,7 +133,29 @@ const Chat = () => {
   const displayedUsers = users.filter((u) =>
     (u.name || u.email).toLowerCase().includes(searchTerm.toLowerCase())
   );
+if (!payment) return null; // wait for API
 
+if (!payment.active) {
+  return (
+    <div className="h-screen flex flex-col items-center justify-center bg-[#f8fafb]">
+      <div className="bg-white p-10 rounded-2xl shadow-lg text-center space-y-4">
+        <h2 className="text-xl font-bold text-slate-700">
+          Chat Locked
+        </h2>
+        <p className="text-slate-400 text-sm">
+          You need to unlock expert access to chat with trainers.
+        </p>
+
+        <button
+          onClick={() => navigate("/userhome/userpayment")}
+          className="bg-[#1abc9c] text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-900"
+        >
+          Unlock Expert Access
+        </button>
+      </div>
+    </div>
+  );
+}
   return (
     <div className=" bg-[#f8fafb] p-4 ">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 h-[85vh]">

@@ -136,7 +136,7 @@ const Homeuser = () => {
       value: user.weight,
       unit: "kg",
       icon: Activity,
-      change: "-2.3%",
+      change: "",
       isPositive: true,
     },
     {
@@ -152,7 +152,7 @@ const Homeuser = () => {
       value: calculateBodyFat(user.weight, user.height, user.age, user.gender),
       unit: "%",
       icon: Target,
-      change: "-1.5%",
+      change: "",
       isPositive: true,
     },
     {
@@ -160,15 +160,15 @@ const Homeuser = () => {
       value: user.calories,
       unit: "kcal",
       icon: Flame,
-      change: "+12%",
+      change: "",
       isPositive: true,
     },
     {
-      label: "Progress",
-      value: user.fitnesslevel,
-      unit: "%",
+      label: "Age",
+      value: user.age,
+      unit: "year",
       icon: Award,
-      change: "+8%",
+      change: "",
       isPositive: true,
     },
   ];

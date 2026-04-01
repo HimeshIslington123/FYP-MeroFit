@@ -47,7 +47,7 @@ const Payment = ({ amount, label }) => {
 
   return (
     <form
-      className="bg-gray-800 flex flex-col gap-[10px] p-[20px] rounded-2xl"
+      className=" flex flex-col gap-[10px] p-[20px] border-1 border-[#1e1e2f] rounded-2xl"
       action="https://rc-epay.esewa.com.np/api/epay/main/v2/form"
       method="POST"
     >
