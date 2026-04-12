@@ -2,11 +2,11 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import multer from "multer";
-import { Register } from "../Model/Register.js"; // Your Mongoose model
+import { Register } from "../Model/Register.js"; 
 import Paymentmodel from "../Model/GymPayment.js";
 import { authenticate } from "../Auth/Middleware.js";
 import dotenv from "dotenv";
-dotenv.config(); // Load env variables
+dotenv.config(); 
 
 const upload = multer();
 const router = express.Router();
@@ -112,9 +112,9 @@ router.post("/createtrainer", upload.single("image"), async (req, res) => {
       email,
       password: hashedPassword,
       address,
-      role: "trainer", // important
+      role: "trainer", 
       specialistTrainer: specialistTrainer || "gain muscles",
-      certifications: certifications ? certifications.split(",") : [], // comma-separated list
+      certifications: certifications ? certifications.split(",") : [], 
       bio: bio || "",
       image: req.file
         ? { data: req.file.buffer, contentType: req.file.mimetype }
@@ -196,8 +196,8 @@ router.post("/create", upload.single("image"), async (req, res) => {
   }
 });
 
-// ✅ Get all users
-router.get("/getusers", authenticate, async (req, res) => {
+
+router.get("/getusers", async (req, res) => {
   try {
     const users = await Register.find().select("-password");
     res.status(200).json(users);
@@ -270,8 +270,6 @@ router.put("/updateProfile/:id", authenticate, async (req, res) => {
       goal,
       activity_level,
     } = req.body;
-
-    // Map frontend fields → DB fields
     const updatedData = {
       height,
       weight,

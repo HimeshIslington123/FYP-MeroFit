@@ -48,11 +48,7 @@ const AdminCommunity = () => {
     } catch (err) { alert("Delete failed"); }
   };
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-screen text-[#2bb3a3] font-bold text-2xl">
-  
-    </div>
-  );
+
 
   return (
     <div className="min-h-screen bg-[#f8fafb]">

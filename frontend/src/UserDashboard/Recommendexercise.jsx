@@ -57,7 +57,7 @@ const ExerciseRecommendation = () => {
             <div key={ex._id} className="bg-white/10 p-4 rounded">
               <h3 className="font-bold text-lg">{ex.name}</h3>
               <p>Target: {ex.targetMuscle}</p>
-              <p>Level: {ex.level}</p>
+   
 
           
             </div>

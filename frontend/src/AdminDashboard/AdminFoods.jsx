@@ -6,6 +6,7 @@ const AdminFoods = () => {
   const token = localStorage.getItem("token");
 
   const [foods, setFoods] = useState([]);
+  const [search, setSearch] = useState(""); // 🔍 search state
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -82,9 +83,20 @@ const AdminFoods = () => {
   /* ================= EDIT ================= */
   const editFood = (food) => {
     setEditingId(food._id);
-    setForm(food);
+    setForm({
+      name: food.name,
+      protein: food.protein,
+      carb: food.carb,
+      fat: food.fat,
+      foodType: food.foodType,
+    });
     setShowForm(true);
   };
+
+  /* ================= FILTERED FOODS ================= */
+  const filteredFoods = foods.filter((food) =>
+    food.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div style={{ background: "#f5f7fb", minHeight: "100vh" }}>
@@ -94,15 +106,26 @@ const AdminFoods = () => {
         <div style={headerRow}>
           <h2 style={{ fontWeight: "600" }}>Food Management</h2>
 
-          <button
-            onClick={() => {
-              setShowForm(!showForm);
-              setEditingId(null);
-            }}
-            style={addBtn}
-          >
-            + Add New Food
-          </button>
+          <div style={{ display: "flex", gap: "10px" }}>
+            {/* 🔍 SEARCH */}
+            <input
+              type="text"
+              placeholder="Search food..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={searchInput}
+            />
+
+            <button
+              onClick={() => {
+                setShowForm(!showForm);
+                setEditingId(null);
+              }}
+              style={addBtn}
+            >
+              + Add New Food
+            </button>
+          </div>
         </div>
 
         {/* ================= FORM ================= */}
@@ -178,7 +201,7 @@ const AdminFoods = () => {
             </thead>
 
             <tbody>
-              {foods.map((food) => (
+              {filteredFoods.map((food) => (
                 <tr key={food._id} style={{ borderBottom: "1px solid #eee" }}>
                   <td style={td}><strong>{food.name}</strong></td>
                   <td style={td}>{food.protein}</td>
@@ -199,6 +222,14 @@ const AdminFoods = () => {
                   </td>
                 </tr>
               ))}
+
+              {filteredFoods.length === 0 && (
+                <tr>
+                  <td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>
+                    No foods found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -241,6 +272,13 @@ const th = {
 const td = {
   padding: "16px",
   fontSize: "14px",
+};
+
+const searchInput = {
+  padding: "10px",
+  borderRadius: "8px",
+  border: "1px solid #ddd",
+  outline: "none",
 };
 
 const addBtn = {

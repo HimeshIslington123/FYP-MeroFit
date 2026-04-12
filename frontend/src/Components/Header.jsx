@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import gymlogo from "../assets/logo.jpeg";
+import gymlogo  from "../assets/image.png";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {

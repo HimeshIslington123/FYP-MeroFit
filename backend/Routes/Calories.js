@@ -5,10 +5,10 @@ const router=express.Router();
 import  Food  from "../Model/Food.js"; 
 import { authenticate } from "../Auth/Middleware.js";
 
-// ✅ Add bulk foods
+
 router.post("/bulk", async (req, res) => {
   try {
-    const foods = req.body; // expecting array of food objects
+    const foods = req.body; 
 
     if (!Array.isArray(foods) || foods.length === 0) {
       return res.status(400).json({

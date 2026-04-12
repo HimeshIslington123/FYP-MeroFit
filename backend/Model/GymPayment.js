@@ -8,7 +8,7 @@ const paymentSchema = new mongoose.Schema({
   },
   payment_amount: { type: Number, required: true },
   payment_status: { type: String, default: "pending" },
-  payment_transaction_uuid: String,
+payment_transaction_uuid: { type: String, unique: true },
 
   created_at: { type: Date, default: Date.now },
 

@@ -159,7 +159,7 @@ const ComparePhoto = () => {
             onClick={() => setIsOpen(true)}
             className="bg-[#2bb3a3] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-[#2bb3a3]/20 hover:scale-105 transition-transform"
           >
-            <Plus size={20} /> Add Photo
+            <Plus size={20} /> Add Progress
           </button>
         </div>
       </div>

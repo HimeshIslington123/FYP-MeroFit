@@ -15,9 +15,7 @@ router.get("/", authenticate, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-   
     const targetCalories = user.calories;
-
 
     let proteinPercent = 0.3;
     let carbPercent = 0.4;
@@ -39,7 +37,6 @@ router.get("/", authenticate, async (req, res) => {
     const targetCarb = Math.round((targetCalories * carbPercent) / 4);
     const targetFat = Math.round((targetCalories * fatPercent) / 9);
 
-
     const todayStr = new Date().toISOString().split("T")[0];
 
     const todayLog = await CalorieLog.findOne({
@@ -52,12 +49,10 @@ router.get("/", authenticate, async (req, res) => {
     const todayCarb = todayLog?.totalCarb || 0;
     const todayFat = todayLog?.totalFat || 0;
 
-
     const remainingCalories = targetCalories - todayCalories;
     const remainingProtein = targetProtein - todayProtein;
     const remainingCarb = targetCarb - todayCarb;
     const remainingFat = targetFat - todayFat;
-
 
     let message = "";
 
@@ -70,7 +65,6 @@ router.get("/", authenticate, async (req, res) => {
     } else {
       message = "Balanced eating recommended.";
     }
-
 
     if (remainingCalories <= 0) {
       return res.json({
@@ -88,7 +82,6 @@ router.get("/", authenticate, async (req, res) => {
       });
     }
 
-
     const foods = await Food.find();
     let recommendedFoods = [];
 
@@ -102,7 +95,6 @@ router.get("/", authenticate, async (req, res) => {
         score -= (f.calories - remainingCalories) * 2;
       }
 
-
       if (remainingProtein > 0) {
         const usefulProtein = Math.min(f.protein, remainingProtein);
         score += usefulProtein * 4;
@@ -110,14 +102,12 @@ router.get("/", authenticate, async (req, res) => {
         score -= f.protein * 3;
       }
 
-
       if (remainingFat > 0) {
         const usefulFat = Math.min(f.fat, remainingFat);
         score += usefulFat * 2;
       } else {
         score -= f.fat * 2;
       }
-
 
       if (remainingCarb > 0) {
         const usefulCarb = Math.min(f.carb, remainingCarb);
@@ -131,7 +121,6 @@ router.get("/", authenticate, async (req, res) => {
         score: Math.round(score),
       });
     });
-
 
     recommendedFoods.sort((a, b) => b.score - a.score);
     recommendedFoods = recommendedFoods.slice(0, 20);
@@ -153,9 +142,6 @@ router.get("/", authenticate, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
-
 
 
 import Exercise from "../Model/Exercise.js";
@@ -189,7 +175,6 @@ router.get("/exercise", authenticate, async (req, res) => {
     exercises.forEach((ex) => {
       let score = 0;
 
-     
       if (ex.level === user.fitnesslevel) {
         score += 40;
       }
@@ -200,10 +185,8 @@ router.get("/exercise", authenticate, async (req, res) => {
       }
 
       if (user.goal === "gain muscle") {
-        if (["Chest", "Back", "Legs"].includes(ex.targetMuscle))
-          score += 30;
-        if (["Arms", "Shoulders"].includes(ex.targetMuscle))
-          score += 20;
+        if (["Chest", "Back", "Legs"].includes(ex.targetMuscle)) score += 30;
+        if (["Arms", "Shoulders"].includes(ex.targetMuscle)) score += 20;
       }
 
       if (user.goal === "stay fit") {
@@ -211,26 +194,22 @@ router.get("/exercise", authenticate, async (req, res) => {
         if (ex.targetMuscle === "Core") score += 20;
       }
 
-  
       if (user.frequency === "3 days") {
-        if (["Chest", "Back", "Legs"].includes(ex.targetMuscle))
-          score += 30;
+        if (["Chest", "Back", "Legs"].includes(ex.targetMuscle)) score += 30;
       }
 
       if (user.frequency === "5 days") {
         if (
           ["Chest", "Back", "Legs", "Shoulders", "Arms"].includes(
-            ex.targetMuscle
+            ex.targetMuscle,
           )
         )
           score += 25;
       }
 
       if (user.frequency === "Everyday") {
-        if (["Core", "Cardio"].includes(ex.targetMuscle))
-          score += 20;
+        if (["Core", "Cardio"].includes(ex.targetMuscle)) score += 20;
       }
-
 
       if (remainingCalories <= 0) {
         if (ex.targetMuscle === "Cardio") score += 50;
@@ -248,10 +227,10 @@ router.get("/exercise", authenticate, async (req, res) => {
       });
     });
 
-    // Sort by score
+   
     scoredExercises.sort((a, b) => b.score - a.score);
 
-    // Take top 15
+
     const recommended = scoredExercises.slice(0, 15);
 
     res.json({
@@ -270,10 +249,6 @@ router.get("/exercise", authenticate, async (req, res) => {
   }
 });
 
-
-
-
-
 router.get("/admin/stats", authenticate, async (req, res) => {
   try {
     const totalUsers = await Register.countDocuments({ role: "user" });
@@ -283,9 +258,9 @@ router.get("/admin/stats", authenticate, async (req, res) => {
       {
         $group: {
           _id: null,
-          total: { $sum: "$payment_amount" }
-        }
-      }
+          total: { $sum: "$payment_amount" },
+        },
+      },
     ]);
 
     const totalEarning = result.length > 0 ? result[0].total : 0;
@@ -296,7 +271,6 @@ router.get("/admin/stats", authenticate, async (req, res) => {
       totalTrainers,
       totalEarning,
     });
-
   } catch (err) {
     res.status(500).json({
       success: false,

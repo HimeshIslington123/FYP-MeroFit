@@ -45,34 +45,10 @@ import TrainerUserDetail from "./Trainerdashboard/TrainerUserDetail";
 import TrainerUserCalories from "./Trainerdashboard/TrainerUserCalories";
 import TrainerChat from "./Trainerdashboard/Trainerchat";
 import UserList from "./Trainerdashboard/UserList";
+import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (!token) return;
-
-        const res = await axios.get(
-          "http://localhost:4000/api/users/userdetail",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-
-        const u = res.data.data;
-
-        setUser(u);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-
-    getUser();
-  }, []);
 
   return (
     <Router>
@@ -91,14 +67,19 @@ const App = () => {
           element={<PaymentSuccess></PaymentSuccess>}
         />
 
+<Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
         <Route path="/trainerhome" element={<TrainerHome></TrainerHome>} />
-         <Route path="/userlist" element={<UserList></UserList>} />
+        <Route path="/userlist" element={<UserList></UserList>} />
         <Route path="/trainerchat" element={<TrainerChat></TrainerChat>} />
-          <Route path="trainerchat/:trainerId" element={<TrainerChat />} />
+        <Route path="trainerchat/:trainerId" element={<TrainerChat />} />
         <Route path="/trainer/user/:id" element={<TrainerUserDetail />} />
-        <Route path="/trainer/user/:id/calories" element={<TrainerUserCalories />} />
-
+        <Route
+          path="/trainer/user/:id/calories"
+          element={<TrainerUserCalories />}
+        />
+</Route>
         {/* Admin pages */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/adminblog" element={<AdminBlog />} />
         <Route path="/adminuser" element={<AdminUser />} />
@@ -106,7 +87,10 @@ const App = () => {
         <Route path="/adminchat" element={<Adminchat />} />
         <Route path="/admintrainer" element={<AdminTrainer />} />
         <Route path="/admincommunity" element={<AdminCommunity />} />
+        </Route>
 
+
+<Route element={<ProtectedRoute allowedRoles={["user"]} />}>
         <Route path="/userhome" element={<Userhome />}>
           <Route path="compare" element={<ComparePhoto />} />
           <Route path="userpayment" element={<UserPayment />} />
@@ -131,6 +115,7 @@ const App = () => {
           <Route path="trainer" element={<Trainer />} />
           <Route path="analysis" element={<Analysis />} />
           <Route path="recommendation" element={<RecommendationPreview />} />
+        </Route>
         </Route>
       </Routes>
     </Router>

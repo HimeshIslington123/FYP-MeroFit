@@ -36,17 +36,58 @@ const ExercisePr = () => {
 
   useEffect(() => { fetchAllData(); }, []);
 
-  const handleAddPR = async () => {
-    if (!selectedExercise || !weight || !reps) return;
-    try {
-      await axios.post(
-        "http://localhost:4000/api/pr/add",
-        { exerciseId: selectedExercise, weight: Number(weight), reps: Number(reps) },
-        { headers }
-      );
-      setWeight(""); setReps(""); fetchAllData();
-    } catch (err) { console.error(err); }
-  };
+const handleAddPR = async () => {
+
+  if (!selectedExercise) {
+    alert("Please select an exercise");
+    return;
+  }
+
+  if (!weight) {
+    alert("Please enter weight");
+    return;
+  }
+
+  if (weight <= 0) {
+    alert("Weight must be greater than 0");
+    return;
+  }
+
+  if (!reps) {
+    alert("Please enter reps");
+    return;
+  }
+
+  if (reps <= 0) {
+    alert("Reps must be greater than 0");
+    return;
+  }
+
+  try {
+    await axios.post(
+      "http://localhost:4000/api/pr/add",
+      {
+        exerciseId: selectedExercise,
+        weight: Number(weight),
+        reps: Number(reps)
+      },
+      { headers }
+    );
+
+    alert("PR added successfully ");
+
+    // reset fields
+    setWeight("");
+    setReps("");
+    setSelectedExercise("");
+
+    fetchAllData();
+
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong ");
+  }
+};
 
   const openHistory = (exercise) => {
     setActiveExercise(exercise);

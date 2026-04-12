@@ -108,4 +108,36 @@ router.post("/paymentverify/:data", authenticate, async (req, res) => {
   }
 });
 
+router.get(
+  "/payment-history",
+  authenticate,
+  async (req, res) => {
+    try {
+      const userId = req.user.id;
+
+      const payments = await Paymentmodel.find({ user: userId })
+        .sort({ created_at: -1 });
+
+      if (!payments || payments.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No payment history found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        count: payments.length,
+        data: payments,
+      });
+
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  }
+);
+
 export default router;

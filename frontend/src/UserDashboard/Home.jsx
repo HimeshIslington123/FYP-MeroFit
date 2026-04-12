@@ -57,6 +57,8 @@ const Homeuser = () => {
     verify();
   }, []);
 
+  {console.log(value)}
+
   // Fetch weight and calorie analytics
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -288,10 +290,10 @@ const Homeuser = () => {
           )}
         </div>
       </div>
-<Trainer data={value}></Trainer>
+      <Trainer data={value}></Trainer>
 
       {/* Recommended Foods */}
-   {/*    <div className="mt-6 flex justify-between items-center">
+      {/*    <div className="mt-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Award size={18} className="text-[#C7F045]" />
           <h1 className="text-white/90 text-lg font-medium tracking-wide">
@@ -308,9 +310,8 @@ const Homeuser = () => {
       </div>
       <Food limit={8} showFilters={false} / */}
       <RecommendationPreview limit={4} />
-    <TrackChanges></TrackChanges></div>
-   
-
+      <TrackChanges></TrackChanges>
+    </div>
   );
 };
 

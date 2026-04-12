@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import gymlogo from "../assets/logo.jpeg";
+import gymlogo from "../assets/image.png";
 import { useNavigate } from "react-router-dom";
 
 const Userheader = () => {
@@ -10,12 +10,17 @@ const Userheader = () => {
     { name: "Home", icon: "bi bi-house-door-fill", path: "home" },
     { name: "Profile", icon: "bi bi-person-circle", path: "profile" },
     { name: "Analysis", icon: "bi bi-graph-down", path: "analysis" },
- 
-    { name: "Track Calories", icon: "bi bi-clipboard2-data", path: "trackcalories" },
+
+    {
+      name: "Track Calories",
+      icon: "bi bi-clipboard2-data",
+      path: "trackcalories",
+    },
     { name: "Message", icon: "bi bi-chat-left-dots", path: "chat" },
     { name: "Community", icon: "bi bi-people", path: "post" },
-      { name: "Badge", icon: "bi bi-people", path: "badge" },
-        { name: "Progress logs", icon: "bi bi-people", path: "compare" },
+    { name: "Badge", icon: "bi bi-people", path: "badge" },
+    { name: "Progress logs", icon: "bi bi-people", path: "compare" },
+   
   ];
 
   return (
@@ -24,7 +29,7 @@ const Userheader = () => {
       <div className="flex flex-col gap-[40px]">
         <div className="py-4 flex justify-center">
           <img
-            className="rounded-full border border-amber-50 w-[80px] h-[80px] object-cover"
+            className="rounded-full border border-black w-[130px] h-[130px] object-cover"
             src={gymlogo}
             alt="Gym Logo"
           />
@@ -54,8 +59,6 @@ const Userheader = () => {
 
       {/* Bottom Section */}
       <div className="flex flex-col gap-4 px-6 mb-6 border-t border-gray-300 pt-4">
-       
-
         <div
           onClick={() => {
             navigate("logout");
