@@ -6,11 +6,9 @@ import { authenticate } from "../Auth/Middleware.js";
 
 const router = express.Router();
 
-// ================= MULTER (BUFFER STORAGE) =================
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// ================= CREATE POST =================
 router.post(
   "/create",
   authenticate,
@@ -39,8 +37,22 @@ router.post(
       console.error(err);
       res.status(500).json({ error: "Server error" });
     }
-  }
+  },
 );
+
+// GET: Count posts of logged-in user
+router.get("/count", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const count = await Post.countDocuments({ user: userId });
+
+    res.json({ userId, postCount: count });
+  } catch (err) {
+    console.error("COUNT POSTS ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -56,7 +68,7 @@ router.get("/", async (req, res) => {
       image:
         p.image && p.image.data
           ? `data:${p.image.contentType};base64,${p.image.data.toString(
-              "base64"
+              "base64",
             )}`
           : null,
 
@@ -67,7 +79,7 @@ router.get("/", async (req, res) => {
         image:
           p.user?.image && p.user.image.data
             ? `data:${p.user.image.contentType};base64,${p.user.image.data.toString(
-                "base64"
+                "base64",
               )}`
             : null,
       },
@@ -80,7 +92,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ================= UPDATE POST =================
+
 router.put("/:id", authenticate, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -98,7 +110,6 @@ router.put("/:id", authenticate, async (req, res) => {
   }
 });
 
-// ================= DELETE POST =================
 router.delete("/:id", authenticate, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

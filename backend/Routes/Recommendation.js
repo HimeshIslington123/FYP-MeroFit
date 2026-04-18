@@ -9,14 +9,15 @@ const router = express.Router();
 router.get("/", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
-    const user = await Register.findById(userId);
 
+    const user = await Register.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const targetCalories = user.calories;
 
+    // macro ratios
     let proteinPercent = 0.3;
     let carbPercent = 0.4;
     let fatPercent = 0.3;
@@ -54,10 +55,14 @@ router.get("/", authenticate, async (req, res) => {
     const remainingCarb = targetCarb - todayCarb;
     const remainingFat = targetFat - todayFat;
 
+    // ✅ Get already eaten foods (NO REPEAT LOGIC)
+    const eatenFoodIds =
+      todayLog?.foods?.map((f) => f.foodId.toString()) || [];
+
     let message = "";
 
     if (remainingCalories <= 0) {
-      message = " Calories exceeded for today. No more food recommended.";
+      message = "Calories exceeded for today. No more food recommended.";
     } else if (remainingProtein <= 0) {
       message = "Protein completed. Focus on balanced carbs & fats.";
     } else if (remainingCalories < 200) {
@@ -82,12 +87,17 @@ router.get("/", authenticate, async (req, res) => {
       });
     }
 
-    const foods = await Food.find();
+    // ✅ EXCLUDE already eaten foods (IMPORTANT FIX)
+    const foods = await Food.find({
+      _id: { $nin: eatenFoodIds },
+    });
+
     let recommendedFoods = [];
 
     foods.forEach((f) => {
       let score = 0;
 
+      // calorie scoring
       if (f.calories <= remainingCalories) {
         score += 40;
         score += (1 - f.calories / remainingCalories) * 20;
@@ -95,6 +105,7 @@ router.get("/", authenticate, async (req, res) => {
         score -= (f.calories - remainingCalories) * 2;
       }
 
+      // protein
       if (remainingProtein > 0) {
         const usefulProtein = Math.min(f.protein, remainingProtein);
         score += usefulProtein * 4;
@@ -102,6 +113,7 @@ router.get("/", authenticate, async (req, res) => {
         score -= f.protein * 3;
       }
 
+      // fat
       if (remainingFat > 0) {
         const usefulFat = Math.min(f.fat, remainingFat);
         score += usefulFat * 2;
@@ -109,6 +121,7 @@ router.get("/", authenticate, async (req, res) => {
         score -= f.fat * 2;
       }
 
+      // carbs
       if (remainingCarb > 0) {
         const usefulCarb = Math.min(f.carb, remainingCarb);
         score += usefulCarb * 1.5;
@@ -122,10 +135,11 @@ router.get("/", authenticate, async (req, res) => {
       });
     });
 
+    // sort + limit
     recommendedFoods.sort((a, b) => b.score - a.score);
     recommendedFoods = recommendedFoods.slice(0, 20);
 
-    res.json({
+    return res.json({
       targetCalories,
       targetProtein,
       targetCarb,
@@ -139,11 +153,9 @@ router.get("/", authenticate, async (req, res) => {
       recommendedFoods,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
-
-
 import Exercise from "../Model/Exercise.js";
 import Paymentmodel from "../Model/GymPayment.js";
 
@@ -255,10 +267,18 @@ router.get("/admin/stats", authenticate, async (req, res) => {
     const totalTrainers = await Register.countDocuments({ role: "trainer" });
 
     const result = await Paymentmodel.aggregate([
+      // ✅ group by unique transaction
+      {
+        $group: {
+          _id: "$payment_transaction_uuid",
+          amount: { $first: "$payment_amount" }, // take one amount only
+        },
+      },
+      // ✅ sum unique payments
       {
         $group: {
           _id: null,
-          total: { $sum: "$payment_amount" },
+          total: { $sum: "$amount" },
         },
       },
     ]);

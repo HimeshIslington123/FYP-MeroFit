@@ -46,6 +46,7 @@ import TrainerUserCalories from "./Trainerdashboard/TrainerUserCalories";
 import TrainerChat from "./Trainerdashboard/Trainerchat";
 import UserList from "./Trainerdashboard/UserList";
 import ProtectedRoute from "./ProtectedRoute";
+import History from "./UserDashboard/History";
 
 const App = () => {
   const { user, setUser } = useContext(UserContext);
@@ -61,7 +62,7 @@ const App = () => {
         <Route path="/whytochooseus" element={<Whytochooseus />} />
         <Route path="/Blog" element={<Blog />} />
         <Route path="/blog/:id" element={<SingleBlog />} />
-
+ <Route path="/logout" element={<Logout />} />
         <Route
           path="/paymentsuccess"
           element={<PaymentSuccess></PaymentSuccess>}
@@ -100,10 +101,11 @@ const App = () => {
           <Route path="exercise" element={<Exercise />} />
           <Route path="trackcalories" element={<Calories />} />
           <Route path="exercisepr" element={<ExercisePr />} />
-          <Route path="logout" element={<Logout />} />
+         
           <Route path="weightchanges" element={<WeightChanges />} />
           <Route path="foods" element={<Food />} />
           <Route path="chat" element={<Chat />} />
+            <Route path="history" element={<History />} />
           <Route
             path="recommendexercise"
             element={<ExerciseRecommendation />}

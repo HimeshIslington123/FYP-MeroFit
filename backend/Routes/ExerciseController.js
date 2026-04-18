@@ -4,9 +4,7 @@ import { authenticate } from "../Auth/Middleware.js";
 
 const router = express.Router();
 
-/**
- * POST: Add single exercise
- */
+
 router.post("/",authenticate, async (req, res) => {
   try {
     const exercise = await Exercise.create(req.body);
@@ -16,9 +14,7 @@ router.post("/",authenticate, async (req, res) => {
   }
 });
 
-/**
- * POST: Bulk insert (200–300 exercises)
- */
+
 router.post("/bulk", async (req, res) => {
   try {
     const exercises = await Exercise.insertMany(req.body);
@@ -28,9 +24,7 @@ router.post("/bulk", async (req, res) => {
   }
 });
 
-/**
- * GET: Fetch exercises
- */
+
 router.get("/",authenticate, async (req, res) => {
   const { muscle, level } = req.query;
 

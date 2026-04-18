@@ -8,8 +8,8 @@ const paymentSchema = new mongoose.Schema({
   },
   payment_amount: { type: Number, required: true },
   payment_status: { type: String, default: "pending" },
-payment_transaction_uuid: { type: String, unique: true },
 
+payment_transaction_uuid: { type: String, unique: true, index: true },
   created_at: { type: Date, default: Date.now },
 
   duration: { type: Number, required: true }, // in months

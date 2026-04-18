@@ -32,7 +32,7 @@ router.post("/bulk", async (req, res) => {
 });
 
 
-// ✅ Get all foods
+
 router.get("/", authenticate,async (req, res) => {
   try {
     const foods = await Food.find();
@@ -42,7 +42,7 @@ router.get("/", authenticate,async (req, res) => {
   }
 });
 
-// ✅ Get a single food by ID
+
 router.get("/:id", async (req, res) => {
   try {
     const food = await Food.findById(req.params.id);
@@ -67,7 +67,7 @@ router.post("/", async (req, res) => {
 
 
 
-// ✅ Update a food by ID
+
 router.put("/:id", async (req, res) => {
   try {
     const { name, protein, carb, fat } = req.body;
@@ -83,7 +83,10 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// ✅ Delete a food by ID
+
+
+
+
 router.delete("/:id", async (req, res) => {
   try {
     const deletedFood = await Food.findByIdAndDelete(req.params.id);
@@ -93,8 +96,6 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: "Error deleting food", error: err.message });
   }
 });
-
-
 
 router.get("/:id", async (req, res) => {
   try {

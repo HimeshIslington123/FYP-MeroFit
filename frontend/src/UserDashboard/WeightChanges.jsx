@@ -15,7 +15,6 @@ const WeightChanges = () => {
       const res = await axios.get("http://localhost:4000/api/weightchanges/weight-history", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Sort history by newest first
       setHistory(res.data.sort((a, b) => new Date(b.recordedAt) - new Date(a.recordedAt)));
     } catch (err) { console.error(err); }
   };
@@ -112,7 +111,7 @@ const WeightChanges = () => {
           </button>
         </div>
 
-        {/* --- WEIGHT HISTORY GRID --- */}
+
         <div className="flex items-center gap-2 mb-6 ml-2">
             <History size={20} className="text-slate-400" />
             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm">Entry History</h3>

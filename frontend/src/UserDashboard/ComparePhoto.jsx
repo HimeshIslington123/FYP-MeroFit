@@ -28,7 +28,6 @@ const ComparePhoto = () => {
     fetchProgress();
   }, []);
 
-  // Upload new image
   const sendImage = async () => {
     if (!title || !image) {
       alert("Please provide title and image");

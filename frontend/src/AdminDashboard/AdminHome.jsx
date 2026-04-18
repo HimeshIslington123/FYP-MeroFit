@@ -22,20 +22,17 @@ const AdminHome = () => {
     try {
       setLoading(true);
 
-      // 1️⃣ Get Admin Stats (users, trainers, earnings)
       const statsRes = await axios.get(
         "http://localhost:4000/api/recommendation/admin/stats",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       // 2️⃣ Get Blogs
-      const blogRes = await axios.get(
-        "http://localhost:4000/api/blog/blogs"
-      );
+      const blogRes = await axios.get("http://localhost:4000/api/blog/blogs");
 
       setStatsData({
         totalUsers: statsRes.data.totalUsers || 0,
@@ -43,7 +40,6 @@ const AdminHome = () => {
         totalEarning: statsRes.data.totalEarning || 0,
         totalBlogs: blogRes.data.length || 0,
       });
-
     } catch (err) {
       console.error("Error fetching stats:", err);
     } finally {
@@ -109,9 +105,7 @@ const AdminHome = () => {
                 </h3>
               )}
 
-              <p className="text-gray-400 text-sm mt-2">
-                {stat.label}
-              </p>
+              <p className="text-gray-400 text-sm mt-2">{stat.label}</p>
             </div>
           );
         })}

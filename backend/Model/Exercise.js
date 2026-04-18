@@ -32,7 +32,7 @@ const exerciseSchema = new mongoose.Schema(
       enum: ["Beginner", "Intermediate", "Advanced"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Exercise", exerciseSchema);

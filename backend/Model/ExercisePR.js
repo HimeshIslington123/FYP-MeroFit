@@ -8,7 +8,7 @@ const exercisePRSchema = new mongoose.Schema(
     logs: [
       {
         date: { type: Date, default: Date.now },
-        weight: Number, // in kg
+        weight: Number,
         reps: Number,
       },
     ],

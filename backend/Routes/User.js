@@ -214,7 +214,7 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find user
+
     const user = await Register.findOne({ email });
 
     if (!user) {
@@ -224,7 +224,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Compare passwords
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
@@ -341,7 +341,7 @@ router.get("/users-with-payment", authenticate, async (req, res) => {
   }
 });
 
-// DELETE user (admin)
+
 router.delete("/delete/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;

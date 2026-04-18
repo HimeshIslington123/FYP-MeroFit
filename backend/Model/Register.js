@@ -4,8 +4,6 @@ const RegisterSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-
-  // User-specific fields
   age: Number,
   height: Number,
   weight: Number,
@@ -17,15 +15,11 @@ const RegisterSchema = new mongoose.Schema({
   activityLevel: String,
   targetWeight: Number,
   address: String,
-
-  // Role
   role: {
     type: String,
     enum: ["user", "trainer", "admin"],
     default: "user",
   },
-
-  // Trainer-specific fields
   specialistTrainer: {
     type: String,
     enum: ["weight loss", "gain muscles", "stay fit"],
@@ -33,13 +27,8 @@ const RegisterSchema = new mongoose.Schema({
   },
   certifications: [String],
   bio: { type: String, maxlength: 500 },
-
-  // Common field
   image: { data: Buffer, contentType: String },
-
   createdAt: { type: Date, default: Date.now },
-
-  // Calories calculation for users only
   calories: {
     type: Number,
     default: function () {

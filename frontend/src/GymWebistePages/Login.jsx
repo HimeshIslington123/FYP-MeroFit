@@ -3,11 +3,13 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import gym from "../assets/gymImage.jpg";
 import axios from "axios";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../GlobalContext/Userprovider";
 
 const Login = () => {
-
-  const nav=useNavigate();
+  const nav = useNavigate();
+  const { setUser } = useContext(UserContext);
   const [isLogin, setIsLogin] = useState(true);
   const [step, setStep] = useState(1);
   const [preview, setPreview] = useState("");
@@ -29,59 +31,47 @@ const Login = () => {
     image: null,
   });
 
- 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, image: file });
-    setPreview(URL.createObjectURL(file));//to show preview
+    setPreview(URL.createObjectURL(file));
   };
 
+  const login = async (e) => {
+    e.preventDefault();
 
- const login = async (e) => {
-  e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4000/api/users/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-  try {
-    const res = await axios.post("http://localhost:4000/api/users/login", {
-      email: formData.email,
-      password: formData.password,
-    });
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
 
-    if (res.data.success) {
+        localStorage.setItem("userId", res.data.id);
 
+        localStorage.setItem("role", res.data.user.role);
+        setUser(res.data.user);
+        alert("Login successful");
 
-      localStorage.setItem("token", res.data.token);
-
- 
-      localStorage.setItem("userId", res.data.id);
-
-
-      localStorage.setItem("role", res.data.user.role);
-
-      alert("Login successful");
-
-
-      if (res.data.user.role === "admin") {
-        nav("/adminhome");
-      } 
-      else if (res.data.user.role === "trainer") {
-        nav("/trainerhome");
-      } 
-      else {
-        nav("/userhome/home");
+        if (res.data.user.role === "admin") {
+          nav("/adminhome");
+        } else if (res.data.user.role === "trainer") {
+          nav("/trainerhome");
+        } else {
+          nav("/userhome/home");
+        }
       }
-
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Incorrect Username and password!");
     }
-
-  } catch (error) {
-    console.error("Login error:", error);
-    alert("Login failed!");
-  }
-};
+  };
 
   // ---------------- REGISTER ----------------
   const registerUser = async () => {
@@ -96,7 +86,7 @@ const Login = () => {
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
 
       alert("Registered successfully!");
@@ -156,12 +146,13 @@ const Login = () => {
           </div>
 
           <h1 className="text-center text-2xl font-semibold text-white">
-            {isLogin? "Login User"
+            {isLogin
+              ? "Login User"
               : step === 1
-              ? "Basic Information"
-              : step === 2
-              ? "Body Details"
-              : "Fitness Preferences"}
+                ? "Basic Information"
+                : step === 2
+                  ? "Body Details"
+                  : "Fitness Preferences"}
           </h1>
 
           {/* LOGIN FORM */}
@@ -301,11 +292,7 @@ const Login = () => {
                     <option value="cardio">Cardio</option>
                   </select>
 
-
-
-
-
-                   <select
+                  <select
                     name="fitnesslevel"
                     value={formData.fitnesslevel}
                     onChange={handleChange}
@@ -315,10 +302,7 @@ const Login = () => {
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Advanced">Advanced</option>
-                   
                   </select>
-
-
 
                   <select
                     name="frequency"

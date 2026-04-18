@@ -5,16 +5,8 @@ import { WeightHistory } from "../Model/WeightHistory.js";
 
 const router = express.Router();
 
-/**
- * POST /api/weightchanges/update-weight
- * ADD / UPDATE USER WEIGHT
- */
 router.post("/update-weight", authenticate, async (req, res) => {
-
-
   try {
-  
-
     const userId = req.user?.id;
     const { weight } = req.body;
 
@@ -28,21 +20,18 @@ router.post("/update-weight", authenticate, async (req, res) => {
       return res.status(400).json({ message: "Valid weight is required" });
     }
 
-
     await WeightHistory.create({
       user: userId,
       weight,
       recordedAt: new Date(),
     });
 
-    
     const user = await Register.findById(userId);
 
     if (!user) {
       console.log(" User not found in Register");
       return res.status(404).json({ message: "User not found" });
     }
-
 
     user.weight = weight;
 
@@ -68,16 +57,9 @@ router.post("/update-weight", authenticate, async (req, res) => {
   }
 });
 
-/**
- * GET /api/weightchanges/weight-history
- * GET ALL OLD WEIGHTS
- */
+
 router.get("/weight-history", authenticate, async (req, res) => {
-
-
   try {
-
-
     const userId = req.user?.id;
 
     if (!userId) {
@@ -85,16 +67,12 @@ router.get("/weight-history", authenticate, async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-
     const history = await WeightHistory.find({ user: userId }).sort({
       recordedAt: 1,
     });
 
-
-
     res.status(200).json(history);
   } catch (error) {
-
     res.status(500).json({
       message: "Server error while fetching history",
       error: error.message,

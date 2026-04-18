@@ -4,7 +4,7 @@ import Blog from "../Model/Blog.js";
 import { authenticate } from "../Auth/Middleware.js";
 
 const router = express.Router();
-const upload = multer(); // memory storage
+const upload = multer(); 
 
 
 
@@ -63,9 +63,7 @@ router.post("/blog", upload.single("image"), async (req, res) => {
   }
 });
 
-/**
- * GET ALL BLOGS
- */
+
 router.get("/blogs", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });
@@ -89,9 +87,7 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
-/**
- * UPDATE BLOG
- */
+
 router.put("/blog/:id", upload.single("image"), async (req, res) => {
   try {
     const { title, author, date, description } = req.body;
@@ -113,9 +109,6 @@ router.put("/blog/:id", upload.single("image"), async (req, res) => {
   }
 });
 
-/**
- * DELETE BLOG
- */
 router.delete("/blog/:id", async (req, res) => {
   try {
     await Blog.findByIdAndDelete(req.params.id);

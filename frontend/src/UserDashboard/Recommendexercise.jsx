@@ -22,7 +22,7 @@ const ExerciseRecommendation = () => {
          Workout Plan
       </h1>
 
-      {/* USER INFO */}
+    
       <div className="mb-6 bg-white/10 p-4 rounded">
         <h2 className="text-xl mb-2"> Your Profile</h2>
         <p>Goal: {data.goal}</p>

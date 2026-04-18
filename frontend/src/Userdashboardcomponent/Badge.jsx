@@ -14,14 +14,16 @@ import badge9 from "../assets/badge9.png";
 
 const Badge = () => {
   const [loading, setLoading] = useState(true);
+
   const [data, setData] = useState({
     progressPhotos: [],
     prs: [],
-    posts: [],
+    postCount: 0,
     calorieLogs: [],
     weightHistory: [],
   });
 
+  // ================= SHARE BADGE =================
   const handleShareBadge = async (badge) => {
     try {
       const token = localStorage.getItem("token");
@@ -29,9 +31,8 @@ const Badge = () => {
       const formData = new FormData();
       formData.append(
         "caption",
-        ` I just earned the "${badge.title}" badge!`,
+        `I just earned the "${badge.title}" badge! 🎉`
       );
-
 
       const response = await fetch(badge.image);
       const blob = await response.blob();
@@ -44,38 +45,48 @@ const Badge = () => {
         },
       });
 
-      alert("Badge shared successfully! ");
+      alert("Badge shared successfully!");
     } catch (error) {
       console.error(error);
     }
   };
 
+  // ================= FETCH DATA =================
   useEffect(() => {
     const fetchAll = async () => {
       try {
         const token = localStorage.getItem("token");
         const headers = { Authorization: `Bearer ${token}` };
 
-        const [progressRes, prRes, postRes, calorieRes, weightRes] =
-          await Promise.all([
-            axios.get("http://localhost:4000/progress/getProgress", {
-              headers,
-            }),
-            axios.get("http://localhost:4000/api/pr", { headers }),
-            axios.get("http://localhost:4000/api/post"),
-            axios
-              .get("http://localhost:4000/TrackCalories/all", { headers })
-              .catch(() => ({ data: { logs: [] } })),
-            axios.get(
-              "http://localhost:4000/api/weightchanges/weight-history",
-              { headers },
-            ),
-          ]);
+        const [
+          progressRes,
+          prRes,
+          postRes,
+          calorieRes,
+          weightRes,
+        ] = await Promise.all([
+          axios.get("http://localhost:4000/progress/getProgress", {
+            headers,
+          }),
+
+          axios.get("http://localhost:4000/api/pr", { headers }),
+
+          axios.get("http://localhost:4000/api/post/count", { headers }),
+
+          axios
+            .get("http://localhost:4000/TrackCalories/all", { headers })
+            .catch(() => ({ data: { logs: [] } })),
+
+          axios.get(
+            "http://localhost:4000/api/weightchanges/weight-history",
+            { headers }
+          ),
+        ]);
 
         setData({
           progressPhotos: progressRes.data || [],
           prs: prRes.data || [],
-          posts: postRes.data || [],
+          postCount: postRes.data.postCount || 0,
           calorieLogs: calorieRes.data.logs || [],
           weightHistory: weightRes.data || [],
         });
@@ -89,15 +100,12 @@ const Badge = () => {
     fetchAll();
   }, []);
 
-  
-
-
+  // ================= BADGES =================
   const badgeList = [
     {
       id: 1,
       image: badge1,
       title: "First Workout Track",
-
       description: "Log your very first workout session.",
       earned: data.prs.length >= 1,
       progress: data.prs.length,
@@ -107,7 +115,6 @@ const Badge = () => {
       id: 2,
       image: badge2,
       title: "Weight Achiever",
-
       description: "Track your weight at least 2 times.",
       earned: data.weightHistory.length >= 2,
       progress: data.weightHistory.length,
@@ -117,7 +124,6 @@ const Badge = () => {
       id: 3,
       image: badge3,
       title: "First Progress Log",
-
       description: "Upload your first progress photo.",
       earned: data.progressPhotos.length >= 1,
       progress: data.progressPhotos.length,
@@ -127,7 +133,6 @@ const Badge = () => {
       id: 4,
       image: badge4,
       title: "Visual Journey",
-
       description: "Upload 5 progress photos to track transformation.",
       earned: data.progressPhotos.length >= 5,
       progress: data.progressPhotos.length,
@@ -137,27 +142,24 @@ const Badge = () => {
       id: 5,
       image: badge5,
       title: "Community Voice",
-
       description: "Create your first community post.",
-      earned: data.posts.length >= 1,
-      progress: data.posts.length,
+      earned: data.postCount >= 1,
+      progress: data.postCount,
       target: 1,
     },
     {
       id: 6,
       image: badge6,
       title: "Social Influencer",
-
       description: "Make 5 posts in the community.",
-      earned: data.posts.length >= 5,
-      progress: data.posts.length,
+      earned: data.postCount >= 5,
+      progress: data.postCount,
       target: 5,
     },
     {
       id: 7,
       image: badge7,
       title: "Nutrient Tracker",
-
       description: "Log calories for the first time.",
       earned: data.calorieLogs.length >= 1,
       progress: data.calorieLogs.length,
@@ -167,7 +169,6 @@ const Badge = () => {
       id: 8,
       image: badge8,
       title: "Calorie Tracking Pro",
-
       description: "Track calories 10 times consistently.",
       earned: data.calorieLogs.length >= 10,
       progress: data.calorieLogs.length,
@@ -177,7 +178,6 @@ const Badge = () => {
       id: 9,
       image: badge9,
       title: "Workout Warrior",
-
       description: "Track 5 workout sessions.",
       earned: data.prs.length >= 5,
       progress: data.prs.length,
@@ -186,12 +186,16 @@ const Badge = () => {
   ];
 
   const earnedCount = badgeList.filter((b) => b.earned).length;
-  const percentage = Math.round((earnedCount / badgeList.length) * 100);
+  const percentage = Math.round(
+    (earnedCount / badgeList.length) * 100
+  );
 
+  // ================= UI =================
   return (
-    <div className=" ">
+    <div className="">
       <div className="max-w-7xl mx-auto">
 
+        {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <div className="flex items-center gap-3 mb-3">
@@ -203,16 +207,17 @@ const Badge = () => {
             </p>
           </div>
 
-  
+          {/* PROGRESS */}
           <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex w-[300px] justify-between items-center mb-3">
               <span className="text-slate-800 font-medium">
                 {earnedCount} of {badgeList.length} Earned
               </span>
-              <span className="text-[#2bb3a3] m-[10px] font-bold">
+              <span className="text-[#2bb3a3] font-bold">
                 {percentage}%
               </span>
             </div>
+
             <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#2bb3a3] rounded-full transition-all duration-700"
@@ -222,7 +227,7 @@ const Badge = () => {
           </div>
         </div>
 
-
+        {/* BADGES GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {badgeList.map((badge) => (
             <div
@@ -234,7 +239,6 @@ const Badge = () => {
                   : "border-gray-100 opacity-60"
               }`}
             >
-     
               <div className="mb-6 h-24 flex items-center justify-center">
                 <img
                   src={badge.image}
@@ -245,10 +249,13 @@ const Badge = () => {
                 />
               </div>
 
-              <h3 className="text-xl  text-gray-800 mb-1">{badge.title}</h3>
+              <h3 className="text-xl text-gray-800 mb-1">
+                {badge.title}
+              </h3>
 
-              <p className="text-gray-500 text-sm mb-6">{badge.description}</p>
-
+              <p className="text-gray-500 text-sm mb-6">
+                {badge.description}
+              </p>
 
               <div className="mt-auto">
                 {badge.earned ? (
@@ -266,7 +273,7 @@ const Badge = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="text-gray-400 ">
+                  <div className="text-gray-400">
                     {badge.progress} / {badge.target}
                   </div>
                 )}

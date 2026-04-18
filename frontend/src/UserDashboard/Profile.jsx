@@ -263,7 +263,7 @@ const Profile = () => {
               <div className="w-[45%] lg:w-[20%] flex flex-col border rounded-2xl border-gray-200 items-center justify-between  text-black rounded-[20px] p-[20px] bg-white ">
                 <div className="bg-[#fdf3e7] rounded-[10px] p-[10px]">
                   <Activity size={40} color="#e67e22" />
-                </div> 
+                </div>
                 <h1 className="text-[25px] font-semibold mt-2">
                   {userdata.weight} kg
                 </h1>

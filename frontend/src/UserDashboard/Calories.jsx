@@ -9,7 +9,7 @@ const Calories = () => {
 const [food, setFood] = useState({
   name: "",
   protein: 0,
-  carb: 0,   // NOT carbs
+  carb: 0,   
   fat: 0,
   foodType: "BALANCED",
 });
@@ -412,26 +412,33 @@ const handleChange = (field, value) => {
           </p>
         </div>
         {showHistory && (
-          <div className="space-y-3 max-h-[300px] overflow-y-auto">
-            {allCaloriesData?.log?.map((data, i) => (
-              <div
-                key={i}
-                onClick={() => setDailyActiveLog(data)}
-                className="bg-white p-4 rounded shadow cursor-pointer hover:bg-gray-50"
-              >
-                <div className="flex justify-between">
-                  <p>Date: {data.date}</p>
-                  <p>Total Calories: {Math.round(data.totalCalories)} kcal</p>
-                </div>
-                <div className="flex gap-4 mt-2 text-gray-500 text-sm">
-                  <p>Protein: {Math.round(data.totalProtein)}g</p>
-                  <p>Carbs: {Math.round(data.totalCarb)}g</p>
-                  <p>Fat: {Math.round(data.totalFat)}g</p>
-                </div>
-              </div>
-            ))}
+  <div className="space-y-3 max-h-[300px] overflow-y-auto">
+    {allCaloriesData?.logs?.length > 0 ? (
+      allCaloriesData.logs.map((data, i) => (
+        <div
+          key={i}
+          onClick={() => setDailyActiveLog(data)}
+          className="bg-white p-4 rounded shadow cursor-pointer hover:bg-gray-50"
+        >
+          <div className="flex justify-between">
+            <p>Date: {data.date}</p>
+            <p>Total Calories: {Math.round(data.totalCalories)} kcal</p>
           </div>
-        )}
+
+          <div className="flex gap-4 mt-2 text-gray-500 text-sm">
+            <p>Protein: {Math.round(data.totalProtein)}g</p>
+            <p>Carbs: {Math.round(data.totalCarb)}g</p>
+            <p>Fat: {Math.round(data.totalFat)}g</p>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-center text-gray-400 py-4">
+        No history available
+      </p>
+    )}
+  </div>
+)}
         {dailyActiveLog && (
           <div className="bg-white p-4 rounded mt-4 shadow">
             <div className="flex justify-between mb-2">

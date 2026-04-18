@@ -6,7 +6,7 @@ const AdminFoods = () => {
   const token = localStorage.getItem("token");
 
   const [foods, setFoods] = useState([]);
-  const [search, setSearch] = useState(""); // 🔍 search state
+  const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -15,10 +15,10 @@ const AdminFoods = () => {
     protein: "",
     carb: "",
     fat: "",
-    foodType: "BALANCED",
+    mealType: "BREAKFAST",
   });
 
-  /* ================= FETCH FOODS ================= */
+
   const fetchFoods = async () => {
     try {
       const res = await axios.get("http://localhost:4000/calories", {
@@ -26,7 +26,7 @@ const AdminFoods = () => {
       });
       setFoods(res.data);
     } catch (err) {
-      console.error("Error fetching foods:", err);
+      console.error(err);
     }
   };
 
@@ -34,7 +34,7 @@ const AdminFoods = () => {
     fetchFoods();
   }, []);
 
-  /* ================= ADD / UPDATE ================= */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,8 +56,9 @@ const AdminFoods = () => {
         protein: "",
         carb: "",
         fat: "",
-        foodType: "BALANCED",
+        mealType: "BREAKFAST",
       });
+
       setEditingId(null);
       setShowForm(false);
       fetchFoods();
@@ -66,7 +67,7 @@ const AdminFoods = () => {
     }
   };
 
-  /* ================= DELETE ================= */
+
   const deleteFood = async (id) => {
     if (!window.confirm("Delete this food?")) return;
 
@@ -88,12 +89,12 @@ const AdminFoods = () => {
       protein: food.protein,
       carb: food.carb,
       fat: food.fat,
-      foodType: food.foodType,
+      mealType: food.mealType,
     });
     setShowForm(true);
   };
 
-  /* ================= FILTERED FOODS ================= */
+
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -103,13 +104,12 @@ const AdminFoods = () => {
       <Navbar />
 
       <div style={{ padding: "30px" }}>
+        {/* HEADER */}
         <div style={headerRow}>
-          <h2 style={{ fontWeight: "600" }}>Food Management</h2>
+          <h2>Food Management</h2>
 
           <div style={{ display: "flex", gap: "10px" }}>
-            {/* 🔍 SEARCH */}
             <input
-              type="text"
               placeholder="Search food..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -123,96 +123,110 @@ const AdminFoods = () => {
               }}
               style={addBtn}
             >
-              + Add New Food
+              + Add Food
             </button>
           </div>
         </div>
 
-        {/* ================= FORM ================= */}
+        {/* FORM */}
         {showForm && (
           <div style={card}>
-            <h3 style={{ marginBottom: "16px" }}>
-              {editingId ? "Edit Food" : "Add New Food"}
-            </h3>
+            <h3>{editingId ? "Edit Food" : "Add Food"}</h3>
 
             <form onSubmit={handleSubmit} style={formGrid}>
               <input
-                placeholder="Food name"
+                placeholder="Name"
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Protein (g)"
-                value={form.protein}
-                onChange={(e) => setForm({ ...form, protein: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Carbs (g)"
-                value={form.carb}
-                onChange={(e) => setForm({ ...form, carb: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Fat (g)"
-                value={form.fat}
-                onChange={(e) => setForm({ ...form, fat: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
                 required
               />
 
-              <select
-                value={form.foodType}
+              <input
+                type="number"
+                placeholder="Protein"
+                value={form.protein}
                 onChange={(e) =>
-                  setForm({ ...form, foodType: e.target.value })
+                  setForm({ ...form, protein: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="number"
+                placeholder="Carbs"
+                value={form.carb}
+                onChange={(e) =>
+                  setForm({ ...form, carb: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="number"
+                placeholder="Fat"
+                value={form.fat}
+                onChange={(e) =>
+                  setForm({ ...form, fat: e.target.value })
+                }
+                required
+              />
+
+    
+              <select
+                value={form.mealType}
+                onChange={(e) =>
+                  setForm({ ...form, mealType: e.target.value })
                 }
               >
-                <option value="BALANCED">Balanced</option>
-                <option value="HIGH_PROTEIN">High Protein</option>
-                <option value="LOW_CARB">Low Carb</option>
-                <option value="HIGH_CARB">High Carb</option>
-                <option value="LOW_FAT">Low Fat</option>
-                <option value="KETO">Keto</option>
+                <option value="BREAKFAST">Breakfast</option>
+                <option value="LUNCH">Lunch</option>
+                <option value="DINNER">Dinner</option>
+                <option value="SNACK">Snack</option>
+                <option value="POST_WORKOUT">Post Workout</option>
               </select>
 
               <button type="submit" style={saveBtn}>
-                {editingId ? "Update Food" : "Save Food"}
+                {editingId ? "Update" : "Save"}
               </button>
             </form>
           </div>
         )}
 
-        {/* ================= TABLE ================= */}
+
         <div style={card}>
           <table width="100%" style={{ borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ background: "#f9fafb" }}>
+              <tr>
                 <th style={th}>Name</th>
                 <th style={th}>Protein</th>
                 <th style={th}>Carb</th>
                 <th style={th}>Fat</th>
                 <th style={th}>Calories</th>
-                <th style={th}>Type</th>
+                <th style={th}>Meal Type</th>
                 <th style={th}>Action</th>
               </tr>
             </thead>
 
             <tbody>
               {filteredFoods.map((food) => (
-                <tr key={food._id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={td}><strong>{food.name}</strong></td>
+                <tr key={food._id}>
+                  <td style={td}>{food.name}</td>
                   <td style={td}>{food.protein}</td>
                   <td style={td}>{food.carb}</td>
                   <td style={td}>{food.fat}</td>
                   <td style={td}>{food.calories}</td>
-                  <td style={td}>{food.foodType}</td>
+                  <td style={td}>{food.mealType}</td>
+
                   <td style={td}>
-                    <button onClick={() => editFood(food)} style={editBtn}>
+                    <button
+                      onClick={() => editFood(food)}
+                      style={editBtn}
+                    >
                       Edit
                     </button>
+
                     <button
                       onClick={() => deleteFood(food._id)}
                       style={deleteBtn}
@@ -225,7 +239,7 @@ const AdminFoods = () => {
 
               {filteredFoods.length === 0 && (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
                     No foods found
                   </td>
                 </tr>
@@ -238,88 +252,94 @@ const AdminFoods = () => {
   );
 };
 
-/* ================= STYLES ================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const headerRow = {
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
   marginBottom: "20px",
 };
 
 const card = {
   background: "#fff",
-  borderRadius: "12px",
   padding: "20px",
-  marginBottom: "25px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+  borderRadius: "12px",
+  marginBottom: "20px",
 };
 
 const formGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-  gap: "15px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: "10px",
 };
 
 const th = {
-  padding: "16px",
-  fontSize: "14px",
-  fontWeight: "600",
-  color: "#555",
+  padding: "12px",
   textAlign: "left",
+  background: "#f5f5f5",
 };
 
 const td = {
-  padding: "16px",
-  fontSize: "14px",
+  padding: "12px",
 };
 
 const searchInput = {
-  padding: "10px",
-  borderRadius: "8px",
-  border: "1px solid #ddd",
-  outline: "none",
+  padding: "8px",
+  borderRadius: "6px",
+  border: "1px solid #ccc",
 };
 
 const addBtn = {
-  background: "#1a73e8",
-  color: "#fff",
+  background: "#2bb3a3",
+  color: "white",
+  padding: "8px 12px",
   border: "none",
-  padding: "10px 16px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "600",
+  borderRadius: "6px",
 };
 
 const saveBtn = {
-  background: "#1a73e8",
-  color: "#fff",
+  background: "#2bb3a3",
+  color: "white",
+  padding: "10px",
   border: "none",
-  padding: "12px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "600",
+  borderRadius: "6px",
 };
 
 const editBtn = {
-  background: "#e8f0fe",
-  color: "#1a73e8",
+  background: "#2196f3",
+  color: "white",
+  padding: "6px 10px",
   border: "none",
-  padding: "6px 12px",
-  borderRadius: "6px",
-  marginRight: "8px",
-  cursor: "pointer",
-  fontWeight: "600",
+  marginRight: "5px",
+  borderRadius: "5px",
 };
 
 const deleteBtn = {
-  background: "#fee",
-  color: "#d93025",
+  background: "#f44336",
+  color: "white",
+  padding: "6px 10px",
   border: "none",
-  padding: "6px 12px",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontWeight: "600",
+  borderRadius: "5px",
 };
 
 export default AdminFoods;

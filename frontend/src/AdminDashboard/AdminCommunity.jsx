@@ -55,8 +55,7 @@ const AdminCommunity = () => {
       <Navbar />
       
       <div className="p-6 md:p-12 max-w-7xl mx-auto">
-        
-        {/* --- ADMIN HEADER SECTION --- */}
+    
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
           <div>
             <h2 className="text-slate-800 text-3xl ">Community Moderation</h2>

@@ -19,7 +19,7 @@ const Payment = ({ amount, label }) => {
     secret: "8gBm/:&EnhH.1/q",
   });
 
-  // generate signature function
+
   const generateSignature = (
     total_amount,
     transaction_uuid,

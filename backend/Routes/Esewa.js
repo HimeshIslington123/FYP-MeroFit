@@ -2,10 +2,10 @@ import express from "express";
 import CryptoJS from "crypto-js";
 import { authenticate } from "../Auth/Middleware.js";
 import Paymentmodel from "../Model/GymPayment.js";
-
+import mongoose from "mongoose";
 const router = express.Router();
 
-// Function to generate signature again (same as frontend)
+
 const generateSignature = (
   total_amount,
   transaction_uuid,
@@ -22,20 +22,19 @@ router.get("/getPayment", authenticate, async (req, res) => {
   try {
     const userid = req.user.id;
 
-    // Get the latest payment for user
     const userPayment = await Paymentmodel.findOne({ user: userid })
       .sort({ createdAt: -1 });
 
-    // No payment found
+
     if (!userPayment) {
       return res.json({ active: false, message: "No payment found" });
     }
 
     const now = new Date();
 
-    // Check if expired
+
     if (userPayment.expire_at < now) {
-      // Expired case
+
       return res.json({
         active: false,
         expired: true,
@@ -43,7 +42,7 @@ router.get("/getPayment", authenticate, async (req, res) => {
       });
     }
 
-    // Payment still active
+
     return res.json({
       active: true,
       expired: false,
@@ -62,11 +61,11 @@ router.post("/paymentverify/:data", authenticate, async (req, res) => {
     const duration = req.body.duration;
     const { data } = req.params;
 
-    // Decode Base64 data
+
     const decodedString = Buffer.from(data, "base64").toString("utf8");
     const decoded = JSON.parse(decodedString);
 
-    // Build hash string for signature verification
+
     const hashString = `transaction_code=${decoded.transaction_code},status=${decoded.status},total_amount=${decoded.total_amount},transaction_uuid=${decoded.transaction_uuid},product_code=${decoded.product_code},signed_field_names=${decoded.signed_field_names}`;
 
     const secret = "8gBm/:&EnhH.1/q";
@@ -74,13 +73,13 @@ router.post("/paymentverify/:data", authenticate, async (req, res) => {
     const serverSig = CryptoJS.enc.Base64.stringify(hash);
 
     if (serverSig === decoded.signature) {
-      // Check if this transaction already exists
+
       const existingPayment = await Paymentmodel.findOne({
         payment_transaction_uuid: decoded.transaction_uuid,
       });
 
       if (existingPayment) {
-        // Already saved, return existing data
+    
         return res.json({
           success: true,
           data: existingPayment,
@@ -88,15 +87,23 @@ router.post("/paymentverify/:data", authenticate, async (req, res) => {
         });
       }
 
-      // Create new payment entry
-      const paymentmodel = new Paymentmodel({
-        user: userid,
-        payment_amount: decoded.total_amount,
-        payment_status: "PAID",
-        duration: duration,
-        payment_transaction_uuid: decoded.transaction_uuid,
-      });
 
+     const payment = await Paymentmodel.findOneAndUpdate(
+  { payment_transaction_uuid: decoded.transaction_uuid },
+  {
+    $setOnInsert: {
+      user: userid,
+      payment_amount: decoded.total_amount,
+      payment_status: "PAID",
+      duration: duration,
+      payment_transaction_uuid: decoded.transaction_uuid,
+    },
+  },
+  {
+    new: true,
+    upsert: true,
+  }
+);
       await paymentmodel.save();
 
       return res.json({ success: true, data: decoded });
@@ -108,36 +115,52 @@ router.post("/paymentverify/:data", authenticate, async (req, res) => {
   }
 });
 
-router.get(
-  "/payment-history",
-  authenticate,
-  async (req, res) => {
-    try {
-      const userId = req.user.id;
+router.get("/payment-history", authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-      const payments = await Paymentmodel.find({ user: userId })
-        .sort({ created_at: -1 });
+    const payments = await Paymentmodel.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(userId),
+        },
+      },
 
-      if (!payments || payments.length === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "No payment history found",
-        });
-      }
+    
+      {
+        $sort: { created_at: -1 },
+      },
 
-      res.status(200).json({
-        success: true,
-        count: payments.length,
-        data: payments,
-      });
+  
+      {
+        $group: {
+          _id: "$payment_transaction_uuid",
+          doc: { $first: "$$ROOT" },
+        },
+      },
 
-    } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: err.message,
-      });
-    }
+  
+      {
+        $replaceRoot: { newRoot: "$doc" },
+      },
+
+
+      {
+        $sort: { created_at: -1 },
+      },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      count: payments.length,
+      data: payments,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
-);
+});
 
 export default router;

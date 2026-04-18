@@ -6,7 +6,6 @@ import { authenticate } from "../Auth/Middleware.js";
 
 const router = express.Router();
 
-// GET all PRs of a user
 router.get("/", authenticate, async (req, res) => {
   try {
     const prs = await ExercisePR.find({ userId: req.user.id }).populate("exerciseId");
@@ -16,7 +15,6 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
-// POST add new PR for an exercise
 router.post("/add", authenticate, async (req, res) => {
   try {
     const { exerciseId, weight, reps } = req.body;

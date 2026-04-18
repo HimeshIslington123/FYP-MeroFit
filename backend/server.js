@@ -1,4 +1,3 @@
-
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -10,17 +9,16 @@ import { connectdb } from "./Config/Db.js";
 import userRoutes from "./Routes/User.js";
 import bodyRoutes from "./Routes/BodyProgress.js";
 import exerciseRoutes from "./Routes/ExerciseController.js";
-import blogRoutes from "./Routes/Blogcontroller.js"
+import blogRoutes from "./Routes/Blogcontroller.js";
 import paymentRoutes from "./Routes/Esewa.js";
 import caloriesRoutes from "./Routes/Calories.js";
 import TrackCalories from "./Routes/TrackCalories.js";
-import ExercisePr from "./Routes/ExercisePrController.js"
-import WeightChanges from "./Routes/weightRoutes.js"
-import chatRoutes from "./Routes/ChatController.js"
+import ExercisePr from "./Routes/ExercisePrController.js";
+import WeightChanges from "./Routes/weightRoutes.js";
+import chatRoutes from "./Routes/ChatController.js";
 import ChatMessage from "./Model/Chat.js";
-import PostRoutes from "./Routes/PostRoutes.js"
-import RecommendationRoutes from "./Routes/Recommendation.js"
-
+import PostRoutes from "./Routes/PostRoutes.js";
+import RecommendationRoutes from "./Routes/Recommendation.js";
 
 dotenv.config();
 
@@ -46,7 +44,7 @@ io.on("connection", (socket) => {
         senderId: data.senderId,
         receiverId: data.receiverId,
         message: data.message || "",
-        image: data.file || null, 
+        image: data.file || null,
       });
 
       const receiverSocket = onlineUsers.get(data.receiverId);
@@ -66,32 +64,9 @@ io.on("connection", (socket) => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-
 
 // Example route
 app.get("/", (req, res) => {
@@ -102,19 +77,15 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/progress", bodyRoutes);
 app.use("/api/exercises", exerciseRoutes);
-app.use("/api/blog",blogRoutes);
+app.use("/api/blog", blogRoutes);
 app.use("/esewa", paymentRoutes);
 app.use("/calories", caloriesRoutes);
 app.use("/TrackCalories", TrackCalories);
 app.use("/api/pr", ExercisePr);
 app.use("/api/weightchanges", WeightChanges);
 app.use("/api/chat", chatRoutes);
-app.use("/api/post",PostRoutes );
-app.use("/api/recommendation",RecommendationRoutes );
-
-
-
-
+app.use("/api/post", PostRoutes);
+app.use("/api/recommendation", RecommendationRoutes);
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {

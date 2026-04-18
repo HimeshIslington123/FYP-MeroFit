@@ -16,7 +16,7 @@ router.post(
       const { title } = req.body;
 
       const Bodyprogress = new BodyProgress({
-        user:id,
+        user: id,
         title,
         image: { data: req.file.buffer, contentType: req.file.mimetype },
       });
@@ -26,28 +26,25 @@ router.post(
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
 );
-
 
 router.get("/getProgress", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Get all progress entries for this user
+
     const progresses = await BodyProgress.find({ user: userId });
 
-    // Map each entry to include base64 image
-    const data = progresses.map(p => ({
+
+    const data = progresses.map((p) => ({
       id: p._id,
       title: p.title,
       createdAt: p.createdAt,
-      image: `data:${p.image.contentType};base64,${p.image.data.toString("base64")}`
+      image: `data:${p.image.contentType};base64,${p.image.data.toString("base64")}`,
     }));
 
     res.json(data);
-   
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });

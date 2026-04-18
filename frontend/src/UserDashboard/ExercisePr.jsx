@@ -11,7 +11,7 @@ const ExercisePr = () => {
   const [reps, setReps] = useState("");
   const [loading, setLoading] = useState(true);
   
-  // Modal State
+
   const [showModal, setShowModal] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
 

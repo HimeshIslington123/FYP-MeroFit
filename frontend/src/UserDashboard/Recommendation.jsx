@@ -9,10 +9,11 @@ const RecommendationPreview = ({ limit }) => {
   const [selectedFood, setSelectedFood] = useState(null);
   const [quantity, setQuantity] = useState(100);
 
+  const [activeTab, setActiveTab] = useState("ALL");
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  /* ================= FETCH DATA ================= */
   const fetchData = async () => {
     try {
       const res = await axios.get(
@@ -37,10 +38,6 @@ const RecommendationPreview = ({ limit }) => {
     );
   }
 
-  const foodsToShow = limit
-    ? data.recommendedFoods.slice(0, limit)
-    : data.recommendedFoods;
-
   const eatenProtein = data.targetProtein - data.remainingProtein;
   const eatenCarb = data.targetCarb - data.remainingCarb;
   const eatenFat = data.targetFat - data.remainingFat;
@@ -48,7 +45,18 @@ const RecommendationPreview = ({ limit }) => {
   const calcPercent = (value, target) =>
     Math.min(100, (value / target) * 100);
 
-  /* ================= ADD FOOD ================= */
+
+  const filteredFoods =
+    activeTab === "ALL"
+      ? data.recommendedFoods
+      : data.recommendedFoods.filter(
+          (f) => f.mealType === activeTab
+        );
+
+  const foodsToShow = limit
+    ? filteredFoods.slice(0, limit)
+    : filteredFoods;
+
   const AddFood = async () => {
     try {
       const multiplier = quantity / 100;
@@ -66,98 +74,79 @@ const RecommendationPreview = ({ limit }) => {
       setSelectedFood(null);
       setQuantity(100);
 
-      fetchData(); // refresh dashboard
+      fetchData();
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className="p-4 bg-gray-50 ">
+    <div className="p-4 bg-gray-50">
+
+
       {limit ? (
-        /* ================= HOME PREVIEW ================= */
         <div className="space-y-4 w-[400px] p-6 rounded-2xl bg-white shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-[#2bb3a3]/10 rounded-xl flex items-center justify-center">
-                🥗
-              </div>
-              <p className="font-semibold text-slate-800">
-                Food Recommendation
-              </p>
-            </div>
+          <div className="flex justify-between">
+            <p className="font-semibold">Food Recommendation</p>
 
             <button
               onClick={() => navigate("/userhome/recommendation")}
-              className="flex items-center gap-1 text-sm font-semibold text-[#2bb3a3] hover:gap-2 transition-all"
+              className="text-sm text-[#2bb3a3]"
             >
-              View All
-              <ArrowRight size={16} />
+              View All →
             </button>
           </div>
 
-          {foodsToShow.length === 0 ? (
-            <p className="text-slate-400 italic text-center py-4">
-              No recommendations yet.
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {foodsToShow.map((f) => (
-                <div
-                  key={f._id}
-                  className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:shadow-md transition cursor-pointer"
-                >
-                  <div>
-                    <h3 className="font-semibold text-slate-800">
-                      {f.name}
-                    </h3>
-                    <p className="text-slate-400 text-sm">
-                      {f.calories} kcal
-                    </p>
-                  </div>
-                  <ArrowRight size={18} className="text-slate-300" />
-                </div>
-              ))}
+          {foodsToShow.map((f) => (
+            <div
+              key={f._id}
+              className="flex justify-between p-3 border rounded-xl"
+            >
+              <div>
+                <p className="font-semibold">{f.name}</p>
+                <p className="text-sm text-gray-400">
+                  {f.calories} kcal
+                </p>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       ) : (
-        /* ================= FULL DASHBOARD ================= */
+      
         <div className="max-w-6xl mx-auto space-y-10">
-          <h1 className="text-3xl font-bold text-center text-slate-800">
+
+          <h1 className="text-3xl font-bold text-center">
             Your Daily Nutrition Dashboard
           </h1>
 
-          {/* SUMMARY CARDS */}
+         
           <div className="grid md:grid-cols-2 gap-8">
-            {/* TARGET */}
-            <div className="bg-white rounded-2xl shadow-sm border p-6 space-y-3">
-              <h2 className="text-lg font-semibold text-slate-700">
-                 Daily Targets
-              </h2>
-              <p>Calories: <strong>{data.targetCalories} kcal</strong></p>
-              <p>Protein: <strong>{data.targetProtein} g</strong></p>
-              <p>Carbs: <strong>{data.targetCarb} g</strong></p>
-              <p>Fat: <strong>{data.targetFat} g</strong></p>
+
+            <div className="bg-white p-6 rounded-xl border">
+              <h2 className="font-semibold mb-2">Daily Targets</h2>
+              <p>Calories: {data.targetCalories}</p>
+              <p>Protein: {data.targetProtein}</p>
+              <p>Carbs: {data.targetCarb}</p>
+              <p>Fat: {data.targetFat}</p>
             </div>
 
-            {/* CONSUMED */}
-            <div className="bg-white rounded-2xl shadow-sm border p-6 space-y-6">
-              <h2 className="text-lg font-semibold text-slate-700">
-                Consumed Today
-              </h2>
+            <div className="bg-white p-6 rounded-xl border space-y-4">
+              <h2 className="font-semibold">Consumed</h2>
 
               {/* Calories */}
               <div>
-                <div className="flex justify-between text-sm mb-1">
+                <div className="flex justify-between text-sm">
                   <span>Calories</span>
-                  <span>{data.todayCalories} / {data.targetCalories}</span>
+                  <span>{data.todayCalories}</span>
                 </div>
-                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 rounded">
                   <div
-                    className="h-full bg-[#2bb3a3]"
+                    className="h-2 bg-green-500"
                     style={{
-                      width: `${calcPercent(data.todayCalories, data.targetCalories)}%`
+                      width: `${calcPercent(
+                        data.todayCalories,
+                        data.targetCalories
+                      )}%`,
                     }}
                   />
                 </div>
@@ -165,31 +154,37 @@ const RecommendationPreview = ({ limit }) => {
 
               {/* Protein */}
               <div>
-                <div className="flex justify-between text-sm mb-1">
+                <div className="flex justify-between text-sm">
                   <span>Protein</span>
-                  <span>{eatenProtein.toFixed(1)} / {data.targetProtein} g</span>
+                  <span>{eatenProtein}</span>
                 </div>
-                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 rounded">
                   <div
-                    className="h-full bg-blue-500"
+                    className="h-2 bg-blue-500"
                     style={{
-                      width: `${calcPercent(eatenProtein, data.targetProtein)}%`
+                      width: `${calcPercent(
+                        eatenProtein,
+                        data.targetProtein
+                      )}%`,
                     }}
                   />
                 </div>
               </div>
 
-              {/* Carbs */}
+
               <div>
-                <div className="flex justify-between text-sm mb-1">
+                <div className="flex justify-between text-sm">
                   <span>Carbs</span>
-                  <span>{eatenCarb.toFixed(1)} / {data.targetCarb} g</span>
+                  <span>{eatenCarb}</span>
                 </div>
-                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 rounded">
                   <div
-                    className="h-full bg-yellow-500"
+                    className="h-2 bg-yellow-500"
                     style={{
-                      width: `${calcPercent(eatenCarb, data.targetCarb)}%`
+                      width: `${calcPercent(
+                        eatenCarb,
+                        data.targetCarb
+                      )}%`,
                     }}
                   />
                 </div>
@@ -197,98 +192,111 @@ const RecommendationPreview = ({ limit }) => {
 
               {/* Fat */}
               <div>
-                <div className="flex justify-between text-sm mb-1">
+                <div className="flex justify-between text-sm">
                   <span>Fat</span>
-                  <span>{eatenFat.toFixed(1)} / {data.targetFat} g</span>
+                  <span>{eatenFat}</span>
                 </div>
-                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 rounded">
                   <div
-                    className="h-full bg-red-500"
+                    className="h-2 bg-red-500"
                     style={{
-                      width: `${calcPercent(eatenFat, data.targetFat)}%`
+                      width: `${calcPercent(
+                        eatenFat,
+                        data.targetFat
+                      )}%`,
                     }}
                   />
                 </div>
               </div>
             </div>
           </div>
+{data.message && (
+    <div className="bg-blue-50 border border-blue-200 text-black p-3 rounded-lg text-center font-medium">
+      {data.message}
+    </div>
+  )}
 
-          {/* RECOMMENDED FOODS */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-slate-800">
-              🥗 Recommended Foods
-            </h2>
+          <div className="flex gap-3 flex-wrap">
+            {[
+              "ALL",
+              "BREAKFAST",
+              "LUNCH",
+              "DINNER",
+              "SNACK",
+              "POST_WORKOUT",
+            ].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-full border text-sm ${
+                  activeTab === tab
+                    ? "bg-[#2bb3a3] text-white"
+                    : "bg-white"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-            {foodsToShow.length === 0 ? (
-              <p className="text-red-400">
-                No recommendations available.
-              </p>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {foodsToShow.map((f) => (
-                  <div
-                    key={f._id}
-                    className="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-lg transition"
-                  >
-                    <h3 className="text-lg font-bold text-slate-800 mb-3">
-                      {f.name}
-                    </h3>
 
-                    <div className="space-y-2 text-sm text-slate-600">
-                      <p>Calories: {f.calories} kcal</p>
-                      <p>Protein: {f.protein} g</p>
-                      <p> Carbs: {f.carb} g</p>
-                      <p> Fat: {f.fat} g</p>
-                    </div>
+          <div className="grid md:grid-cols-3 gap-6">
 
-                    <button
-                      onClick={() => {
-                        setSelectedFood(f);
-                        setShowAddFood(true);
-                      }}
-                      className="mt-5 w-full bg-[#2bb3a3] text-white py-2 rounded-xl hover:bg-[#249e90] transition"
-                    >
-                      Add to Meal
-                    </button>
-                  </div>
-                ))}
+            {foodsToShow.map((f) => (
+              <div
+                key={f._id}
+                className="bg-white p-4 border rounded-xl"
+              >
+                <h3 className="font-bold">{f.name}</h3>
+                <p className="text-sm text-gray-500">
+                  {f.mealType}
+                </p>
+                <p>{f.calories} kcal</p>
+
+                <button
+                  onClick={() => {
+                    setSelectedFood(f);
+                    setShowAddFood(true);
+                  }}
+                  className="mt-3 w-full bg-[#2bb3a3] text-white py-2 rounded"
+                >
+                  Add
+                </button>
               </div>
-            )}
+            ))}
           </div>
         </div>
       )}
 
-      {/* ================= ADD FOOD MODAL ================= */}
-      {showAddFood && selectedFood && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-[400px] p-6 rounded-2xl shadow-xl space-y-5">
 
-            <h3 className="text-xl font-bold text-slate-800">
-              Add {selectedFood.name}
-            </h3>
 
-            <p className="text-sm text-slate-500">
-              Enter quantity in grams
-            </p>
+
+      {showAddFood && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-xl w-[350px]">
+
+            <h2 className="text-lg font-bold mb-3">
+              Add {selectedFood?.name}
+            </h2>
 
             <input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full p-3 rounded-xl border border-gray-200 text-center text-lg"
+              onChange={(e) => setQuantity(e.target.value)}
+              className="w-full border p-2 rounded"
             />
 
-            <div className="flex gap-4">
+            <div className="flex gap-2 mt-4">
               <button
                 onClick={() => setShowAddFood(false)}
-                className="flex-1 py-2 rounded-xl border border-gray-300"
+                className="w-full border p-2 rounded"
               >
                 Cancel
               </button>
 
               <button
                 onClick={AddFood}
-                className="flex-1 py-2 rounded-xl bg-[#2bb3a3] text-white hover:bg-[#249e90]"
+                className="w-full bg-[#2bb3a3] text-white p-2 rounded"
               >
                 Confirm
               </button>

@@ -20,6 +20,7 @@ const Userheader = () => {
     { name: "Community", icon: "bi bi-people", path: "post" },
     { name: "Badge", icon: "bi bi-people", path: "badge" },
     { name: "Progress logs", icon: "bi bi-people", path: "compare" },
+        { name: "View payment history", icon: "bi bi-people", path: "history" },
    
   ];
 
@@ -61,7 +62,7 @@ const Userheader = () => {
       <div className="flex flex-col gap-4 px-6 mb-6 border-t border-gray-300 pt-4">
         <div
           onClick={() => {
-            navigate("logout");
+            navigate("/logout");
             setNavLink("Logout");
           }}
           className={`flex items-center gap-3 cursor-pointer p-2 rounded-md  ${

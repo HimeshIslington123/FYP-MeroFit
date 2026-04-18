@@ -14,19 +14,20 @@ const FoodSchema = new mongoose.Schema({
     },
   },
 
-
-  foodType: {
-  type: String,
-  enum: [
-    "HIGH_PROTEIN",
-    "LOW_CARB",
-    "HIGH_CARB",
-    "LOW_FAT",
-    "BALANCED",
-    "KETO",
-  ],
-  default: "BALANCED", 
-},
+mealType: {
+    type: String,
+    enum: [
+      "BREAKFAST",
+      "LUNCH",
+      "DINNER",
+      "SNACK",
+      "BRUNCH",
+      "PRE_WORKOUT",
+      "POST_WORKOUT",
+    ],
+    default: "SNACK",
+  },
+  
 
 });
 

@@ -142,7 +142,7 @@ if (!payment) return null; // wait for API
     <div className=" bg-[#f8fafb] p-4 ">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 h-[85vh]">
 
-        {/* --- SIDEBAR --- */}
+
         <div className="w-full md:w-80 bg-white rounded-[2rem] shadow-sm border border-gray-100 flex flex-col overflow-hidden">
           <div className="p-6 border-b border-gray-50">
             <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[#2bb3a3] font-bold mb-4 text-sm">

@@ -22,7 +22,7 @@ ChartJS.register(
   PointElement,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const Analysis = () => {
@@ -61,7 +61,7 @@ const Analysis = () => {
   // ===================== CHART DATA =====================
   const weightData = {
     labels: weightHistory.map((w) =>
-      new Date(w.recordedAt).toLocaleDateString()
+      new Date(w.recordedAt).toLocaleDateString(),
     ),
     datasets: [
       {
@@ -90,8 +90,7 @@ const Analysis = () => {
     ],
   };
 
-  const macroData =
-    todayMacros &&
+  const macroData = todayMacros &&
     todayMacros.totalProtein !== undefined && {
       labels: ["Protein", "Carbs", "Fat"],
       datasets: [
@@ -112,7 +111,7 @@ const Analysis = () => {
     weightHistory.length > 1
       ? Math.round(
           weightHistory[weightHistory.length - 1].weight -
-            weightHistory[weightHistory.length - 2].weight
+            weightHistory[weightHistory.length - 2].weight,
         )
       : null;
 
@@ -146,7 +145,10 @@ const Analysis = () => {
               options={{
                 responsive: true,
                 plugins: { legend: { display: true } },
-                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } },
+                scales: {
+                  x: { grid: { display: false } },
+                  y: { grid: { display: false } },
+                },
               }}
             />
           ) : (
@@ -157,12 +159,15 @@ const Analysis = () => {
         {/* Last 7 Days Calories */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-light text-black">Last 7 Days Calories</h3>
+            <h3 className="text-lg font-light text-black">
+              Last 7 Days Calories
+            </h3>
             {last7.length > 0 && (
               <span className="bg-[#fdf3e7] text-[#e67e22] text-[12px] px-2 py-1 rounded-full">
                 Avg{" "}
                 {Math.round(
-                  last7.reduce((sum, log) => sum + log.totalCalories, 0) / last7.length
+                  last7.reduce((sum, log) => sum + log.totalCalories, 0) /
+                    last7.length,
                 )}
               </span>
             )}
@@ -173,7 +178,10 @@ const Analysis = () => {
               options={{
                 responsive: true,
                 plugins: { legend: { display: true } },
-                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } },
+                scales: {
+                  x: { grid: { display: false } },
+                  y: { grid: { display: false } },
+                },
               }}
             />
           ) : (
